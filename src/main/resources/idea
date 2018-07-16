@@ -1,0 +1,1 @@
+由于从数据库中查出来的是List<Map>，所以使用NamedPreparedStatement
