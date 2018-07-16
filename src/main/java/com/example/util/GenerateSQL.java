@@ -11,74 +11,54 @@ public class GenerateSQL {
                             new FileInputStream(fileDir), "UTF8"));
 
             String str;
-
-            String table_name = "";
+            String query_table_name = "";
             String col_name = "";
-
-            String col_type = "";
-            String nullOrNot = "";
-            String comment = "";
-
-            String dropTemplete;
-            String createTemplete;
+            String rename = "";
             StringBuffer sb = new StringBuffer();
-            String tableComment = "";
-            String pk = "";
+            String queryStr = "";
             int lineNum = 0;
-            String primaryKey = "";
+            String tables = "";
             while ((str = in.readLine()) != null) {
                 lineNum++;
                 //                System.out.println(str);
                 if(str.startsWith("表名")) {
-                    table_name = str.substring(3, str.length()).toUpperCase().trim();
-                    dropTemplete = "DROP TABLE IF EXISTS `" + table_name + "`;\r\n";
-                    createTemplete = "CREATE TABLE `" + table_name + "` (" + "\r\n";
-                    sb.append(dropTemplete).append(createTemplete);
-                }else if(str.startsWith("中文名")){
-                    tableComment = str.substring(4,str.length());
-                }else if(str.startsWith("主键")){
-                    pk = str.substring(3,str.length());
+                    continue;
                 }else if(str.startsWith("序号")){
                     continue;
                 }else if(str.isEmpty()){ //Str为空，表示读到了空行，也表示一个表的sql语句已经完成。
-                    if(!pk.isEmpty()){//如果有主键
-                        primaryKey = "       PRIMARY KEY (`" +pk.trim()+ "`)\n";
-                    }else{  //没有主键
-                        primaryKey = "";
-                        sb.deleteCharAt(sb.length() - 3);
-                    }
-                    String end = ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='"+tableComment+"';" + "\r\n";
-                    sb.append(primaryKey).append(end).append("\r\n");
-                    pk = "";
+                    col_name = "";
+                    query_table_name = "";
+                    rename = "";
+                    sb.append(queryStr).append("\r\nWHERE " + tables).append("\r\n\r\n");
+                    queryStr = "";
+                    tables = "";
                 }else{
                     String[] cols = str.split("\\s+");
-                    if(cols.length != 5){
-                        System.out.println("ERROR: "+lineNum+"行空格数量不对.\r\n");
+                    if(cols.length < 7){
                         continue;
+                    }else if(cols.length > 7){
+                        System.out.println("第" + lineNum + "行有问题！");
+                        break;
                     }
-                    comment = cols[1];
-                    col_name = cols[2];
-                    col_type = cols[3];
-                    if(col_name.equals("C_CREATE_DATE")){
-                        nullOrNot = "NULL DEFAULT CURRENT_TIMESTAMP";
-                    }else if(col_name.equals("C_UPDATED_DATE")){
-                        nullOrNot = "NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP";
-                    }else{
-                        if (cols[4].toUpperCase().equals("M")) {
-                            nullOrNot = "NOT NULL";
-                        } else {
-                            nullOrNot = "DEFAULT NULL";
+                    if(query_table_name.isEmpty() && col_name.isEmpty()){
+                        queryStr = "SELECT \r\n\t";
+                        col_name = cols[5];
+                        query_table_name = cols[6].toUpperCase();
+                    }else if(!query_table_name.isEmpty() && !col_name.isEmpty()){  //列和表都不为空
+                        col_name = cols[5];
+                        if(!query_table_name.equals(cols[6].toUpperCase())){
+                            queryStr += "\r\n\t";
                         }
+                        if(tables.indexOf(cols[6].toUpperCase()) < 0){
+                            tables = tables + cols[6].toUpperCase() + ",";
+                        }
+                        query_table_name = cols[6].toUpperCase();
+                        rename = cols[2];
                     }
-
-                    String EachCol = "      `" + col_name + "` " + col_type + " " + nullOrNot + " COMMENT " + "'" + comment + "'," + "\r\n";
-                    sb.append(EachCol.toUpperCase());
+                    queryStr = queryStr + query_table_name + "." + col_name + " as " + rename +",";
                 }
             }
 
-            primaryKey = "       PRIMARY KEY (`" +pk+"`)\r\n";
-            String end = ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='"+tableComment+"';" + "\r\n";
-            sb.append(primaryKey).append(end);
             in.close();
             return sb.toString();
         }catch (UnsupportedEncodingException e) {
@@ -91,9 +71,11 @@ public class GenerateSQL {
         return "";
     }
     public static void main(String[] args){
-        String pathName = "out/production/castSQL/newTableCastText.txt";
+        String pathName = "src/main/resources/冲突表0716.txt"; //冲突表0716.txt  C:\Users\99624\IdeaProjects\mdos2\MigrateLibrary\src\main\resources\冲突表0716.txt
         String SQLResult = getSQLResult(pathName);
+        System.out.println(SQLResult);
         String newFilePath = "";
+
         File fileDir = new File("out\\production\\castSQL\\SQLResult2.sql");
         if(!fileDir.exists()){
             try {

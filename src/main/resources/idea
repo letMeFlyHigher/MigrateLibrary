@@ -1,1 +1,15 @@
 由于从数据库中查出来的是List<Map>，所以使用NamedPreparedStatement
+
+select <table-namei>.<colnamej> ....
+from <table-name1>,<table-name2>
+
+查询语句:
+select col6.col5,
+from col6
+
+新增语句
+insert into col6(for key in List<map>,....) values(?.....);
+
+0.组织sql语句。
+1.先查出来，根据名字，如果有一个表，直接查就行，如果有多个表，就多个表关联查一下；然后放到一个ListMAP里面。
+2.组织新增语句，批量新增到对应表中，参数使用获得的ListMap 来做。

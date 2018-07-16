@@ -1,5 +1,4 @@
 
-11	站点/平台
 表名：TAB_OMIN_CM_CC_STATIONPLAT
 序号	字段描述	字段名称	数据类型	允许空	对应字段	对应表
 1		站点/平台UUID	C_SITEOPF_ID	VARCHAR(36)	M	C_STATION_ID	tab_omin_cm_cc_station
@@ -84,8 +83,7 @@
 80		最近更新人	C_MODIFIER	VARCHAR(36)	C		
 81		操作状态	C_OPT_STATUS	VARCHAR(8)	C		
 
-地面、台站关系表 
-表名：tab_omin_cm_cc_awsstationnetship 
+表名：tab_omin_cm_cc_awsstationnetship
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	编码/主键	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
 2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	tab_omin_cm_cc_station	TAB_OMIN_META_NETWORK
@@ -118,8 +116,7 @@
 29	最后修改人	C_MODIFIER	VARCHAR(36)	C		
 30	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
 
-高空气球探空仪探测站、台站关系表
-表名：tab_omin_cm_cc_uparstationnetship 
+表名：tab_omin_cm_cc_uparstationnetship
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	编码/主键	C_SNETSHIP_ID	VARCHAR(36)	M	36位主键	
 2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	C_SITEOPF_ID	TAB_OMIN_CM_CC_STATIONPLAT
@@ -150,8 +147,7 @@
 27	最后修改人	C_MODIFIER	VARCHAR	C		
 28	操作状态	C_OPT_STATUS	VARCHAR	C
 		
-酸雨、台站关系表
-表名：tab_omin_cm_cc_arstationnetship 
+表名：tab_omin_cm_cc_arstationnetship
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	编码	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
 2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	截取NetworkPK的32位	TAB_OMIN_META_NETWORK
@@ -159,10 +155,10 @@
 4	台站级别	C_STATION_LEVEL	VARCHAR(36)	C	NetWorkLevel	TAB_OMIN_META_NETWORK
 5	本站网开始观测时间	C_StartTime 	VARCHAR(20)	M	StartTime	TAB_OMIN_META_NETWORK
 6	本站网终止观测时间	C_EndTime 	VARCHAR(20)	M	EndTime	TAB_OMIN_META_NETWORK
-  7	观测时制	C_TimeSystem 	VARCHAR(20)	C	TimeSystem	TAB_OMIN_META_NETWORK
+7	观测时制	C_TimeSystem 	VARCHAR(20)	C	TimeSystem	TAB_OMIN_META_NETWORK
 8	守班情况	C_ONDUTY	VARCHAR(36)	C	ShiftCase	TAB_OMIN_META_NETWORK
 9	资料交换级别	C_ExchangeCode 	VARCHAR(3)	C	ExchangeCode	TAB_OMIN_META_NETWORK
- 10	观测方式	C_ObsvMode 	NUMERIC(3,0)	M	ObsvMode	TAB_OMIN_META_NETWORK
+10	观测方式	C_ObsvMode 	NUMERIC(3,0)	M	ObsvMode	TAB_OMIN_META_NETWORK
 11	观测次数	C_ObsvCount 	VARCHAR(20)	C	ObsvCount	TAB_OMIN_META_NETWORK
 12	观测时间	C_ObsvTimes 	VARCHAR(100)	C	ObsvTimes	TAB_OMIN_META_NETWORK
 13	酸雨采集方式	C_AcidrainAcquMode	VARCHAR(5)	C	AcidrainAcquMode	TAB_OMIN_META_NETWORK
@@ -176,7 +172,6 @@
 21	最后修改人	C_MODIFIER	VARCHAR	C		
 22	操作状态	C_OPT_STATUS	VARCHAR	C		
 
-14自动土壤水分、台站关系表
 表名：tab_omin_cm_cc_asmstationnetship
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	编码	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
@@ -257,7 +252,6 @@
 76	最后修改人	C_MODIFIER	VARCHAR(36)	C		
 77	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
 
-15大气成分观测站、台站关系表
 表名：tab_omin_cm_cc_cawnstationnetship
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表结构
 1	编码/主键	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
@@ -282,7 +276,6 @@
 21	最后修改人	C_MODIFIER	VARCHAR(36)	C		
 22	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
 
-136辐射观测站、台站关系表
 表名：tab_omin_cm_cc_radistationnetship
 序号	字段描述	字段名称	字段类型	允许空	对应表字段	对应表
 1	编码/主键	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
@@ -306,7 +299,6 @@
 19	最后修改人	C_MODIFIER	VARCHAR(36)	C		
 20	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
 
-14	观测量
 表编码：TAB_OMIN_CM_CC_OBSQUANTITY
 序号	字段名	字段编码	字段类型	允许空	对应字段	对应表
 1	观测量UUID	C_OBSQ_ID	VARCHAR(36)	M	后台生成36位主键	
@@ -337,9 +329,7 @@
 19	操作状态	C_OPT_STATU	VARCHAR(8)	C	
 	
 
-	站网、台站与观测量关系
-表名：TAB_OMIN_CM_CC_OBSQSTATIONNETSHIP 
-描述：观测量与站网和台站的关系表。
+表名：TAB_OMIN_CM_CC_OBSQSTATIONNETSHIP
 序号	字段描述	字段名称	字段类型	允许空	说明
 1	Uuid	C_OBSQSN_ID	VARCHAR(36)	M	
 2	站网信息与台站关系表编码	C_SNETSHIP_ID	VARCHAR(36)	M	
@@ -349,9 +339,7 @@
 6	最近更新人	C_MODIFIER	VARCHAR(36)	C	
 7	操作状态	C_OPT_STATUS	VARCHAR(8)	C	
 
-17	环境
-表编码：TAB_OMIN_CM_CC_ENVIRONMENT 
-描述：本类别描述了观测所处的地理环境，其还为额外的元信息提供非结构化元素，而元信息被认为与观测资料的充分利用有关，且尚未在标准中列明
+表编码：TAB_OMIN_CM_CC_ENVIRONMENT
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	观测环境UUID	C_ENV_ID	VARCHAR(36)	M	由后台生成36位主键	
 2	地表覆盖	C_ENV_SFCV	VARCHAR(36)	C		
@@ -372,9 +360,7 @@
 17	最近更新人	C_MODIFIER	VARCHAR(36)	C		
 18	操作状态	C_OPT_STATUS	VARCHAR(8)	C	
 	
-19	仪器和观测方法
 表名：TAB_OMIN_CM_CC_OBSMETHOD
-描述：定观测方法并描述观测仪器的特性。如果一项观测需要多台仪器同时运行，则该类别应当进行重复。
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	观测方法UUID	C_OBSVM_ID	VARCHAR(36)	M	后台生成36位主键	
 2	观测源	C_OBSV_SOURCE	VARCHAR(36)	C		
