@@ -1,0 +1,413 @@
+
+11	站点/平台
+表名：TAB_OMIN_CM_CC_STATIONPLAT
+序号	字段描述	字段名称	数据类型	允许空	对应字段	对应表
+1		站点/平台UUID	C_SITEOPF_ID	VARCHAR(36)	M	C_STATION_ID	tab_omin_cm_cc_station
+2		语种	C_MDLANG	VARCHAR(50)	C	C_MDLANG	tab_omin_cm_cc_station
+3		字符集	C_MDCHAR	VARCHAR(50)	C	C_MDCHAR	tab_omin_cm_cc_station
+4		创建日期	C_MDDATEST	VARCHAR(20)	C	C_MDDATEST	tab_omin_cm_cc_station
+5		标准名称	C_MDSTANNAME	VARCHAR(60)	C	C_MDSTANNAME	tab_omin_cm_cc_station
+6		标准版本	C_MDSTANVER	VARCHAR(60)	C	C_MDSTANVER	tab_omin_cm_cc_station
+7		区站号	C_INDEXNBR	VARCHAR(32)	M	C_INDEXNBR	tab_omin_cm_cc_station
+8		子站号	C_INDEXSUBNBR	VARCHAR(32)	C	C_INDEXSUBNBR	tab_omin_cm_cc_station
+9		台站/平台标识符	C_SITEOPF_FLAG	VARCHAR(32)	C		
+10		台站档案号	C_ARCHIVEINBR	VARCHAR(32)	C	C_ARCHIVEINBR	tab_omin_cm_cc_station
+11		站名(中文)	C_STATIONNC	VARCHAR(128)	M	C_STATIONNC	tab_omin_cm_cc_station
+12		站名(英文)	C_STATIONNE	VARCHAR(125)	C	C_STATIONNE	tab_omin_cm_cc_station
+13		站别名	C_ALIAS	VARCHAR(128)	C		
+14		台站/平台模式	C_SITEOPF_MODEL	VARCHAR(256)	C		
+15		台站/平台类型	C_SITEOPF_TYPE	VARCHAR(36)	C		
+16		经度	C_LONGITUDE	VARCHAR(32)	M	C_LONGITUDE	tab_omin_cm_cc_station
+17		纬度	C_LATITUDE	VARCHAR(32)	M	C_LATITUDE	tab_omin_cm_cc_station
+18		气压表海拔高度	C_HP	VARCHAR(32)	M	C_HP	tab_omin_cm_cc_station
+19		测站海拔高度	C_HHA	VARCHAR(32)	M	C_HHA	tab_omin_cm_cc_station
+20		雷达天线馈源海拔高度	C_RAA	VARCHAR(32)	C		
+21		地理环境	C_ENVIRONMENT	VARCHAR(32)	M	C_ENVIRONMENT	tab_omin_cm_cc_station
+22		WMO区协	C_REGIONID	VARCHAR(36)	C	C_REGIONID	tab_omin_cm_cc_station
+23		时区	C_TIMEZONE	VARCHAR(128)	C		
+24		气候带	C_CLIMATEZONE	VARCHAR(128)	C		
+25		国家(地区)名称	C_COUNTRYID	VARCHAR(32)	C	C_COUNTRYID	tab_omin_cm_cc_station
+26		区域中心	C_REGIONALHC	VARCHAR(32)	C	C_REGIONALHC	tab_omin_cm_cc_station
+27		行政区划代码	C_ADMINISTRATIVEDC	VARCHAR(32)	C	C_ADMINISTRATIVEDC	tab_omin_cm_cc_station
+28		省(自治区、直辖市、特别行政区)名称	C_PROVINCE	VARCHAR(36)	C		
+29		地级市(地区、自治州、盟)名称	C_CITY	VARCHAR(36)	C		
+30		县(市辖区、县级市、自治县、旗、自治旗、特区、林区)名称	C_COUNTY	VARCHAR(36)	C		
+31		详细地址	C_ADDRESS	VARCHAR(32)	M	C_ADDRESS	tab_omin_cm_cc_station
+32		台站URL	C_STATIONURL	VARCHAR(256)	C		
+33		其他链接URL	C_OTHERURL	VARCHAR(256)	C		
+34		建站时间	C_ESTADATE	VARCHAR(8)	M	C_ESTADATE	tab_omin_cm_cc_station
+35		撤站时间	C_REPDATE	VARCHAR(8)	M	C_REPDATE	tab_omin_cm_cc_station
+36		资料通信方法	C_CMETHOD	VARCHAR(36)	C	TRANSMITMODE	Tab_omin_cm_cc_station
+37		台站状态	C_STATUS	VARCHAR(32)	C	C_STATUS	tab_omin_cm_cc_station
+38		站网信息	C_SITEINFORMATION	VARCHAR(32)	M		
+39		台(站)长	C_CHARGEPERSON	VARCHAR(36)	M	C_RPINDNAME	tab_omin_cm_cc_station
+40		其他	C_APPENDIX	VARCHAR(256)	C	C_APPENDIX	tab_omin_cm_cc_station
+41		是否考核	C_ISEXAM	Varchar(10)	C	ISEXAM	Tab_omin_meta_regstation
+42		乡镇	C_TOWNSHIP	VARCHAR(100)	C	TOWNSHIP	Tab_omin_meta_regstation
+43		所属机构	C_ORGANIZATION	VARCHAR(100)	C	C_ORGANIZATION	Tab_omin_cm_cc_station
+44		洲代码	C_CONTINENT	VARCHAR(1)	C	C_CONTINENT	Tab_omin_cm_cc_station
+45		洋代码	C_OCEAN	VARCHAR(1)	C	C_OCEAN	Tab_omin_cm_cc_station
+46		浮点经度	C_LONGITUDE_NUMB	NUMERIC(22,15)	C	C_LONGITUDE_NUMB	Tab_omin_cm_cc_station
+47		浮点纬度	C_LATITUDE_NUMB	NUMERIC(22,15)	C	C_LATITUDE_NUMB	Tab_omin_cm_cc_station
+48		管理台站	C_MANASTATION	VARCHAR(10)	M	MANASTATION	Tab_omin_meta_regstation
+49		资金来源	C_FUNDSSOURCES	VARCHAR(100)	C	FUNDSSOURCES	Tab_omin_meta_regstation
+50		站点特殊类别	C_SPECIFICTYPE	VARCHAR(100)	C	SPECIFICTYPE	Tab_omin_meta_regstation
+51		疑误信息反馈单位	C_INFOFEEDBACKDEP	VARCHAR(100)	C	INFOFEEDBACKDEP	Tab_omin_meta_regstation
+52		设备通信模块ID号	C_MODULEID	VARCHAR(100)	C	MODULEID	Tab_omin_meta_regstation
+53		风速感应器距地高度	C_WINDSENSORHEIGHT	VARCHAR(10)	C	WINDSENSORHEIGHT	Tab_omin_meta_regstation
+54		测站类别	C_STATIONTYPE	VARCHAR(10)	C	STATIONTYPE	Tab_omin_meta_regstation
+55		是否上传区域站小时数据文件	C_ISUPLOADREGHOURDATA	VARCHAR(10)	C	ISUPLOADREGHOURDATA	Tab_omin_meta_regstation
+56		是否上传分钟数据文件	C_ISUPLOADMINUTEDATA	VARCHAR(10)	C	ISUPLOADMINUTEDATA	Tab_omin_meta_regstation
+57		是否上传国家站小时数据文件	C_ISUPLOADHOURDATA	VARCHAR(10)	C	ISUPLOADHOURDATA	Tab_omin_meta_regstation
+58		是否上传日数据文件	C_ISUPLOADDAYDATA	VARCHAR(10)	C	ISUPLOADDAYDATA	Tab_omin_meta_regstation
+59		是否上传日照数据文件	C_ISUPLOADSUNSHINEDATA	VARCHAR(10)	C	ISUPLOADSUNSHINEDATA	Tab_omin_meta_regstation
+60		是否上传小时辐射数据	C_ISUPLOADRADIATEHOURDATA	VARCHAR(10)	C	ISUPLOADRADIATEHOURDATA	Tab_omin_meta_regstation
+61		台站数据处理人员电话	C_TELDATAPROCESSER	VARCHAR(50)	M	TELDATAPROCESSER	Tab_omin_meta_regstation
+62		台站管理人员电话	C_TELMANAGER	VARCHAR(50)	M	TELMANAGER	Tab_omin_meta_regstation
+63		备注	C_REMARKS	VARCHAR(100)	C	REMARKS	Tab_omin_meta_regstation
+64		台站简称	C_SHORT_NAME	VARCHAR(50)	M	SHORT_NAME	Tab_omin_meta_regstation
+65		风速传感器平台距地高度	C_WIND_SENSOR_HEIGHT	VARCHAR(50)	C	WIND_SENSOR_HEIGHT	Tab_omin_meta_regstation
+66		省简称	C_PROVINCE_SHORT	VARCHAR(50)	C	PROVINCE_SHORT	Tab_omin_meta_regstation
+67		市简称	C_CITY_SHORT	VARCHAR(50)	C	CITY_SHORT	Tab_omin_meta_regstation
+68		县简称	C_COUNTY_SHORT	VARCHAR(50)	C	COUNTY_SHORT	Tab_omin_meta_regstation
+69		设备ID	C_EQU_ID	VARCHAR(50)	M	EQU_ID	Tab_omin_meta_regstation
+70		要素数	C_OBG_NUM	VARCHAR(50)	M	OBG_NUM	Tab_omin_meta_regstation
+71		是否上传酸雨日数据文件	C_ISUPLOADACIDRAINDAYDATA	VARCHAR(50)	C	ISUPLOADACIDRAINDAYDATA	Tab_omin_meta_regstation
+72		国家站地面天气站(是/否)	C_ISWEATHERSTATION	VARCHAR(50)	C	ISWEATHERSTATION	Tab_omin_meta_regstation
+73		部门	C_DEPT	VARCHAR(50)	C	DEPT	Tab_omin_meta_regstation
+74		是否是高山站	C_IF_MOUNTAIN	VARCHAR(50)	C	IF_MOUNTAIN	Tab_omin_meta_regstation
+75		元数据更新时间	C_MDUPDATE	VARCHAR(8)	C	C_MDUPDATE	Tab_omin_cm_cc_station
+76		是否是交通站	C_ISTRAFFICSTATION	VARCHAR(50)	C	ISTRAFFICSTATION	Tab_omin_meta_regstation
+77		是否是旅游站	C_ISTOURISTSTATION	VARCHAR(50)	C	ISTOURISTSTATION	Tab_omin_meta_regstation
+78		创建时间	C_CREATE_DATE	timestamp	C		
+79		最近更新时间	C_UPDATED_DATE	timestamp	C		
+80		最近更新人	C_MODIFIER	VARCHAR(36)	C		
+81		操作状态	C_OPT_STATUS	VARCHAR(8)	C		
+
+地面、台站关系表 
+表名：tab_omin_cm_cc_awsstationnetship 
+序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
+1	编码/主键	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
+2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	tab_omin_cm_cc_station	TAB_OMIN_META_NETWORK
+3	站网ID	C_SNET_ID	VARCHAR(36)	M	固定值：01	
+4	台站级别	C_STATION_LEVEL	VARCHAR(36)	C	NetWorkLevel	TAB_OMIN_META_NETWORK
+5	启用时间	C_StartTime	VARCHAR(20)	C	 c_estadate	TAB_OMIN_CM_CC_STATION
+6	开始观测时间	C_netstarttime	VARCHAR(20)	C	StartTime	TAB_OMIN_META_NETWORK
+7	终止观测时间	C_netEndTime	VARCHAR(20)	M	EndTime	TAB_OMIN_META_NETWORK
+8	观测时制	C_TimeSystem	VARCHAR(20)	C	TimeSystem	TAB_OMIN_META_NETWORK
+9	人工观测次数	C_ObsvCount	VARCHAR(20)	C	ObsvCount	TAB_OMIN_META_NETWORK
+10	人工观测时间	C_ObsvTimes	VARCHAR(100)	C	ObsvTimes	TAB_OMIN_META_NETWORK
+11	资料交换级别	C_ExchangeCode	VARCHAR(3)	C	ExchangeCode	TAB_OMIN_META_NETWORK
+12	观测方式	C_ObsvMode	NUMERIC(3,0)	M	ObsvMode	TAB_OMIN_META_NETWORK
+13	守班情况	C_ONDUTY	VARCHAR(36)	C	ShiftCase	TAB_OMIN_META_NETWORK
+14	沿革文件来源	C_HisLogDataFrom	VARCHAR(100)	C	HisLogDataFrom	TAB_OMIN_META_NETWORK
+15	沿革文件编制人	C_HisLogCompBy	VARCHAR(50)	C	HisLogCompBy	TAB_OMIN_META_NETWORK
+16	沿革文件审核人	C_HisLogAudtBy	VARCHAR(50)	C	HisLogAudtBy	TAB_OMIN_META_NETWORK
+17	沿革文件编制日期	C_HISLOGCOMPDATE	VARCHAR(20)	C	HISLOGCOMPDATE	TAB_OMIN_META_NETWORK
+18	自动站站类型	C_INSTR_MODEL	VARCHAR(64)	C	AUTOSTATIONMODEL	TAB_OMIN_META_REGSTATION
+19	自动站生产商	C_MF	VARCHAR(64)	C	AUTOSTATIONMANU	TAB_OMIN_META_REGSTATION
+20	供电方式	C_POWER_TYPE	VARCHAR(36)	C	POWERSUPPLYMODE	TAB_OMIN_META_REGSTATION
+21	安装时间	C_INSTALLTIME	VARCHAR(8)	C		
+22	安装位置	C_INSTALL_POS	VARCHAR(256)	C	INSTALPOSITION	TAB_OMIN_META_REGSTATION
+23	降水停用时间开始月	C_RAIN_STIME	TINYINT(2)	C	自己降水SwitchDate	TAB_OMIN_META_OBSVELMT
+24	降水停用时间结束月	C_RAIN_ETIME	TINYINT(2)	C	自己降水SWITCHDATE	TAB_OMIN_META_OBSVELMT
+25	大型蒸发停用开始月	C_SWITCH_SDATE	TINYINT(2)	C	大型蒸发量的SWITCHDATE	TAB_OMIN_META_OBSVELMT
+26	大型蒸发停用结束月	C_SWITCH_EDATE	TINYINT(2)	C	大型蒸发量SWITCHDATE	TAB_OMIN_META_OBSVELMT
+27	创建时间	C_CREATE_DATE	timestamp	C		
+28	最近更新时间	C_UPDATED_DATE	timestamp	C		
+29	最后修改人	C_MODIFIER	VARCHAR(36)	C		
+30	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
+
+高空气球探空仪探测站、台站关系表
+表名：tab_omin_cm_cc_uparstationnetship 
+序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
+1	编码/主键	C_SNETSHIP_ID	VARCHAR(36)	M	36位主键	
+2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	C_SITEOPF_ID	TAB_OMIN_CM_CC_STATIONPLAT
+3	站网ID	C_SNET_ID	VARCHAR(36)	M	固定值：04	
+4	台站级别	C_STATION_LEVEL	VARCHAR(36)	C	NetWorkLevel	TAB_OMIN_META_NETWORK
+5	是否是GCOS站	C_ISGCOS	VARCHAR(2)	M	ISGCOS	TAB_OMIN_META_NETWORK
+6	本站网开始观测时间	C_StartTime	VARCHAR(20)	C	StartTime	TAB_OMIN_META_NETWORK
+7	本站网终止观测时间	C_EndTime	VARCHAR(20)	C	EndTime	TAB_OMIN_META_NETWORK
+8	观测时制	C_TimeSystem	VARCHAR(20)	C	TimeSystem	TAB_OMIN_META_NETWORK
+9	资料交换级别	C_ExchangeCode	VARCHAR(3)	C	ExchangeCode	TAB_OMIN_META_NETWORK
+10	观测方式	C_ObsvMode	NUMERIC(3,0)	M	ObsvMode	TAB_OMIN_META_NETWORK
+11	测风开始时间	C_AnemoStartTime	VARCHAR(20)	C	AnemoStartTime	TAB_OMIN_META_NETWORK
+12	测风终止时间	C_AnemoEndTime	VARCHAR(20)	C	AnemoEndTime	TAB_OMIN_META_NETWORK
+13	测风观测时间	C_AnemoObsvTime	VARCHAR(50)	C	AnemoObsvTime	TAB_OMIN_META_NETWORK
+14	测风观测次数	C_AnemoObsvCount	NUMERIC(5,0)	C	AnemoObsvCount	TAB_OMIN_META_NETWORK
+15	测风海拔高度	C_ANE_ALT	VARCHAR(20)	C	ANE_ALT	TAB_OMIN_META_NETWORK
+16	探空开始时间	C_SondeStartTime	VARCHAR(20)	C	SondeStartTime	TAB_OMIN_META_NETWORK
+17	探空终止时间	C_SondeEndTime	VARCHAR(20)	C	SondeEndTime	TAB_OMIN_META_NETWORK
+18	探空观测时间	C_SondeObsvTime	VARCHAR(50)	C	SondeObsvTime	TAB_OMIN_META_NETWORK
+19	探空观测次数	C_SondeObsvCount	NUMERIC(5,0)	C	SondeObsvCount	TAB_OMIN_META_NETWORK
+20	探空海拔高度	C_Sound_Alt	VARCHAR(20)	C	Sound_Alt	TAB_OMIN_META_NETWORK
+21	沿革文件来源	C_HisLogDataFrom	VARCHAR(100)	C	HisLogDataFrom	TAB_OMIN_META_NETWORK
+22	沿革文件编制人	C_HisLogCompBy	VARCHAR(50)	C	HisLogCompBy	TAB_OMIN_META_NETWORK
+23	沿革文件审核人	C_HisLogAudtBy	VARCHAR(50)	C	HisLogAudtBy	TAB_OMIN_META_NETWORK
+24	沿革文件编制日期	C_HISLOGCOMPDATE	VARCHAR(20)	C	HISLOGCOMPDATE	TAB_OMIN_META_NETWORK
+25	创建时间	C_CREATE_DATE	timestamp	C		
+26	最近更新时间	C_UPDATED_DATE	timestamp	C		
+27	最后修改人	C_MODIFIER	VARCHAR	C		
+28	操作状态	C_OPT_STATUS	VARCHAR	C
+		
+酸雨、台站关系表
+表名：tab_omin_cm_cc_arstationnetship 
+序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
+1	编码	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
+2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	截取NetworkPK的32位	TAB_OMIN_META_NETWORK
+3	站网ID	C_SNET_ID	VARCHAR(36)	M	固定值：17	TAB_OMIN_META_NETWORK
+4	台站级别	C_STATION_LEVEL	VARCHAR(36)	C	NetWorkLevel	TAB_OMIN_META_NETWORK
+5	本站网开始观测时间	C_StartTime 	VARCHAR(20)	M	StartTime	TAB_OMIN_META_NETWORK
+6	本站网终止观测时间	C_EndTime 	VARCHAR(20)	M	EndTime	TAB_OMIN_META_NETWORK
+  7	观测时制	C_TimeSystem 	VARCHAR(20)	C	TimeSystem	TAB_OMIN_META_NETWORK
+8	守班情况	C_ONDUTY	VARCHAR(36)	C	ShiftCase	TAB_OMIN_META_NETWORK
+9	资料交换级别	C_ExchangeCode 	VARCHAR(3)	C	ExchangeCode	TAB_OMIN_META_NETWORK
+ 10	观测方式	C_ObsvMode 	NUMERIC(3,0)	M	ObsvMode	TAB_OMIN_META_NETWORK
+11	观测次数	C_ObsvCount 	VARCHAR(20)	C	ObsvCount	TAB_OMIN_META_NETWORK
+12	观测时间	C_ObsvTimes 	VARCHAR(100)	C	ObsvTimes	TAB_OMIN_META_NETWORK
+13	酸雨采集方式	C_AcidrainAcquMode	VARCHAR(5)	C	AcidrainAcquMode	TAB_OMIN_META_NETWORK
+14	酸雨采集样式	C_AcidrainAcquStyle	VARCHAR(5)	C	AcidrainAcquStyle	TAB_OMIN_META_NETWORK
+15	沿革文件来源	C_HisLogDataFrom	VARCHAR(100)	C	HisLogDataFrom	TAB_OMIN_META_NETWORK
+16	沿革文件编制人	C_HisLogCompBy	VARCHAR(50)	C	HisLogCompBy	TAB_OMIN_META_NETWORK
+17	沿革文件审核人	C_HisLogAudtBy	VARCHAR(50)	C	HisLogAudtBy	TAB_OMIN_META_NETWORK
+18	沿革文件编制日期	C_HISLOGCOMPDATE	VARCHAR(20)	C	HISLOGCOMPDATE	TAB_OMIN_META_NETWORK
+19	创建时间	C_CREATE_DATE	timestamp	C		
+20	最近更新时间	C_UPDATED_DATE	timestamp	C		
+21	最后修改人	C_MODIFIER	VARCHAR	C		
+22	操作状态	C_OPT_STATUS	VARCHAR	C		
+
+14自动土壤水分、台站关系表
+表名：tab_omin_cm_cc_asmstationnetship
+序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
+1	编码	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
+2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	截取NetworkPK的32位	TAB_OMIN_META_NETWORK
+3	站网ID	C_SNET_ID	VARCHAR(36)	M	固定值：13	TAB_OMIN_META_NETWORK
+4	台站级别	C_STATION_LEVEL	VARCHAR(36)	C	NetWorkLevel	TAB_OMIN_META_NETWORK
+5	本站网开始观测时间	C_StartTime	VARCHAR(20)	M	StartTime	TAB_OMIN_META_NETWORK
+6	本站网终止观测时间	C_EndTime	VARCHAR(20)	M	EndTime	TAB_OMIN_META_NETWORK
+7	观测时制	C_TimeSystem	VARCHAR(20)	C	TimeSystem	TAB_OMIN_META_NETWORK
+8	观测次数	C_ObsvCount	VARCHAR(20)	C	ObsvCount	TAB_OMIN_META_NETWORK
+9	观测时间	C_ObsvTimes	VARCHAR(100)	C	ObsvTimes	TAB_OMIN_META_NETWORK
+10	守班情况	C_ONDUTY	VARCHAR(36)	C	ShiftCase	TAB_OMIN_META_NETWORK
+11	资料交换级别	C_ExchangeCode	VARCHAR(3)	C	ExchangeCode	TAB_OMIN_META_NETWORK
+12	观测方式	C_ObsvMode	NUMERIC(3,0)	M	ObsvMode	TAB_OMIN_META_NETWORK
+13	是否800个粮食重点生产县	C_FOODPRODUCTION	VARCHAR(20)	C	FOODPRODUCTION	TAB_OMIN_META_NETWORK
+14	是否测摘点	C_TestSite	VARCHAR(20)	C	TestSite	TAB_OMIN_META_NETWORK
+15	是否农气站	C_Agricultural	VARCHAR(20)	C	Agricultural	TAB_OMIN_META_NETWORK
+16	传感器深度	C_DepthOfSensor	VARCHAR(20)	C	DepthOfSensor	TAB_OMIN_META_NETWORK
+17	自动土壤水分仪器型号	C_tsoilInstrument	VARCHAR(20)	C	tsoilInstrument	TAB_OMIN_META_NETWORK
+18	观测地段	C_DISTRTYPE	VARCHAR(50)	C	DISTRTYPE	tab_omin_meta_network_soil
+19	地表覆盖物	C_CROP	VARCHAR(50)	C	CROP	tab_omin_meta_network_soil
+20	10cm土壤质地	C_TEXTURE10	VARCHAR(50)	C	TEXTURE10	tab_omin_meta_network_soil
+21	10cm田间持水量	C_CAPACITY10	VARCHAR(20)	C	CAPACITY10	tab_omin_meta_network_soil
+22	10cm土壤容重	C_UNITWEIGHT10	VARCHAR(20)	C	UNITWEIGHT10	tab_omin_meta_network_soil
+23	10cm凋萎湿度	C_WILTING_MOISTURE10	VARCHAR(20)	C	WILTING_MOISTURE10	tab_omin_meta_network_soil
+24	20cm土壤质地	C_TEXTURE20	VARCHAR(50)	C	TEXTURE20	tab_omin_meta_network_soil
+25	20cm田间持水量	C_CAPACITY20	VARCHAR(20)	C	CAPACITY20	tab_omin_meta_network_soil
+26	20cm土壤容重	C_UNITWEIGHT20	VARCHAR(20)	C	UNITWEIGHT20	tab_omin_meta_network_soil
+27	20cm凋萎湿度	C_WILTING_MOISTURE20	VARCHAR(20)	C	WILTING_MOISTURE20	tab_omin_meta_network_soil
+28	30cm土壤质地	C_TEXTURE30	VARCHAR(50)	C	TEXTURE30	tab_omin_meta_network_soil
+29	30cm田间持水量	C_CAPACITY30	VARCHAR(20)	C	CAPACITY30	tab_omin_meta_network_soil
+30	30cm土壤容重	C_UNITWEIGHT30	VARCHAR(20)	C	UNITWEIGHT30	tab_omin_meta_network_soil
+31	30cm凋萎湿度	C_WILTING_MOISTURE30	VARCHAR(20)	C	WILTING_MOISTURE30	tab_omin_meta_network_soil
+32	40cm土壤质地	C_TEXTURE40	VARCHAR(50)	C	TEXTURE40	tab_omin_meta_network_soil
+33	40cm田间持水量	C_CAPACITY40	VARCHAR(20)	C	CAPACITY40	tab_omin_meta_network_soil
+34	40cm土壤容重	C_UNITWEIGHT40	VARCHAR(20)	C	UNITWEIGHT40	tab_omin_meta_network_soil
+35	40cm凋萎湿度	C_WILTING_MOISTURE40	VARCHAR(20)	C	WILTING_MOISTURE40	tab_omin_meta_network_soil
+36	50cm土壤质地	C_TEXTURE50	VARCHAR(50)	C	TEXTURE50	tab_omin_meta_network_soil
+37	50cm田间持水量	C_CAPACITY50	VARCHAR(20)	C	CAPACITY50	tab_omin_meta_network_soil
+38	50cm土壤容重	C_UNITWEIGHT50	VARCHAR(20)	C	UNITWEIGHT50	tab_omin_meta_network_soil
+39	50cm凋萎湿度	C_WILTING_MOISTURE50	VARCHAR(20)	C	WILTING_MOISTURE50	tab_omin_meta_network_soil
+40	60cm土壤质地	C_TEXTURE60	VARCHAR(50)	C	TEXTURE60	tab_omin_meta_network_soil
+41	60cm田间持水量	C_CAPACITY60	VARCHAR(20)	C	CAPACITY60	tab_omin_meta_network_soil
+42	60cm土壤容重	C_UNITWEIGHT60	VARCHAR(20)	C	UNITWEIGHT60	tab_omin_meta_network_soil
+43	60cm凋萎湿度	C_WILTING_MOISTURE60	VARCHAR(20)	C	WILTING_MOISTURE60	tab_omin_meta_network_soil
+44	80cm土壤质地	C_TEXTURE80	VARCHAR(50)	C	TEXTURE80	tab_omin_meta_network_soil
+45	80cm田间持水量	C_CAPACITY80	VARCHAR(20)	C	CAPACITY80	tab_omin_meta_network_soil
+46	80cm土壤容重	C_UNITWEIGHT80	VARCHAR(20)	C	UNITWEIGHT80	tab_omin_meta_network_soil
+47	80cm凋萎湿度	C_WILTING_MOISTURE80	VARCHAR(20)	C	WILTING_MOISTURE80	tab_omin_meta_network_soil
+48	100cm土壤质地	C_TEXTURE100	VARCHAR(50)	C	TEXTURE100	tab_omin_meta_network_soil
+49	100cm田间持水量	C_CAPACITY100	VARCHAR(20)	C	CAPACITY100	tab_omin_meta_network_soil
+50	100cm土壤容重	C_UNITWEIGHT100	VARCHAR(20)	C	UNITWEIGHT100	tab_omin_meta_network_soil
+51	100cm凋萎湿度	C_WILTING_MOISTURE100	VARCHAR(20)	C	WILTING_MOISTURE100	tab_omin_meta_network_soil
+52	10cm观测方式	C_VIEWMODE10	VARCHAR(20)	C	VIEWMODE10	tab_omin_meta_network_soil
+53	覆盖物品种类型	C_CROPVARETYPE	VARCHAR(20)	C	CROPVARETYPE	tab_omin_meta_network_soil
+54	熟性	C_RIPE	VARCHAR(20)	C	RIPE	tab_omin_meta_network_soil
+55	覆盖物品种	C_CROPVARE	VARCHAR(20)	C	CROPVARE	tab_omin_meta_network_soil
+56	栽培方式	C_CULTIVATION	VARCHAR(20)	C	CULTIVATION	tab_omin_meta_network_soil
+57	20cm观测方式	C_VIEWMODE20	VARCHAR(20)	C	VIEWMODE20	tab_omin_meta_network_soil
+58	30cm观测方式	C_VIEWMODE30	VARCHAR(20)	C	VIEWMODE30	tab_omin_meta_network_soil
+59	40cm观测方式	C_VIEWMODE40	VARCHAR(20)	C	VIEWMODE40	tab_omin_meta_network_soil
+60	50cm观测方式	C_VIEWMODE50	VARCHAR(20)	C	VIEWMODE50	tab_omin_meta_network_soil
+61	60cm观测方式	C_VIEWMODE60	VARCHAR(20)	C	VIEWMODE60	tab_omin_meta_network_soil
+62	80cm观测方式	C_VIEWMODE80	VARCHAR(20)	C	VIEWMODE80	tab_omin_meta_network_soil
+63	100cm观测方式	C_VIEWMODE100	VARCHAR(20)	C	VIEWMODE100	tab_omin_meta_network_soil
+64	70cm观测方式	C_VIEWMODE70	VARCHAR(20)	C	VIEWMODE70	tab_omin_meta_network_soil
+65	90cm观测方式	C_VIEWMODE90	VARCHAR(20)	C	VIEWMODE90	tab_omin_meta_network_soil
+66	70cm土壤质地	C_TEXTURE70	VARCHAR(50)	C	TEXTURE70	tab_omin_meta_network_soil
+67	70cm田间持水量	C_CAPACITY70	VARCHAR(50)	C	CAPACITY70	tab_omin_meta_network_soil
+68	70cm土壤容重	C_UNITWEIGHT70	VARCHAR(50)	C	UNITWEIGHT70	tab_omin_meta_network_soil
+69	70cm凋萎湿度	C_WILTING_MOISTURE70	VARCHAR(50)	C	WILTING_MOISTURE70	tab_omin_meta_network_soil
+70	90cm土壤质地	C_TEXTURE90	VARCHAR(50)	C	TEXTURE90	tab_omin_meta_network_soil
+71	90cm田间持水量	C_CAPACITY90	VARCHAR(50)	C	CAPACITY90	tab_omin_meta_network_soil
+72	90cm土壤容重	C_UNITWEIGHT90	VARCHAR(50)	C	UNITWEIGHT90	tab_omin_meta_network_soil
+73	90cm凋萎湿度	C_WILTING_MOISTURE90	VARCHAR(50)	C	WILTING_MOISTURE90	tab_omin_meta_network_soil
+74	创建时间	C_CREATE_DATE	timestamp	C		
+75	最近更新时间	C_UPDATED_DATE	timestamp	C		
+76	最后修改人	C_MODIFIER	VARCHAR(36)	C		
+77	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
+
+15大气成分观测站、台站关系表
+表名：tab_omin_cm_cc_cawnstationnetship
+序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表结构
+1	编码/主键	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
+2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	截取NetworkPK的32位	TAB_OMIN_META_NETWORK
+3	站网ID	C_SNET_ID	VARCHAR(36)	M	固定值：16	TAB_OMIN_META_NETWORK
+4	台站级别	C_STATION_LEVEL	VARCHAR(36)	C	NetWorkLevel	TAB_OMIN_META_NETWORK
+5	本站网开始观测时间	C_StartTime	VARCHAR(20)	M	StartTime	TAB_OMIN_META_NETWORK
+6	本站网终止观测时间	C_EndTime	VARCHAR(20)	M	EndTime	TAB_OMIN_META_NETWORK
+7	观测时制	C_TimeSystem	VARCHAR(20)	C	TimeSystem	TAB_OMIN_META_NETWORK
+8	观测次数	C_ObsvCount	VARCHAR(20)	C	ObsvCount	TAB_OMIN_META_NETWORK
+9	观测时间	C_ObsvTimes	VARCHAR(100)	C	ObsvTimes	TAB_OMIN_META_NETWORK
+11	资料交换级别	C_ExchangeCode	VARCHAR(3)	C	ExchangeCode	TAB_OMIN_META_NETWORK
+12	观测方式	C_ObsvMode	NUMERIC(3,0)	M	ObsvMode	TAB_OMIN_META_NETWORK
+13	守班情况	C_ONDUTY	VARCHAR(36)	C	ShiftCase	TAB_OMIN_META_NETWORK
+14	是否上传气溶胶质量浓度文件	C_HAVE_MINUTEDATA	VARCHAR(4)	C	have_minutedata	TAB_OMIN_META_NETWORK_ATMOS
+15	气溶胶质量浓度文件格式	C_FILE_FORMAT	VARCHAR(4)	C	file_format	TAB_OMIN_META_NETWORK_ATMOS
+16	是否上传气溶胶数浓度文件	C_HAVE_HOURDATA	VARCHAR(4)	C	have_hourdata	TAB_OMIN_META_NETWORK_ATMOS
+17	设备类型	C_DEV_TYPE	VARCHAR(4)	C	dev_type	TAB_OMIN_META_NETWORK_ATMOS
+18	观测时间频次	C_OBSERV_FREQUENCY	VARCHAR(4)	C	observ_frequency	TAB_OMIN_META_NETWORK_ATMOS
+19	创建时间	C_CREATE_DATE	timestamp	C		
+20	最近更新时间	C_UPDATED_DATE	timestamp	C		
+21	最后修改人	C_MODIFIER	VARCHAR(36)	C		
+22	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
+
+136辐射观测站、台站关系表
+表名：tab_omin_cm_cc_radistationnetship
+序号	字段描述	字段名称	字段类型	允许空	对应表字段	对应表
+1	编码/主键	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
+2	台站id	C_SITEOPF_ID	VARCHAR(36)	M	截取NetworkPK的32位	TAB_OMIN_META_NETWORK
+3	站网ID	C_SNET_ID	VARCHAR(36)	M	固定值：11	TAB_OMIN_META_NETWORK
+4	台站级别	C_STATION_LEVEL	VARCHAR(36)	M	NetWorkLevel	TAB_OMIN_META_NETWORK
+5	本站网开始观测时间	C_StartTime	VARCHAR(20)	M	StartTime	TAB_OMIN_META_NETWORK
+6	本站网终止观测时间	C_EndTime	VARCHAR(20)	M	EndTime	TAB_OMIN_META_NETWORK
+7	观测时制	C_TimeSystem	VARCHAR(20)	C	TimeSystem	TAB_OMIN_META_NETWORK
+8	观测次数	C_ObsvCount	VARCHAR(20)	C	ObsvCount	TAB_OMIN_META_NETWORK
+9	观测时间	C_ObsvTimes	VARCHAR(100)	C	ObsvTimes	TAB_OMIN_META_NETWORK
+10	资料交换级别	C_ExchangeCode	VARCHAR(3)	C	ExchangeCode	TAB_OMIN_META_NETWORK
+11	观测方式	C_ObsvMode	NUMERIC(3,0)	M	ObsvMode	TAB_OMIN_META_NETWORK
+12	守班情况	C_ONDUTY	VARCHAR(36)	C	ShiftCase	TAB_OMIN_META_NETWORK
+13	沿革文件来源	C_HisLogDataFrom	VARCHAR(100)	C	HisLogDataFrom	TAB_OMIN_META_NETWORK
+14	沿革文件编制人	C_HisLogCompBy	VARCHAR(50)	C	HisLogCompBy	TAB_OMIN_META_NETWORK
+15	沿革文件审核人	C_HisLogAudtBy	VARCHAR(50)	C	HisLogAudtBy	TAB_OMIN_META_NETWORK
+16	沿革文件编制日期	C_HISLOGCOMPDATE	VARCHAR(20)	C	HISLOGCOMPDATE	TAB_OMIN_META_NETWORK
+17	创建时间	C_CREATE_DATE	timestamp	C		
+18	最近更新时间	C_UPDATED_DATE	timestamp	C		
+19	最后修改人	C_MODIFIER	VARCHAR(36)	C		
+20	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
+
+14	观测量
+表编码：TAB_OMIN_CM_CC_OBSQUANTITY
+序号	字段名	字段编码	字段类型	允许空	对应字段	对应表
+1	观测量UUID	C_OBSQ_ID	VARCHAR(36)	M	后台生成36位主键	
+2	观测量	C_OBSQ_NAME	VARCHAR(36)	M	ObsvElmtName	TAB_OMIN_META_OBSVELMT
+3	单位	C_OBSQ_UNIT	VARCHAR(36)	C		
+4	测量方法	C_MEASURE_METHOD	VARCHAR(36)	C		
+5	方法详述	C_DESCMETHOD	VARCHAR(36)	C		
+6	观测负责人	C_OBSCHARGEPERSON	VARCHAR(36)	C		
+7	观测来源	C_OBS_SOURCE	VARCHAR(8)	M	ObsvMode	TAB_OMIN_META_OBSVELMT
+8	开始时间	C_OBSQ_STARTTIME	TIMESTAMP	M	StartTime	TAB_OMIN_META_OBSVELMT
+9	结束时间	C_OBSQ_ENDTIME	TIMESTAMP	M	StopTime	TAB_OMIN_META_OBSVELMT
+10	空间范围	C_OBSQ_SRANGES	VARCHAR(256)	C		
+11	延迟时间	C_DELAY_TIME	VARCHAR(36)	C		
+12	实时观测	C_OBS_RTIME	VARCHAR(8)	C		
+13	代表性	C_OBSQ_TYPCIAL	VARCHAR(36)	C		
+20	观测时制	C_TimeSystem	VARCHAR(36)	C	TimeSystem	TAB_OMIN_META_OBSVELMT
+21	观测时间	C_ObsvTimes	VARCHAR(100)	C	ObsvTimes	TAB_OMIN_META_OBSVELMT
+22	观测次数	C_ObsvCount	Numeric(3)	C	ObsvCount	TAB_OMIN_META_OBSVELMT
+23	守班情况	C_ShiftCase	Numeric(3)	C	ShiftCase	TAB_OMIN_META_OBSVELMT
+26	采样方式	C_AQTMETHOD	VARCHAR(36)	C	AQTMETHOD	TAB_OMIN_META_OBSVELMT
+27	采样频率	C_AQTFREQUENCY	VARCHAR(36)	C	AQTFREQUENCY	TAB_OMIN_META_OBSVELMT
+28	本要素故障时间	C_StopTime	VARCHAR(8)	C	ResumeTime	TAB_OMIN_META_OBSVELMT
+29	本要素恢复观测时间	C_ResumeTime	VARCHAR(8)	C	EndTime	TAB_OMIN_META_OBSVELMT
+30	本要素故障停止观测原因	C_StopReason	VARCHAR(8)	C	StopReason	TAB_OMIN_META_OBSVELMT
+16	创建时间	C_CREATE_DATE	timestamp	C		
+17	最近更新时间	C_UPDATED_DATE	timestamp	C		
+18	最近更新人	C_MODIFIER	VARCHAR(36)	C		
+19	操作状态	C_OPT_STATU	VARCHAR(8)	C	
+	
+
+	站网、台站与观测量关系
+表名：TAB_OMIN_CM_CC_OBSQSTATIONNETSHIP 
+描述：观测量与站网和台站的关系表。
+序号	字段描述	字段名称	字段类型	允许空	说明
+1	Uuid	C_OBSQSN_ID	VARCHAR(36)	M	
+2	站网信息与台站关系表编码	C_SNETSHIP_ID	VARCHAR(36)	M	
+3	观测量编码	C_OBSQ_ID	VARCHAR(36)	M	
+4	创建时间	C_CREATE_DATE	timestamp	C	
+5	最近更新时间	C_UPDATED_DATE	timestamp	C	
+6	最近更新人	C_MODIFIER	VARCHAR(36)	C	
+7	操作状态	C_OPT_STATUS	VARCHAR(8)	C	
+
+17	环境
+表编码：TAB_OMIN_CM_CC_ENVIRONMENT 
+描述：本类别描述了观测所处的地理环境，其还为额外的元信息提供非结构化元素，而元信息被认为与观测资料的充分利用有关，且尚未在标准中列明
+序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
+1	观测环境UUID	C_ENV_ID	VARCHAR(36)	M	由后台生成36位主键	
+2	地表覆盖	C_ENV_SFCV	VARCHAR(36)	C		
+3	地表覆盖分类方法	C_ENV_SFCVPN	VARCHAR(36)	C		
+4	表面粗糙度	C_ENV_SFROUGHNESS	VARCHAR(256)	C		
+5	地形学或测深法	C_TERRAIN_LOCAL	VARCHAR(36)	C		
+6	发生在台站/平台的事件	C_STATION_INTF	VARCHAR(256)	C		
+7	站址信息	C_ENV_LOC	VARCHAR(256)	C		
+8	环境评估	C_ENV_EVALUATE	VARCHAR(256)	C		
+9	人口密度(10km/50km)	C_POPDENSITY	VARCHAR(256)	C		
+10	环境直报	C_ENV_DIRREPORT	VARCHAR(256)	C		
+11	环境材料	C_ENV_MATERIAL	VARCHAR(256)	C		
+12	迁站次数	C_TRANSTIMES	VARCHAR(256)	C	C_TRANSTIMES	tab_omin_cm_cc_station
+13	最近迁站时间	C_TRANSDATE	VARCHAR(8)	C	C_TRANSDATE	tab_omin_cm_cc_station
+14	站点/平台UUID	C_SITEOPF_ID	VARCHAR(36)	M 	
+15	创建时间	C_CREATE_DATE	timestamp	C		
+16	最近更新时间	C_UPDATED_DATE	timestamp	C		
+17	最近更新人	C_MODIFIER	VARCHAR(36)	C		
+18	操作状态	C_OPT_STATUS	VARCHAR(8)	C	
+	
+19	仪器和观测方法
+表名：TAB_OMIN_CM_CC_OBSMETHOD
+描述：定观测方法并描述观测仪器的特性。如果一项观测需要多台仪器同时运行，则该类别应当进行重复。
+序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
+1	观测方法UUID	C_OBSVM_ID	VARCHAR(36)	M	后台生成36位主键	
+2	观测源	C_OBSV_SOURCE	VARCHAR(36)	C		
+3	测量/观测方法	C_OBSV_METHOD	VARCHAR(36)	C		
+5	仪器运行状态	C_RUNNING_STATUS	VARCHAR(256)	C		
+6	传感器的垂直距离	C_SENSOR_VD	VARCHAR(32)	C		
+7	仪器配置	C_INSTR_CONF	VARCHAR(256)	C		
+8	仪器对比日志	C_INSTR_COMPLOG	VARCHAR(256)	C		
+9	仪器对比结果	C_INSTR_COMPRESULT	VARCHAR(256)	C		
+12	定期维护	C_MAINTAIN	VARCHAR(64)	C		
+13	维护(维修)方	C_MAINTAINP	VARCHAR(64)	C		
+14	地理空间位置	C_LOCATION	VARCHAR(256)	C		
+15	维护维修活动	C_MAINTAIN_ACTIVITY	VARCHAR(256)	C		
+16	观测状态	C_OBS_SATUS	VARCHAR(64)	C		
+17	仪器的暴露度	C_INSTR_EXPDEG	VARCHAR(256)	C		
+19	安装时间	C_INSTALLTIME	VARCHAR(32)	M		
+20	启用时间	C_STARTTIME	VARCHAR(32)	C		
+21	仪器性能指标	C_INSTR_PERFINDEX	VARCHAR(256)	C		
+22	观测量id	C_OBSQ_ID	VARCHAR(36)	C		
+23	创建时间	C_CREATE_DATE	timestamp	C		
+24	最近更新时间	C_UPDATED_DATE	timestamp	M		
+25	仪器设备名称	C_InstName	VARCHAR(100)	M	InstName	tab_omin_meta_instrument
+26	仪器生产商	C_Manufactory	VARCHAR(100)	M	Manufactory	tab_omin_meta_instrument
+27	仪器故障停止观测时间	C_StopTime	VARCHAR(8)	C	StopTime	tab_omin_meta_instrument
+28	仪器故障恢复时间	C_ResumeTime	VARCHAR(8)	C	ResumeTime	tab_omin_meta_instrument
+29	仪器故障原因	C_STOPREASON	VARCHAR(100)	C	STOPREASON	tab_omin_meta_instrument
+30	设备距地或观测场高度	C_OverGrdHeight	VARCHAR(20)	C	OverGrdHeight	tab_omin_meta_instrument
+31	仪器观测平台高度	C_OBSVPLATHEIGHT	VARCHAR(20)	C	OBSVPLATHEIGHT	tab_omin_meta_instrument
+32	仪器购买时间	C_BuyTime	VARCHAR(8)	C	BuyTime	tab_omin_meta_instrument
+33	检定时间	C_CHECKTIME	VARCHAR(8)	C	CHECKTIME	tab_omin_meta_instrument
+34	开始使用时间	C_AgainTime	VARCHAR(8)	C	againtime	tab_omin_meta_instrument
+35	检定证	C_Vercer	VARCHAR(100)	C	Vercer	tab_omin_meta_instrument
+36	结束时间	C_endtime	VARCHAR(8)	M	EndTime	tab_omin_meta_instrument
+37	规格型号	C_InstModel	VARCHAR(100)	M	InstModel	tab_omin_meta_instrument
+38	要素名称	C_ObsvElmtName	VARCHAR(100)	M	ObsvElmtName	tab_omin_meta_instrument
+39	站网关系id	C_SNETSHIP_ID	VARCHAR(36)	M		

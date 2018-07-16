@@ -1,5 +1,6 @@
 package com.example.config;
 
+import com.example.work.Main;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -33,5 +34,10 @@ public class MultipleDBConfig {
     @Bean(name="oracleJdbcTemplate")
     public JdbcTemplate oracleJdbcTemplate(@Qualifier("oracleDb") DataSource dsOracle){
         return new JdbcTemplate(dsOracle);
+    }
+
+    @Bean(name="main")
+    public Main getMain(){
+        return new Main();
     }
 }
