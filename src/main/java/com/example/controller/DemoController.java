@@ -26,6 +26,7 @@ public class DemoController {
 
     @RequestMapping("/start")
     public String getStarted(){
+        main.start();
         return null;
     }
 

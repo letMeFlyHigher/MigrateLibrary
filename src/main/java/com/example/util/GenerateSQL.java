@@ -18,10 +18,12 @@ public class GenerateSQL {
             String queryStr = "";
             int lineNum = 0;
             String tables = "";
+            String inserTable = "";
             while ((str = in.readLine()) != null) {
                 lineNum++;
                 //                System.out.println(str);
                 if(str.startsWith("表名")) {
+                    sb.append("待插入表：" + str.substring(3,str.length()) + "\r\n");
                     continue;
                 }else if(str.startsWith("序号")){
                     continue;
@@ -29,7 +31,7 @@ public class GenerateSQL {
                     col_name = "";
                     query_table_name = "";
                     rename = "";
-                    sb.append(queryStr).append("\r\nWHERE " + tables).append("\r\n\r\n");
+                    sb.append(queryStr).deleteCharAt(sb.length() - 4).append("\r\nFROM " + tables).deleteCharAt(sb.length()-1).append("\r\n\r\n");
                     queryStr = "";
                     tables = "";
                 }else{
@@ -76,7 +78,7 @@ public class GenerateSQL {
         System.out.println(SQLResult);
         String newFilePath = "";
 
-        File fileDir = new File("out\\production\\castSQL\\SQLResult2.sql");
+        File fileDir = new File("src\\main\\resources\\query.sql");
         if(!fileDir.exists()){
             try {
                 fileDir.createNewFile();
