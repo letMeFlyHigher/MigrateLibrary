@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 @Configuration
 public class MultipleDBConfig {
     @Bean(name="mysqlDb")
-    @ConfigurationProperties(prefix="spring.mysql.datasource")
+    @ConfigurationProperties(prefix="spring.mysql.datasource2")
     public DataSource mysqlDataSource(){
         return DataSourceBuilder.create().build();
     }

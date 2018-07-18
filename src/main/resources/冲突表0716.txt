@@ -1,4 +1,3 @@
-
 表名：TAB_OMIN_CM_CC_STATIONPLAT
 序号	字段描述	字段名称	数据类型	允许空	对应字段	对应表
 1		站点/平台UUID	C_SITEOPF_ID	VARCHAR(36)	M	C_STATION_ID	tab_omin_cm_cc_station
@@ -36,7 +35,7 @@
 33		其他链接URL	C_OTHERURL	VARCHAR(256)	C		
 34		建站时间	C_ESTADATE	VARCHAR(8)	M	C_ESTADATE	tab_omin_cm_cc_station
 35		撤站时间	C_REPDATE	VARCHAR(8)	M	C_REPDATE	tab_omin_cm_cc_station
-36		资料通信方法	C_CMETHOD	VARCHAR(36)	C	TRANSMITMODE	Tab_omin_cm_cc_station
+36		资料通信方法	C_CMETHOD	VARCHAR(36)	C	TRANSMITMODE	Tab_omin_meta_regstation
 37		台站状态	C_STATUS	VARCHAR(32)	C	C_STATUS	tab_omin_cm_cc_station
 38		站网信息	C_SITEINFORMATION	VARCHAR(32)	M		
 39		台(站)长	C_CHARGEPERSON	VARCHAR(36)	M	C_RPINDNAME	tab_omin_cm_cc_station
@@ -146,7 +145,7 @@
 26	最近更新时间	C_UPDATED_DATE	timestamp	C		
 27	最后修改人	C_MODIFIER	VARCHAR	C		
 28	操作状态	C_OPT_STATUS	VARCHAR	C
-		
+
 表名：tab_omin_cm_cc_arstationnetship
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	编码	C_SNETSHIP_ID	VARCHAR(36)	M	由后台生成一个36为的主键	
@@ -299,7 +298,7 @@
 19	最后修改人	C_MODIFIER	VARCHAR(36)	C		
 20	操作状态	C_OPT_STATUS	VARCHAR(8)	C		
 
-表编码：TAB_OMIN_CM_CC_OBSQUANTITY
+表名：TAB_OMIN_CM_CC_OBSQUANTITY
 序号	字段名	字段编码	字段类型	允许空	对应字段	对应表
 1	观测量UUID	C_OBSQ_ID	VARCHAR(36)	M	后台生成36位主键	
 2	观测量	C_OBSQ_NAME	VARCHAR(36)	M	ObsvElmtName	TAB_OMIN_META_OBSVELMT
@@ -339,7 +338,7 @@
 6	最近更新人	C_MODIFIER	VARCHAR(36)	C	
 7	操作状态	C_OPT_STATUS	VARCHAR(8)	C	
 
-表编码：TAB_OMIN_CM_CC_ENVIRONMENT
+表名：TAB_OMIN_CM_CC_ENVIRONMENT
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	观测环境UUID	C_ENV_ID	VARCHAR(36)	M	由后台生成36位主键	
 2	地表覆盖	C_ENV_SFCV	VARCHAR(36)	C		
@@ -358,8 +357,8 @@
 15	创建时间	C_CREATE_DATE	timestamp	C		
 16	最近更新时间	C_UPDATED_DATE	timestamp	C		
 17	最近更新人	C_MODIFIER	VARCHAR(36)	C		
-18	操作状态	C_OPT_STATUS	VARCHAR(8)	C	
-	
+18	操作状态	C_OPT_STATUS	VARCHAR(8)	C
+
 表名：TAB_OMIN_CM_CC_OBSMETHOD
 序号	字段描述	字段名称	字段类型	允许空	对应字段	对应表
 1	观测方法UUID	C_OBSVM_ID	VARCHAR(36)	M	后台生成36位主键	
@@ -396,4 +395,6 @@
 36	结束时间	C_endtime	VARCHAR(8)	M	EndTime	tab_omin_meta_instrument
 37	规格型号	C_InstModel	VARCHAR(100)	M	InstModel	tab_omin_meta_instrument
 38	要素名称	C_ObsvElmtName	VARCHAR(100)	M	ObsvElmtName	tab_omin_meta_instrument
-39	站网关系id	C_SNETSHIP_ID	VARCHAR(36)	M		
+39	站网关系id	C_SNETSHIP_ID	VARCHAR(36)	M
+
+--------end-------
