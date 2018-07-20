@@ -57,14 +57,16 @@ select count(*) from (
     TAB_OMIN_META_REGSTATION.POWERSUPPLYMODE                                                             AS C_POWER_TYPE,
     TAB_OMIN_META_REGSTATION.INSTALPOSITION                                                              AS C_INSTALL_POS,
     -- TAB_OMIN_META_OBSVELMT.自己降水SwitchDate as C_RAIN_STIME,TAB_OMIN_META_OBSVELMT.自己降水SWITCHDATE as C_RAIN_ETIME,TAB_OMIN_META_OBSVELMT.大型蒸发量的SWITCHDATE as C_SWITCH_SDATE,TAB_OMIN_META_OBSVELMT.大型蒸发量SWITCHDATE as C_SWITCH_EDTE
-    (SELECT switchdate
+    decode((select 1 from TAB_OMIN_META_OBSVELMT o
+     WHERE substr(o.OBSVELMTPK, 0, 36) = TAB_OMIN_META_NETWORK.NETWORKPK AND o.OBSVELMTNAME ='自记降水'),1,(
+     SELECT decode(o.switchdate,null,',',o.switchdate)
      FROM TAB_OMIN_META_OBSVELMT o
-     WHERE substr(o.OBSVELMTPK, 0, 36) = TAB_OMIN_META_NETWORK.NETWORKPK AND o.OBSVELMTNAME =
-                                                                             '自记降水')                     AS switchdaterain,
-    (SELECT switchdate
-     FROM tab_omin_meta_obsvelmt o2
-     WHERE substr(o2.OBSVELMTPK, 0, 36) = TAB_OMIN_META_NETWORK.NETWORKPK AND o2.OBSVELMTNAME =
-                                                                              '大型蒸发量')                   AS switchdatebig
+     WHERE substr(o.OBSVELMTPK, 0, 36) = TAB_OMIN_META_NETWORK.NETWORKPK AND o.OBSVELMTNAME ='自记降水'),null) AS rainfallswitch,
+    decode((select 1 from TAB_OMIN_META_OBSVELMT o
+     WHERE substr(o.OBSVELMTPK, 0, 36) = TAB_OMIN_META_NETWORK.NETWORKPK AND o.OBSVELMTNAME ='大型蒸发量'),1,(
+     SELECT decode(o.switchdate,null,',',o.switchdate)
+     FROM TAB_OMIN_META_OBSVELMT o
+     WHERE substr(o.OBSVELMTPK, 0, 36) = TAB_OMIN_META_NETWORK.NETWORKPK AND o.OBSVELMTNAME ='大型蒸发量'),null) AS evaporationswitch
   FROM TAB_OMIN_META_NETWORK, TAB_OMIN_CM_CC_STATION, TAB_OMIN_META_REGSTATION
   WHERE substr(TAB_OMIN_META_NETWORK.NETWORKPK, 0, 32) = TAB_OMIN_CM_CC_STATION.C_STATION_ID (+) AND
         TAB_OMIN_META_REGSTATION.REGSTATIONID (+) = TAB_OMIN_CM_CC_STATION.C_STATION_ID

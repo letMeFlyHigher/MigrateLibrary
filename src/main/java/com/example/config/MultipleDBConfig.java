@@ -1,5 +1,6 @@
 package com.example.config;
 
+import com.example.dao.Awsstationnetship;
 import com.example.work.Main;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -22,6 +24,7 @@ public class MultipleDBConfig {
     @Bean(name="mysqlJdbcTemplate")
     public JdbcTemplate jdbcTemplate(@Qualifier("mysqlDb") DataSource dsMySql){
         return new JdbcTemplate(dsMySql);
+//        return new NamedParameterJdbcTemplate(dsMySql);
     }
 
     @Bean(name="oracleDb")
@@ -33,11 +36,17 @@ public class MultipleDBConfig {
 
     @Bean(name="oracleJdbcTemplate")
     public JdbcTemplate oracleJdbcTemplate(@Qualifier("oracleDb") DataSource dsOracle){
+//        return new JdbcTemplate(dsOracle);
         return new JdbcTemplate(dsOracle);
     }
 
     @Bean(name="main")
     public Main getMain(){
         return new Main();
+    }
+
+    @Bean(name="awsstationnetship")
+    public Awsstationnetship getAws(){
+        return new Awsstationnetship();
     }
 }
