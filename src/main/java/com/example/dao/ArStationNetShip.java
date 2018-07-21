@@ -1,6 +1,8 @@
 package com.example.dao;
 
 import com.sun.xml.internal.ws.util.QNameMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -14,15 +16,16 @@ import java.util.Map;
 @Repository
 public class ArStationNetShip extends baseDao {
 
+//    private static final Logger LOGGER = LoggerFactory.getLogger(ArStationNetShip.class);
 
     @Override
     public boolean start() {
         List<Map<String, Object>> listMap = executeQuerySql();
         String tableName = "TAB_OMIN_CM_CC_ARSTATIONNETSHIP";
         if(insertToPMCISTable(tableName,listMap) > 0){
-            System.out.println("酸雨站网迁移成功");
+            LOGGER.error("酸雨站网迁移成功");
         }else{
-            System.out.println("酸雨站网迁移失败");
+           LOGGER.error("酸雨站网迁移失败");
         }
         return false;
     }

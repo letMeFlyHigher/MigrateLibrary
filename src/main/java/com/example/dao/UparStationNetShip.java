@@ -17,9 +17,9 @@ public class UparStationNetShip extends baseDao{
         String tableName = "tab_omin_cm_cc_uparstationnetship".toUpperCase();
         List<Map<String,Object>> listMap = executeQuerySql();
         if(insertToPMCISTable(tableName,listMap) > 0){
-            System.out.println("高空站网迁移成功");
+            LOGGER.info("高空站网迁移成功");
         }else{
-            System.out.println("高空站网迁移失败");
+            LOGGER.error("高空站网迁移失败");
         }
         return false;
     }

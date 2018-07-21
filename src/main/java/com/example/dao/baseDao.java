@@ -2,6 +2,8 @@ package com.example.dao;
 
 import com.example.callback.Callback;
 import com.example.callback.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -28,7 +30,6 @@ public abstract class baseDao extends Task {
         mysqlTemplate.execute(sql);
     }
 
-
     public abstract boolean start();
     /**
      * 用来处理不同表下的字段类型
@@ -43,9 +44,6 @@ public abstract class baseDao extends Task {
         return oracleTemplate.queryForList(querySql);
     }
 
-
-    //
-    //
 
     /**
      * 目前还没有对，违反约束条件等异常，做出处理。
