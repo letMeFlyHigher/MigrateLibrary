@@ -2,18 +2,22 @@ package com.example.dao;
 
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+//地面站网
 @Repository
 public class Awsstationnetship extends baseDao {
 
+
     @Override
     public boolean start() {
-        List<Map<String,Object>> listMap = queryMDOSTableForListMap();
+        List<Map<String,Object>> listMap = executeQuerySql();
         if(insertToPMCISTable("TAB_OMIN_CM_CC_AWSSTATIONNETSHIP",listMap) > 0){
             System.out.println("成功迁移地面关系站网");
         }else{
@@ -27,10 +31,12 @@ public class Awsstationnetship extends baseDao {
         // 以下需要做特殊化处理的
         // 站网ID（C_SNET_ID) 处理为 ’01‘
         //主键，还是用mdos的主键，在公共元数据中新增的话，再说。
+        //
         //启用时间(C_Starttime) 取用 区域站的建站时间,区域站通过台站号是否包含字母来确定。
         // 大型蒸发量，自记降水切换时间的处理。
         String cIndexNbr = "";
         int rainSPos=-1,rainEPos=-1,switchSPos=-1,switchEPos = -1;
+        String C_SNETSHIP_ID = null;
         int j=0;
         while(iter.hasNext()){
             j++;
@@ -38,7 +44,7 @@ public class Awsstationnetship extends baseDao {
             String fieldName = entry.getKey();
             Object val = entry.getValue();
             //处理启用时间（取用区域站的建站时间）
-            if(fieldName.equals("C_StartTime")){
+            if(fieldName.equals("C_StartTime".toUpperCase())){
                 if(cIndexNbr.matches("[a-z|A-Z]\\d\\d\\d\\d")){ //区域站
                    ps.setString(j, (String) val) ;
                 }else{
@@ -46,39 +52,39 @@ public class Awsstationnetship extends baseDao {
                 }
             }else if(fieldName.equals("C_SNET_ID")){
                ps.setString(j,"01");
-            }else if(fieldName.equals("c_indexnbr_Query")){
+            }else if(fieldName.equals("c_indexnbr_Query".toUpperCase())){
                cIndexNbr = (String)val;
                j--;  //用来查询的字段，并不计入参数累加器中
-            }else if(fieldName.equals("RainfallSwitch_Query")){ //自己降水切换时间的处理  ， 限制条件 Query是在后面。
+            }else if(fieldName.equals("RainfallSwitch_Query".toUpperCase())){ //自己降水切换时间的处理  ， 限制条件 Query是在后面。
                 //大型蒸发量切换时间的处理   值分三种情况， 一种是空值，此时表示改地面站网无改要素，第二种是‘,’,表示全年启用该要素，第三种是‘month1,month2’,表示month1停用，month2开始启用
                 if(val == null){
-                    ps.setString(rainSPos,null);
-                    ps.setString(rainEPos,null);
+                    ps.setNull(rainSPos,Types.TINYINT);
+                    ps.setNull(rainEPos,Types.TINYINT);
                 }else if(val.equals(",")){  //全年启用将开始启用，和开始停用月都设置为12月份儿。
-                    ps.setString(rainSPos,"12");
-                    ps.setString(rainEPos,"12");
+                    ps.setInt(rainSPos,12);
+                    ps.setInt(rainEPos,12);
                 }else{ // 切换时间有具体的数值
                     String[] vals = ((String)val).split(",");
-                    ps.setString(rainSPos,vals[0]);
-                    ps.setString(rainEPos,vals[1]);
+                    ps.setInt(rainSPos,Integer.parseInt(vals[0]));
+                    ps.setInt(rainEPos,Integer.parseInt(vals[1]));
                 }
                 j--;
 
-            }else if(fieldName.equals("EvaporationSwitch_Query")){
+            }else if(fieldName.equals("EvaporationSwitch_Query".toUpperCase())){
                 //大型蒸发量切换时间的处理   值分三种情况， 一种是空值，此时表示改地面站网无改要素，第二种是‘,’,表示全年启用该要素，第三种是‘month1,month2’,表示month1停用，month2开始启用
                 if(val == null){
-                    ps.setString(switchSPos,null);
-                    ps.setString(switchEPos,null);
+                    ps.setNull(switchSPos,Types.TINYINT);
+                    ps.setNull(switchEPos,Types.TINYINT);
                 }else if(val.equals(",")){  //全年启用将开始启用，和开始停用月都设置为12月份儿。
-                    ps.setString(switchSPos,"12");
-                    ps.setString(switchEPos,"12");
+                    ps.setInt(switchSPos,12);
+                    ps.setInt(switchEPos,12);
                 }else{ // 切换时间有具体的数值
                     String[] vals = ((String)val).split(",");
-                    ps.setString(switchSPos,vals[0]);
-                    ps.setString(switchEPos,vals[1]);
+                    ps.setInt(switchSPos,Integer.parseInt(vals[0]));
+                    ps.setInt(switchEPos,Integer.parseInt(vals[1]));
                 }
                 j--;
-            }else if(fieldName.indexOf(",C_RAIN_STIME,C_RAIN_ETIME,C_SWITCH_SDATE,C_SWITCH_EDATE") > -1){
+            }else if(",C_RAIN_STIME,C_RAIN_ETIME,C_SWITCH_SDATE,C_SWITCH_EDATE".indexOf(fieldName) > -1){
                 if(fieldName.equals("C_RAIN_STIME")){
                     rainSPos = j;
                 }else if(fieldName.equals("C_RAIN_ETIME")){
@@ -92,20 +98,28 @@ public class Awsstationnetship extends baseDao {
                     break;
                 }
             }else{
-                ps.setString(j,(String)val);
+               //接下来处理剩下字段的类型问题
+                // bigDecimal  的字段：shiftcase,ObsvMode -- C_ONDUTY,C_ObsvMode
+                if("C_OBSVMODE".indexOf(fieldName) > -1){
+                    ps.setBigDecimal(j,(BigDecimal)val);
+                }else if("C_ONDUTY".indexOf(fieldName) > -1){
+                            ps.setBigDecimal(j,(BigDecimal) val);
+                }else{
+                    ps.setString(j,(String)val);
+                }
             }
         }
     }
 
     @Override
-    public List<Map<String, Object>> queryMDOSTableForListMap() {
+    public List<Map<String, Object>> executeQuerySql() {
         String querySql = "SELECT\n" +
                 "    TAB_OMIN_META_NETWORK.NETWORKPK                                                                      AS C_SNETSHIP_ID,\n" +
                 "    TAB_OMIN_CM_CC_STATION.c_station_id                                                                  AS C_SITEOPF_ID,\n" +
                 "    'tmpVal'                                                                  AS C_SNET_ID,\n" +
                 "    TAB_OMIN_META_NETWORK.NetWorkLevel                                                                   AS C_STATION_LEVEL,\n" +
-                "    TAB_OMIN_CM_CC_STATION.c_estadate                                                                    AS C_StartTime,\n" +
                 "    TAB_OMIN_CM_CC_STATION.c_indexnbr                                                                    AS C_indexnbr_QUERY,\n" +
+                "    TAB_OMIN_CM_CC_STATION.c_estadate                                                                    AS C_StartTime,\n" +
                 "    TAB_OMIN_META_NETWORK.StartTime                                                                      AS C_netstarttime,\n" +
                 "    TAB_OMIN_META_NETWORK.EndTime                                                                        AS C_netEndTime,\n" +
                 "    TAB_OMIN_META_NETWORK.TimeSystem                                                                     AS C_TimeSystem,\n" +
@@ -137,9 +151,9 @@ public class Awsstationnetship extends baseDao {
                 "     FROM TAB_OMIN_META_OBSVELMT o\n" +
                 "     WHERE substr(o.OBSVELMTPK, 0, 36) = TAB_OMIN_META_NETWORK.NETWORKPK AND o.OBSVELMTNAME ='大型蒸发量'),null) AS EvaporationSwitch_QUERY\n" +
                 "  FROM TAB_OMIN_META_NETWORK, TAB_OMIN_CM_CC_STATION, TAB_OMIN_META_REGSTATION\n" +
-                "  WHERE substr(TAB_OMIN_META_NETWORK.NETWORKPK, 0, 32) = TAB_OMIN_CM_CC_STATION.C_STATION_ID (+) AND\n" +
+                "  WHERE substr(TAB_OMIN_META_NETWORK.NETWORKPK(+), 0, 32) = TAB_OMIN_CM_CC_STATION.C_STATION_ID AND\n" +
                 "        TAB_OMIN_META_REGSTATION.REGSTATIONID (+) = TAB_OMIN_CM_CC_STATION.C_STATION_ID\n" +
-                "        AND TAB_OMIN_META_NETWORK.NETWORKTYPE = '01'";
+                "        AND TAB_OMIN_META_NETWORK.NETWORKTYPE = '01' AND TAB_OMIN_CM_CC_STATION.C_INDEXNBR is not null";
         return queryMDOSForListMap(querySql);
     }
 

@@ -36,7 +36,7 @@ public abstract class baseDao extends Task {
      * @throws SQLException
      */
     protected abstract void dealDiffTable(PreparedStatement ps,Iterator<Map.Entry<String,Object>> iter) throws SQLException;
-    public abstract List<Map<String,Object>> queryMDOSTableForListMap();
+    public abstract List<Map<String,Object>> executeQuerySql();
 
     public List<Map<String,Object>> queryMDOSForListMap(String querySql){
         oracleTemplate.setFetchSize(800);
@@ -55,6 +55,11 @@ public abstract class baseDao extends Task {
      * @return
      */
     public  int insertToPMCISTable(String tableName,List<Map<String,Object>> listMap){
+        String queryIfExists = "select count(*) as num from " + tableName;
+        Map<String,Object> numMap = mysqlTemplate.queryForMap(queryIfExists);
+        if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
+            mysqlTemplate.execute("TRUNCATE TABLE " + tableName);
+        }
         String[] array = new String[listMap.size()];
         int i = 0 ;
         Map<String,Object> fieldMap = listMap.get(i);
@@ -74,11 +79,11 @@ public abstract class baseDao extends Task {
         values.deleteCharAt(values.length() - 1).append(")");
         insertSql.append(" ").append(values);
         //给插入语句的赋值。
+        Connection conn =null;
         try{
 //            System.out.println(insertSql);
             //获取准备语句对象。
-
-            Connection conn = mysqlTemplate.getDataSource().getConnection();
+            conn = mysqlTemplate.getDataSource().getConnection();
             conn.setAutoCommit(false);
             PreparedStatement ps = conn.prepareStatement(insertSql.toString());
             for(i = 0; i < listMap.size(); i++){
@@ -102,13 +107,31 @@ public abstract class baseDao extends Task {
             }
             ps.executeBatch();
             conn.commit();
+
             return 1;
-        }catch(DataAccessException e){
+        }
+//        catch(DataAccessException e){
+//            e.printStackTrace();
+////            clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
+//            try {
+//                conn.rollback();
+//            } catch (SQLException e1) {
+//                e1.printStackTrace();
+//            }
+//            System.out.println("迁移失败 " + tableName);
+//
+//            return -1;
+//        }
+        catch (SQLException e) {
             e.printStackTrace();
 //            clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             System.out.println("迁移失败 " + tableName);
-            return -1;
-        } catch (SQLException e) {
+
             e.printStackTrace();
             return -1;
         }

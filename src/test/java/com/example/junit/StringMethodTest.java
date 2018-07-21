@@ -9,8 +9,8 @@ public class StringMethodTest {
 //        match(testStr1);
 //        match(testStr2);
 //        match(testStr3);
-        split("2,4");
-
+//        split("2,4");
+        indexOf("bb");
     }
 
     private static void match(String str){
@@ -25,5 +25,18 @@ public class StringMethodTest {
         String[] vals = str.split(",");
         System.out.println("第一个val:" + vals[0]);
         System.out.println("第二个val:" + vals[1]);
+    }
+
+    public static void indexOf(String str){
+//        if(str.indexOf(",rr,bb,cc") > -1){
+//            System.out.println("exists");
+//        }else{
+//            System.out.println("not exists");
+//        }
+        if(",rr,bb,cc".indexOf("bb") > -1){
+            System.out.println("exists");
+        }else{
+            System.out.println("not exists");
+        }
     }
 }

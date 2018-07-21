@@ -45,8 +45,5 @@ public class MultipleDBConfig {
         return new Main();
     }
 
-    @Bean(name="awsstationnetship")
-    public Awsstationnetship getAws(){
-        return new Awsstationnetship();
-    }
+
 }
