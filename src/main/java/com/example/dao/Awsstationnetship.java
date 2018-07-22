@@ -1,5 +1,7 @@
 package com.example.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -14,20 +16,21 @@ import java.util.Map;
 @Repository
 public class Awsstationnetship extends baseDao {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Awsstationnetship.class);
 
     @Override
     public boolean start() {
         List<Map<String,Object>> listMap = executeQuerySql();
         if(insertToPMCISTable("TAB_OMIN_CM_CC_AWSSTATIONNETSHIP",listMap) > 0){
-            System.out.println("成功迁移地面关系站网");
+            LOGGER.info("成功迁移地面关系站网");
         }else{
-            System.out.println("迁移地面关系站网失败");
+           LOGGER.error("迁移地面关系站网失败");
         }
         return false;
     }
 
     @Override
-    protected void dealDiffTable(PreparedStatement ps, Iterator<Map.Entry<String, Object>> iter) throws SQLException {
+    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
         // 以下需要做特殊化处理的
         // 站网ID（C_SNET_ID) 处理为 ’01‘
         //主键，还是用mdos的主键，在公共元数据中新增的话，再说。

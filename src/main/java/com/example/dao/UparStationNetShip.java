@@ -1,5 +1,7 @@
 package com.example.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -12,6 +14,9 @@ import java.util.Map;
 //高空气球探空仪探测
 @Repository
 public class UparStationNetShip extends baseDao{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UparStationNetShip.class);
+
     @Override
     public boolean start() {
         String tableName = "tab_omin_cm_cc_uparstationnetship".toUpperCase();
@@ -25,7 +30,7 @@ public class UparStationNetShip extends baseDao{
     }
 
     @Override
-    protected void dealDiffTable(PreparedStatement ps, Iterator<Map.Entry<String, Object>> iter) throws SQLException {
+    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
         //高空站网的字段处理方式
         // ObsvMode,SondeObsvCount,AnemoObsvCount
         int j = 0;

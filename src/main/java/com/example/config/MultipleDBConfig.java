@@ -22,9 +22,9 @@ public class MultipleDBConfig {
     }
 
     @Bean(name="mysqlJdbcTemplate")
-    public JdbcTemplate jdbcTemplate(@Qualifier("mysqlDb") DataSource dsMySql){
-        return new JdbcTemplate(dsMySql);
-//        return new NamedParameterJdbcTemplate(dsMySql);
+    public NamedParameterJdbcTemplate jdbcTemplate(@Qualifier("mysqlDb") DataSource dsMySql){
+//        return new JdbcTemplate(dsMySql);
+        return new NamedParameterJdbcTemplate(dsMySql);
     }
 
     @Bean(name="oracleDb")

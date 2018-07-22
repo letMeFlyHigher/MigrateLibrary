@@ -1,6 +1,8 @@
 package com.example.dao;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 
 import java.math.BigDecimal;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 public class Stationplat extends baseDao{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Stationplat.class);
     public boolean start(){
         List<Map<String,Object>> stationList = new ArrayList<Map<String,Object>>();
         stationList = executeQuerySql();
@@ -21,21 +24,20 @@ public class Stationplat extends baseDao{
 
         String tableName = "TAB_OMIN_CM_CC_STATIONPLAT";
         if(insertToPMCISTable(tableName,stationList) > 0){
-            System.out.println("成功迁移站点平台表");
+            LOGGER.info("成功迁移站点平台表");
         }else{
-            System.out.println("站点平台表迁移失败");
+            LOGGER.error("站点平台表迁移失败");
         }
         return false;
     }
 
     @Override
-    protected void dealDiffTable(PreparedStatement ps, Iterator<Map.Entry<String, Object>> iter) throws SQLException {
+    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
+        map.
         int j = 0;
         while(iter.hasNext()){
             j++;
             Map.Entry<String,Object> entry = iter.next();
-            String fieldName = entry.getKey();
-            Object val = entry.getValue();
             //站点平台表
         if(",C_HP,C_HHA,".indexOf("," + fieldName + ",") > -1){
             ps.setBigDecimal(j,(BigDecimal)val);

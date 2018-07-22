@@ -20,7 +20,7 @@ import java.util.Map;
 public abstract class baseDao extends Task {
     @Autowired
     @Qualifier("mysqlJdbcTemplate")
-    protected JdbcTemplate mysqlTemplate;
+    protected NamedParameterJdbcTemplate mysqlTemplate;
 
     @Autowired
     @Qualifier("oracleJdbcTemplate")
@@ -36,7 +36,8 @@ public abstract class baseDao extends Task {
      * @param ps  准备语句
      * @throws SQLException
      */
-    protected abstract void dealDiffTable(PreparedStatement ps,Iterator<Map.Entry<String,Object>> iter) throws SQLException;
+    protected abstract void dealDiffTable(PreparedStatement ps, String fieldName, Object val, Map<String, Object> fieldMap) throws SQLException;
+
     public abstract List<Map<String,Object>> executeQuerySql();
 
     public List<Map<String,Object>> queryMDOSForListMap(String querySql){
@@ -54,11 +55,10 @@ public abstract class baseDao extends Task {
      */
     public  int insertToPMCISTable(String tableName,List<Map<String,Object>> listMap){
         String queryIfExists = "select count(*) as num from " + tableName;
-        Map<String,Object> numMap = mysqlTemplate.queryForMap(queryIfExists);
+        Map<String,Object> numMap = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists);
         if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
-            mysqlTemplate.execute("TRUNCATE TABLE " + tableName);
+            mysqlTemplate.getJdbcOperations().execute("TRUNCATE TABLE " + tableName);
         }
-        String[] array = new String[listMap.size()];
         int i = 0 ;
         Map<String,Object> fieldMap = listMap.get(i);
         Iterator<String> iter = fieldMap.keySet().iterator();
@@ -81,12 +81,10 @@ public abstract class baseDao extends Task {
         try{
 //            System.out.println(insertSql);
             //获取准备语句对象。
-            conn = mysqlTemplate.getDataSource().getConnection();
-            conn.setAutoCommit(false);
-            PreparedStatement ps = conn.prepareStatement(insertSql.toString());
+            Map<String,?>[] objs = (Map<String, ?>[]) listMap.toArray();
+            mysqlTemplate.batchUpdate(insertSql.toString(),objs);
             for(i = 0; i < listMap.size(); i++){
                 Map<String,Object> map = listMap.get(i);
-                Iterator<Map.Entry<String,Object>> itera = map.entrySet().iterator();
 //                int j = 0;
 //                while(itera.hasNext()){   //对查出来的字段，做遍历
 //                    j++;
@@ -100,12 +98,7 @@ public abstract class baseDao extends Task {
 //                    dealDiffTable(ps,j,field,iter);
                     //回调函数，设置参数
 //                }
-                dealDiffTable(ps,itera);
-                ps.addBatch();
             }
-            ps.executeBatch();
-            conn.commit();
-
             return 1;
         }
 //        catch(DataAccessException e){

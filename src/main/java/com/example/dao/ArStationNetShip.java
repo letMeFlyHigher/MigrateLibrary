@@ -16,14 +16,14 @@ import java.util.Map;
 @Repository
 public class ArStationNetShip extends baseDao {
 
-//    private static final Logger LOGGER = LoggerFactory.getLogger(ArStationNetShip.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArStationNetShip.class);
 
     @Override
     public boolean start() {
         List<Map<String, Object>> listMap = executeQuerySql();
         String tableName = "TAB_OMIN_CM_CC_ARSTATIONNETSHIP";
         if(insertToPMCISTable(tableName,listMap) > 0){
-            LOGGER.error("酸雨站网迁移成功");
+            LOGGER.info("酸雨站网迁移成功");
         }else{
            LOGGER.error("酸雨站网迁移失败");
         }
@@ -31,7 +31,7 @@ public class ArStationNetShip extends baseDao {
     }
 
     @Override
-    protected void dealDiffTable(PreparedStatement ps, Iterator<Map.Entry<String, Object>> iter) throws SQLException {
+    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
         int j = 0;
         while(iter.hasNext()){
             j++;
