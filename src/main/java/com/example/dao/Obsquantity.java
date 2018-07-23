@@ -59,32 +59,25 @@ public class Obsquantity extends baseDao {
         //给插入语句的赋值。
 //            System.out.println(insertSql);
         //获取准备语句对象。
+        MapSqlParameterSource mspsNetShip = new MapSqlParameterSource();
+
         List<Map<String,Object>> batchValues = new ArrayList<>(listMap.size());
         for(i = 0; i < listMap.size(); i++){
             Map<String,Object> map = listMap.get(i);
-            String uuid = MyUUID.getUUID36();
+            String C_OBSQSN_ID = MyUUID.getUUID36();
             String obsvelmtPK = (String)map.get("C_OBSVELMTPK_QUERY");
+            String C_SNETSHIP_ID = obsvelmtPK.substring(0,36);
+            String C_OBSQ_ID = MyUUID.getUUID36();
+            mspsNetShip.addValue("C_OBSQSN_ID",C_OBSQSN_ID)
+                    .addValue("C_SNETSHP_ID",C_SNETSHIP_ID)
+                    .addValue("C_OBSQ_ID",C_OBSQ_ID);
 
-//                int j = 0;
-//                while(itera.hasNext()){   //对查出来的字段，做遍历
-//                    j++;
-//                    Map.Entry<String,Object> en = itera.next();
-//                    String field = en.getKey();  //字段名字
-//                    Object val = en.getValue();     //字段值
-            //回调函数，设置参数
-//                    if(callback != null){
-//                        callback.call(ps,j,field,val);
-//                    }
-//                    dealDiffTable(ps,j,field,iter);
-            //回调函数，设置参数
-//                }
-//            "mysql,oracle","bigDecimal",default,"string"
             MapSqlParameterSource msps = new MapSqlParameterSource();
             Iterator<String> fieldIter = map.keySet().iterator();
             while(fieldIter.hasNext()){
                 String fieldName  = fieldIter.next();
                 if(!fieldName.endsWith("_QUERY")){
-                    msps.addValue(fieldName,map.get(fieldName), fieldHelper.getFiledNameType(fieldName));
+                    msps.addValue(fieldName,map.get(fieldName));
                 }
             }
             batchValues.add(msps.getValues());
