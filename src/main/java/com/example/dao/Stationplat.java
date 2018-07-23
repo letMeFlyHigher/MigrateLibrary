@@ -1,53 +1,70 @@
 package com.example.dao;
 
 
+import com.example.util.FieldHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class Stationplat extends baseDao{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Stationplat.class);
-    public boolean start(){
+    public void start(){
         List<Map<String,Object>> stationList = new ArrayList<Map<String,Object>>();
         stationList = executeQuerySql();
 //        clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
 
         String tableName = "TAB_OMIN_CM_CC_STATIONPLAT";
-        if(insertToPMCISTable(tableName,stationList) > 0){
+        if(insertToPMCISTable(tableName, stationList, new FieldHelper() {
+            @Override
+            public int getFiledNameType(String fieldName) {
+                if(",C_HP,C_HHA,C_LONGITUDE_NUMB,C_LATITUDE_NUMB".indexOf(fieldName) > -1){
+                    return Types.DECIMAL;
+                }else{
+                    return Types.VARCHAR;
+                }
+            }
+
+            @Override
+            public void editMapForUpdate(Map<String, Object> map) {
+
+            }
+        }) > 0){
             LOGGER.info("成功迁移站点平台表");
         }else{
             LOGGER.error("站点平台表迁移失败");
         }
-        return false;
     }
 
-    @Override
-    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
-        map.
-        int j = 0;
-        while(iter.hasNext()){
-            j++;
-            Map.Entry<String,Object> entry = iter.next();
-            //站点平台表
-        if(",C_HP,C_HHA,".indexOf("," + fieldName + ",") > -1){
-            ps.setBigDecimal(j,(BigDecimal)val);
-        }else if(",C_LONGITUDE_NUMB,C_LATITUDE_NUMB,".indexOf("," + fieldName + ",") > -1){
-            ps.setBigDecimal(j,(BigDecimal)val);
-        }else{
-            ps.setString(j,(String)val);
-        }
-        }
-    }
+//    @Override
+//    protected void editMapForUpdate(Map<String, Object> map) {
+//        map.put("C_HP",(BigDecimal)map.get("C_HP"));
+//        map.put("C_HHA",(BigDecimal)map.get("C_HHA"));
+//        map.put("C_LONGITUDE_NUMB",(BigDecimal)map.get("C_LONGITUDE_NUMB"));
+//        map.put("C_LATITUDE_NUMB",(BigDecimal)map.get("C_LATITUDE_NUMB"));
+//    }
+
+//    @Override
+//    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
+//        map.
+//        int j = 0;
+//        while(iter.hasNext()){
+//            j++;
+//            Map.Entry<String,Object> entry = iter.next();
+//            //站点平台表
+//        if(",C_HP,C_HHA,".indexOf("," + fieldName + ",") > -1){
+//            ps.setBigDecimal(j,(BigDecimal)val);
+//        }else if(",C_LONGITUDE_NUMB,C_LATITUDE_NUMB,".indexOf("," + fieldName + ",") > -1){
+//            ps.setBigDecimal(j,(BigDecimal)val);
+//        }else{
+//            ps.setString(j,(String)val);
+//        }
+//        }
+//    }
 
     @Override
     public List<Map<String, Object>> executeQuerySql() {

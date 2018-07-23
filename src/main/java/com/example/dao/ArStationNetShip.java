@@ -1,14 +1,11 @@
 package com.example.dao;
 
-import com.sun.xml.internal.ws.util.QNameMap;
+import com.example.util.FieldHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Iterator;
+import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 
@@ -19,32 +16,50 @@ public class ArStationNetShip extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArStationNetShip.class);
 
     @Override
-    public boolean start() {
+    public void start() {
         List<Map<String, Object>> listMap = executeQuerySql();
         String tableName = "TAB_OMIN_CM_CC_ARSTATIONNETSHIP";
-        if(insertToPMCISTable(tableName,listMap) > 0){
+        if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
+            @Override
+            public int getFiledNameType(String fieldName) {
+                if(",C_OBSVMODE,C_ONDUTY,".contains(fieldName)){
+                    return Types.DECIMAL;
+                }else{
+                    return Types.VARCHAR;
+                }
+            }
+            @Override
+            public void editMapForUpdate(Map<String, Object> map) {
+
+            }
+        }) > 0){
             LOGGER.info("酸雨站网迁移成功");
         }else{
            LOGGER.error("酸雨站网迁移失败");
         }
-        return false;
     }
 
-    @Override
-    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
-        int j = 0;
-        while(iter.hasNext()){
-            j++;
-            Map.Entry<String,Object> entry =  iter.next();
-            String fieldName = entry.getKey();
-            Object val = entry.getValue();
-            if(",C_OBSVMODE,C_ONDUTY,".indexOf(fieldName) > -1){
-                ps.setBigDecimal(j,(BigDecimal)val);
-            }else{
-                ps.setString(j,(String)val);
-            }
-        }
-    }
+//    @Override
+//    protected void editMapForUpdate(Map<String, Object> map) {
+//        map.put("C_OBSVMODE",(BigDecimal)map.get("C_OBSVMODE"));
+//        map.put("C_ONDUTY",(BigDecimal)map.get("C_ONDUTY"));
+//    }
+
+//    @Override
+//    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
+//        int j = 0;
+//        while(iter.hasNext()){
+//            j++;
+//            Map.Entry<String,Object> entry =  iter.next();
+//            String fieldName = entry.getKey();
+//            Object val = entry.getValue();
+//            if(",C_OBSVMODE,C_ONDUTY,".indexOf(fieldName) > -1){
+//                ps.setBigDecimal(j,(BigDecimal)val);
+//            }else{
+//                ps.setString(j,(String)val);
+//            }
+//        }
+//    }
 
     @Override
     public List<Map<String, Object>> executeQuerySql() {

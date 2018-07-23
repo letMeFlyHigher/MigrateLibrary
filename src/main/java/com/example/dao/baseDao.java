@@ -1,23 +1,18 @@
 package com.example.dao;
 
-import com.example.callback.Callback;
-import com.example.callback.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.util.FieldHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public abstract class baseDao extends Task {
+public abstract class baseDao {
     @Autowired
     @Qualifier("mysqlJdbcTemplate")
     protected NamedParameterJdbcTemplate mysqlTemplate;
@@ -27,21 +22,16 @@ public abstract class baseDao extends Task {
     protected JdbcTemplate oracleTemplate;
 
     public void clearTable(String sql){
-        mysqlTemplate.execute(sql);
+        mysqlTemplate.getJdbcOperations().execute(sql);
     }
 
-    public abstract boolean start();
-    /**
-     * 用来处理不同表下的字段类型
-     * @param ps  准备语句
-     * @throws SQLException
-     */
-    protected abstract void dealDiffTable(PreparedStatement ps, String fieldName, Object val, Map<String, Object> fieldMap) throws SQLException;
+    public abstract void start();
 
+//    protected abstract void editMapForUpdate(Map<String, Object> map);
     public abstract List<Map<String,Object>> executeQuerySql();
 
     public List<Map<String,Object>> queryMDOSForListMap(String querySql){
-        oracleTemplate.setFetchSize(800);
+        oracleTemplate.setFetchSize(500);
         return oracleTemplate.queryForList(querySql);
     }
 
@@ -53,7 +43,7 @@ public abstract class baseDao extends Task {
      * @param listMap 从mdos数据库中查出来的list<Map<>> 形式的结果集。
      * @return
      */
-    public  int insertToPMCISTable(String tableName,List<Map<String,Object>> listMap){
+    public  int insertToPMCISTable(String tableName, List<Map<String,Object>> listMap, FieldHelper fieldHelper){
         String queryIfExists = "select count(*) as num from " + tableName;
         Map<String,Object> numMap = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists);
         if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
@@ -70,37 +60,47 @@ public abstract class baseDao extends Task {
             String fieldName = iter.next();
             if(!fieldName.endsWith("_QUERY")){//过滤掉后缀为‘_QUERY'的字段。
                 insertSql.append(fieldName).append(",");
-                values.append("?").append(",");
+                values.append(":").append(fieldName).append(",");
             }
         }
         insertSql.deleteCharAt(insertSql.length() - 1).append(")");
         values.deleteCharAt(values.length() - 1).append(")");
         insertSql.append(" ").append(values);
         //给插入语句的赋值。
-        Connection conn =null;
-        try{
 //            System.out.println(insertSql);
             //获取准备语句对象。
-            Map<String,?>[] objs = (Map<String, ?>[]) listMap.toArray();
-            mysqlTemplate.batchUpdate(insertSql.toString(),objs);
-            for(i = 0; i < listMap.size(); i++){
-                Map<String,Object> map = listMap.get(i);
+        List<Map<String,Object>> batchValues = new ArrayList<>(listMap.size());
+        for(i = 0; i < listMap.size(); i++){
+            Map<String,Object> map = listMap.get(i);
+            fieldHelper.editMapForUpdate(map);
 //                int j = 0;
 //                while(itera.hasNext()){   //对查出来的字段，做遍历
 //                    j++;
 //                    Map.Entry<String,Object> en = itera.next();
 //                    String field = en.getKey();  //字段名字
 //                    Object val = en.getValue();     //字段值
-                    //回调函数，设置参数
+                //回调函数，设置参数
 //                    if(callback != null){
 //                        callback.call(ps,j,field,val);
 //                    }
 //                    dealDiffTable(ps,j,field,iter);
-                    //回调函数，设置参数
+                //回调函数，设置参数
 //                }
+//            "mysql,oracle","bigDecimal",default,"string"
+            MapSqlParameterSource msps = new MapSqlParameterSource();
+            Iterator<String> fieldIter = map.keySet().iterator();
+            while(fieldIter.hasNext()){
+                String fieldName  = fieldIter.next();
+                if(!fieldName.endsWith("_QUERY")){
+                    msps.addValue(fieldName,map.get(fieldName), fieldHelper.getFiledNameType(fieldName));
+                }
             }
-            return 1;
+            batchValues.add(msps.getValues());
         }
+
+        int[] nums = mysqlTemplate.batchUpdate(insertSql.toString(),batchValues.toArray(new Map[listMap.size()]));
+//        System.out.println(nums);
+        return 1;
 //        catch(DataAccessException e){
 //            e.printStackTrace();
 ////            clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
@@ -113,20 +113,10 @@ public abstract class baseDao extends Task {
 //
 //            return -1;
 //        }
-        catch (SQLException e) {
-            e.printStackTrace();
-//            clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            System.out.println("迁移失败 " + tableName);
-
-            e.printStackTrace();
-            return -1;
-        }
 
     }
+
+//    protected abstract int getFiledNameType(String fieldName);
+
 
 }
