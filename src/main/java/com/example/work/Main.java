@@ -35,6 +35,12 @@ public class Main {
     @Autowired
     private RadiStationNetShip radiStationNetShip;
 
+    @Autowired
+    private ObsQuantity obsQuantity;
+
+    @Autowired
+    private ObsMethod obsMethod;
+
     public boolean start(){
 
 
@@ -58,6 +64,10 @@ public class Main {
         cawnStationNetShip.start();
 
         radiStationNetShip.start();
+
+        obsQuantity.start();
+
+        obsMethod.start();
 
         return false;
     }

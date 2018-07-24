@@ -5,12 +5,14 @@ public class StringMethodTest {
         String testStr1 = "A1232";
         String testStr2 = "54234";
         String testStr3 = "a1232";
+        String testStr4 = "create table `tab_omin_stat`(";
 
 //        match(testStr1);
 //        match(testStr2);
 //        match(testStr3);
 //        split("2,4");
         indexOf("bb");
+        indexOf2(testStr4);
     }
 
     private static void match(String str){
@@ -38,5 +40,12 @@ public class StringMethodTest {
         }else{
             System.out.println("not exists");
         }
+    }
+
+    public static void indexOf2(String str){
+        int pos1 = str.indexOf('`');
+        int pos2 = str.indexOf('`',pos1+1);
+
+        System.out.println(str.substring(pos1 + 1,pos2-1));
     }
 }
