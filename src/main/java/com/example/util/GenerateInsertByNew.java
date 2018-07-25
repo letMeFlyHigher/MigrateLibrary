@@ -31,7 +31,12 @@ public class GenerateInsertByNew {
                 }else if(str.startsWith("CREATE")){ //在此行获取表名
                     int pos1 = str.indexOf('`');
                     int pos2 = str.indexOf('`',pos1 + 1);
-                    tableName = str.substring(pos1 + 1, pos2).replace("CM_CC","META");
+                    tableName = str.substring(pos1 + 1, pos2);
+                    if (tableName.equals("TAB_OMIN_CM_CC_DOUCUMENT")) {
+                       tableName = tableName.replace("CM_CC","MATA") ;
+                    }else{
+                        tableName = tableName.replace("CM_CC","META");
+                    }
                     sb.append(tableName).append("(");
                     valSb = new StringBuffer("VALUES(");
                 }else if(str.startsWith(")")){

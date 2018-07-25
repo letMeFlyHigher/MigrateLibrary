@@ -13,6 +13,8 @@ public class StringMethodTest {
 //        split("2,4");
         indexOf("bb");
         indexOf2(testStr4);
+        String testStr5 = "TAB_OMIN_META_STATIONPLAT";
+        replace(testStr5);
     }
 
     private static void match(String str){
@@ -40,6 +42,10 @@ public class StringMethodTest {
         }else{
             System.out.println("not exists");
         }
+    }
+
+    public static void replace(String str){
+        System.out.println(str.replace("_META_","_CM_CC_"));
     }
 
     public static void indexOf2(String str){

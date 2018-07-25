@@ -41,6 +41,9 @@ public class Main {
     @Autowired
     private ObsMethod obsMethod;
 
+    @Autowired
+    private OthersDao othersDao;
+
     public boolean start(){
 
 
@@ -57,17 +60,19 @@ public class Main {
 //        long dealAr = System.currentTimeMillis() ;
 //        System.out.println("迁移酸雨站网表用时" + (dealAr - dealUpar)/1000 + "s");
 
-        asmStationNetShip.start();
+//        asmStationNetShip.start();
 //        long dealAsm = System.currentTimeMillis() ;
 //        System.out.println("迁移酸雨站网表用时" + (dealAsm - dealAr)/1000 + "s");
 
-        cawnStationNetShip.start();
+//        cawnStationNetShip.start();
 
-        radiStationNetShip.start();
+//        radiStationNetShip.start();
 
-        obsQuantity.start();
+//        obsQuantity.start();
 
-        obsMethod.start();
+//        obsMethod.start();
+
+        othersDao.start();
 
         return false;
     }

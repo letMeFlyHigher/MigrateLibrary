@@ -3,10 +3,15 @@ package com.example.dao;
 import com.example.util.FieldHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,9 +26,6 @@ public abstract class baseDao {
     @Qualifier("oracleJdbcTemplate")
     protected JdbcTemplate oracleTemplate;
 
-    public void clearTable(String sql){
-        mysqlTemplate.getJdbcOperations().execute(sql);
-    }
 
     public abstract void start();
 
@@ -31,9 +33,25 @@ public abstract class baseDao {
     public abstract List<Map<String,Object>> executeQuerySql();
 
     public List<Map<String,Object>> queryMDOSForListMap(String querySql){
-        oracleTemplate.setFetchSize(500);
+        oracleTemplate.setFetchSize(3000);
         return oracleTemplate.queryForList(querySql);
     }
+
+    public  void clearTable(String tableName){
+        String executeSql = "TRUNCATE TABLE " + tableName;
+        mysqlTemplate.getJdbcOperations().execute(executeSql);
+    }
+
+    public boolean hasRowsInTable(String tableName){
+       String hasSql = "SELECT COUNT(*) AS NUM FROM " + tableName;
+       Map<String,Object> map = mysqlTemplate.getJdbcOperations().queryForMap(hasSql);
+       if(map.size() > 0 &&(Long) map.get("NUM") > 0){
+          return true;
+       }else{
+           return false;
+       }
+    }
+
 
 
     /**
