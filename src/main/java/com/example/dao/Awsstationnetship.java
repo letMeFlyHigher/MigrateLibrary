@@ -17,9 +17,8 @@ public class Awsstationnetship extends baseDao {
 
     @Override
     public void start() {
-        Long starttime = System.currentTimeMillis();
+        LOGGER.info("开始迁移地面关系站网");
         List<Map<String,Object>> listMap = executeQuerySql();
-        System.out.println("查询地面用时：" + (System.currentTimeMillis() - starttime)/1000 + "s");
         if(insertToPMCISTable("TAB_OMIN_CM_CC_AWSSTATIONNETSHIP", listMap, new FieldHelper() {
             @Override
             public int getFiledNameType(String fieldName) {
@@ -70,9 +69,9 @@ public class Awsstationnetship extends baseDao {
 
             }
         }) > 0){
-            LOGGER.info("成功迁移地面关系站网");
+            LOGGER.info("地面关系站网迁移成功");
         }else{
-           LOGGER.error("迁移地面关系站网失败");
+           LOGGER.error("地面关系站网迁移失败");
         }
     }
 

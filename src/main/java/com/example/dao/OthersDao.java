@@ -39,10 +39,10 @@ public class OthersDao extends baseDao {
                 tableName = tableName.replace("_META_","_CM_CC_");
             }
         //准备工作
-            if(hasRowsInTable(tableName)){
-                continue;
-            }
-//            clearTable(tableName);
+//            if(hasRowsInTable(tableName)){
+//                continue;
+//            }
+            clearTable(tableName);
 
             LOGGER.info(tableName + "开始迁库");
             //查询mdos
@@ -88,7 +88,8 @@ public class OthersDao extends baseDao {
 
     private void getSqlMap(String insertPath,String queryPath,Map<String,Map<String,String>> map){
 
-        int lineNum = 0;
+        int queryLineNum = 0;
+        int insertLineNum = 0;
         try{
             File insertFile = new File(insertPath);
             BufferedReader in = new BufferedReader(
@@ -106,7 +107,7 @@ public class OthersDao extends baseDao {
             String tableName = "";
             String querySql = "";
             while ((str = in.readLine()) != null) {
-                lineNum++;
+                insertLineNum++;
                 if(str.startsWith("INSERT")){
                    int pos2 = str.indexOf('(');
                    int pos1 = str.indexOf("TAB_OMIN_");
@@ -117,31 +118,45 @@ public class OthersDao extends baseDao {
                 }else if(str.startsWith("类型")){
                    String[] strs = str.split("-") ;
                    map.get(tableName).put("type",strs[1].trim());
+                }else if(str.startsWith("--")){
+                    continue;
                 }
 
             }
             //
             String whereClause = "";
             while((str = in2.readLine()) != null){
+                queryLineNum ++;
                if(str.startsWith("SELECT")) {
                    querySql = str + "\r\n";
                }else if(str.startsWith("\t")){
                   querySql = querySql + str + "\r\n";
                }else if(str.startsWith("FROM")) {
                   String[] strs = str.split("\\s+");
-                  tableName = strs[1];
+                  if(strs[1].contains(",")){ //如果多个表关联查询获取第一个表名。表之间用‘,’分隔。
+                      int position = strs[1].indexOf(',');
+                      tableName = strs[1].substring(0,position);
+                  }else{
+                      tableName = strs[1];
+                  }
                   querySql = querySql + str;
-                   map.get(tableName).put("querySql",querySql);
-               }else{
+                   map.get(tableName).put("querySql",querySql)                  ;
+               }else if(str.startsWith("--")){
                    continue;
+               }else{
+                   if(str.startsWith("WHERE")){
+                       map.get(tableName).put("querySql", map.get(tableName).get("querySql") + "\r\n" + str + "\r\n");
+                   }
                }
             }
 
             in2.close();
             in.close();
         }catch (Exception e){
-            System.out.println(e.getMessage());
-            System.out.println("第" + lineNum + "行出问题了");
+            LOGGER.error(e.getMessage());
+            LOGGER.error("insertNew文件走到" + insertLineNum + "行！");
+            LOGGER.error("queryNew文件走到" + queryLineNum + "行!");
+
         }
     }
 }
