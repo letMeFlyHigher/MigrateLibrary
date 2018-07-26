@@ -3,15 +3,10 @@ package com.example.dao;
 import com.example.util.FieldHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -121,7 +116,7 @@ public abstract class baseDao {
         return 1;
 //        catch(DataAccessException e){
 //            e.printStackTrace();
-////            clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
+//            clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
 //            try {
 //                conn.rollback();
 //            } catch (SQLException e1) {

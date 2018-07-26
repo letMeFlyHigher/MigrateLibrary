@@ -11,13 +11,8 @@ public class GenerateSelectByNew {
                             new FileInputStream(fileDir), "UTF8"));
 
             String str;
-            String query_table_name = "";
-            String col_name = "";
-            String rename = "";
             StringBuffer sb = new StringBuffer();
-            String queryStr = "";
             int lineNum = 0;
-            String tables = "";
             String tableName = "";
             while ((str = in.readLine()) != null) {
                 lineNum++;

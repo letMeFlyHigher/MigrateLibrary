@@ -17,6 +17,9 @@ import java.util.*;
 public class Main {
 
     @Autowired
+    private Stationplat stationplat;
+
+    @Autowired
     @Qualifier("awsstationnetship")
     private Awsstationnetship awsstationnetship;
 
@@ -42,11 +45,11 @@ public class Main {
     private ObsMethod obsMethod;
 
     @Autowired
-    private OthersDao othersDao;
+    private OthersFactory othersFactory;
 
     public boolean start(){
 
-
+        stationplat.start();
 //        Long starttime = System.currentTimeMillis();
         awsstationnetship.start();
 //        long endTime = System.currentTimeMillis();
@@ -72,7 +75,7 @@ public class Main {
 
         obsMethod.start();
 
-        othersDao.start();
+        othersFactory.start();
 
         return false;
     }

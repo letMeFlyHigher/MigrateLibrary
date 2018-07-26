@@ -4,21 +4,28 @@ package com.example.dao;
 import com.example.util.FieldHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class Stationplat extends baseDao{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Stationplat.class);
+
+    @Override
+    @Async
     public void start(){
         List<Map<String,Object>> stationList = new ArrayList<Map<String,Object>>();
         stationList = executeQuerySql();
 //        clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
-
         String tableName = "TAB_OMIN_CM_CC_STATIONPLAT";
+
+        LOGGER.info(tableName + "开始迁库");
         if(insertToPMCISTable(tableName, stationList, new FieldHelper() {
             @Override
             public int getFiledNameType(String fieldName) {
@@ -34,9 +41,9 @@ public class Stationplat extends baseDao{
 
             }
         }) > 0){
-            LOGGER.info("成功迁移站点平台表");
+            LOGGER.info(tableName + "完成迁库");
         }else{
-            LOGGER.error("站点平台表迁移失败");
+            LOGGER.error(tableName + "迁库失败");
         }
     }
 

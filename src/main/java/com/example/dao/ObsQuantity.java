@@ -4,6 +4,7 @@ import com.example.util.MyUUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ObsQuantity extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObsQuantity.class);
 
     @Override
+    @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_OBSQUANTITY";
         LOGGER.info("开始迁移观测量，及观测量、站网关系");

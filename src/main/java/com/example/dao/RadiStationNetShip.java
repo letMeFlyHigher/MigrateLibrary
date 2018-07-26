@@ -3,6 +3,7 @@ package com.example.dao;
 import com.example.util.FieldHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Types;
@@ -14,6 +15,7 @@ public class RadiStationNetShip extends baseDao{
     private static final Logger LOGGER = LoggerFactory.getLogger(RadiStationNetShip.class);
 
     @Override
+    @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_RADISTATIONNETSHIP";
         List<Map<String,Object>> listMap = executeQuerySql();

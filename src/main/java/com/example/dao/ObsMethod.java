@@ -4,6 +4,7 @@ import com.example.util.FieldHelper;
 import com.example.util.MyUUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Types;
@@ -14,10 +15,11 @@ import java.util.Map;
 public class ObsMethod extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObsMethod.class);
     @Override
+    @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_OBSMETHOD";
 
-        LOGGER.info("观测方法开始迁移");
+        LOGGER.info(tableName + "开始迁库");
         List<Map<String,Object>> listMap = executeQuerySql();
         insertToPMCISTable(tableName, listMap, new FieldHelper() {
             @Override
@@ -38,7 +40,7 @@ public class ObsMethod extends baseDao {
             }
         });
 
-        LOGGER.info("观测方法迁移结束！");
+        LOGGER.info(tableName + "迁库成功");
     }
 
     @Override
