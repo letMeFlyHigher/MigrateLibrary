@@ -19,8 +19,10 @@ public class ArStationNetShip extends baseDao {
     @Override
     @Async
     public void start() {
-        List<Map<String, Object>> listMap = executeQuerySql();
+
         String tableName = "TAB_OMIN_CM_CC_ARSTATIONNETSHIP";
+        LOGGER.info(tableName + "开始迁库>>>>>>");
+        List<Map<String, Object>> listMap = executeQuerySql();
         if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
             @Override
             public int getFiledNameType(String fieldName) {
@@ -35,9 +37,9 @@ public class ArStationNetShip extends baseDao {
 
             }
         }) > 0){
-            LOGGER.info("酸雨站网迁移成功");
+            LOGGER.info(tableName + "完成迁库");
         }else{
-           LOGGER.error("酸雨站网迁移失败");
+           LOGGER.error( tableName + "迁移失败");
         }
     }
 

@@ -40,7 +40,7 @@ public class ObsMethod extends baseDao {
             }
         });
 
-        LOGGER.info(tableName + "迁库成功");
+        LOGGER.info(cnt++ + tableName + "迁库成功");
     }
 
     @Override

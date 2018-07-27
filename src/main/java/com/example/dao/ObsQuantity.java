@@ -21,7 +21,7 @@ public class ObsQuantity extends baseDao {
     @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_OBSQUANTITY";
-        LOGGER.info("开始迁移观测量，及观测量、站网关系");
+        LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
         //因为观测量，查出来之后，不只是要插入到一个表中，还有一个观测量与站网和台站关系表
 
@@ -94,7 +94,7 @@ public class ObsQuantity extends baseDao {
         int[] nums = mysqlTemplate.batchUpdate(insertSql.toString(),batchValues.toArray(new Map[listMap.size()]));
         mysqlTemplate.batchUpdate("INSERT INTO TAB_OMIN_CM_CC_OBSQSTATIONNETSHIP(C_OBSQSN_ID,C_SNETSHIP_ID,C_OBSQ_ID) VALUES(:C_OBSQSN_ID,:C_SNETSHIP_ID,:C_OBSQ_ID)",netShipBatchValues.toArray(new Map[listMap.size()]));
 //        System.out.println(nums);
-        LOGGER.info("观测量迁移成功");
+        LOGGER.info(tableName + "迁库完成======");
 
     }
 

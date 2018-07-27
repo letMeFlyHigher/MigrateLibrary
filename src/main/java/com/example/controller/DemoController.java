@@ -24,10 +24,15 @@ public class DemoController {
     @Autowired
     private Main main;
 
-    @RequestMapping("/start")
+    @RequestMapping("/startMigrate")
     public String getStarted(){
         main.start();
         return null;
+    }
+
+    @RequestMapping("/RecreateObservation")
+    public String createObs(){
+        return main.migrate();
     }
 
 

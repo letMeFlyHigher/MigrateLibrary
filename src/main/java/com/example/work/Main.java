@@ -47,6 +47,8 @@ public class Main {
     @Autowired
     private OthersFactory othersFactory;
 
+    @Autowired
+    private RecreateObservationTables recreateObservationTables;
     public boolean start(){
 
         stationplat.start();
@@ -80,6 +82,9 @@ public class Main {
         return false;
     }
 
+    public String migrate(){
+        return recreateObservationTables.mig();
+    }
 
 
 

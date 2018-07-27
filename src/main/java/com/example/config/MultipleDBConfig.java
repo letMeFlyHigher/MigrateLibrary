@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 
 @Configuration
 //@Import(AsyncConfig.class)
+//@ConfigurationProperties(prefix="spring.boot.")
 public class MultipleDBConfig {
 //    @Bean(name="mysqlDb")
 //    @ConfigurationProperties(prefix="spring.mysql.datasource2")
@@ -28,25 +29,7 @@ public class MultipleDBConfig {
     @ConfigurationProperties(prefix="spring.mysql.datasource2")
     public DataSource mysqlDataSource(){
 
-        HikariDataSource hikari = new HikariDataSource();
-        hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        hikari.addDataSourceProperty("serverName", "");
-        hikari.addDataSourceProperty("port", getConfig().getString("mysql.port"));
-        hikari.addDataSourceProperty("databaseName", getConfig().getString("mysql.database"));
-        hikari.addDataSourceProperty("user", getConfig().getString("mysql.user"));
-        hikari.addDataSourceProperty("password", getConfig().getString("mysql.password"));
-        hikari.addDataSourceProperty("autoReconnect",true);
-        hikari.addDataSourceProperty("cachePrepStmts",true);
-        hikari.addDataSourceProperty("prepStmtCacheSize",250);
-        hikari.addDataSourceProperty("prepStmtCacheSqlLimit",2048);
-        hikari.addDataSourceProperty("useServerPrepStmts",true);
-        hikari.addDataSourceProperty("cacheResultSetMetadata",true);
-        hikari.addDataSourceProperty("maxReconnects",5);
-        hikari.addDataSourceProperty("tcpKeepAlive", true);
-        hikari.setMaximumPoolSize(20);
-        hikari.setMinimumIdle(0);
-        hikari.setIdleTimeout(30000);
-        return hikari;
+        return DataSourceBuilder.create().build();
     }
 
     @Bean(name="mysqlJdbcTemplate")

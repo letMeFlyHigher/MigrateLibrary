@@ -18,6 +18,7 @@ public class RadiStationNetShip extends baseDao{
     @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_RADISTATIONNETSHIP";
+        LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
         if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
             @Override
@@ -35,9 +36,9 @@ public class RadiStationNetShip extends baseDao{
                 }
             }
         }) > 0){
-            LOGGER.info("辐射站网迁移成功！");
+            LOGGER.info(cnt++ + tableName + "完成迁库============");
         }else{
-            LOGGER.error("辐射站网迁移失败！");
+            LOGGER.error(tableName + "迁库失败！！！！！！");
         }
     }
 

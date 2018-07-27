@@ -35,7 +35,7 @@ public class CawnStationNetShip extends baseDao{
                 }
             }
         })> 0){
-           LOGGER.info(tableName + "开始迁库!");
+           LOGGER.info(cnt++ + tableName + "开始迁库>>>>");
         }else{
             LOGGER.error(tableName + "迁库完成！");
         }

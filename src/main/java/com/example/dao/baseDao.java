@@ -21,6 +21,7 @@ public abstract class baseDao {
     @Qualifier("oracleJdbcTemplate")
     protected JdbcTemplate oracleTemplate;
 
+    protected static int cnt = 0;
 
     public abstract void start();
 

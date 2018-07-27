@@ -25,7 +25,7 @@ public class Stationplat extends baseDao{
 //        clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
         String tableName = "TAB_OMIN_CM_CC_STATIONPLAT";
 
-        LOGGER.info(tableName + "开始迁库");
+        LOGGER.info(tableName + "开始迁库>>>>");
         if(insertToPMCISTable(tableName, stationList, new FieldHelper() {
             @Override
             public int getFiledNameType(String fieldName) {
@@ -41,7 +41,7 @@ public class Stationplat extends baseDao{
 
             }
         }) > 0){
-            LOGGER.info(tableName + "完成迁库");
+            LOGGER.info(cnt++ + tableName + "完成迁库");
         }else{
             LOGGER.error(tableName + "迁库失败");
         }

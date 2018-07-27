@@ -19,9 +19,10 @@ public class Awsstationnetship extends baseDao {
     @Override
     @Async
     public void start() {
-        LOGGER.info("开始迁移地面关系站网");
+        String tableName = "TAB_OMIN_CM_CC_AWSSTATIONNETSHIP";
+        LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
-        if(insertToPMCISTable("TAB_OMIN_CM_CC_AWSSTATIONNETSHIP", listMap, new FieldHelper() {
+        if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
             @Override
             public int getFiledNameType(String fieldName) {
                 if("C_ONDUTY,C_OBSVMODE,".contains(fieldName)){
@@ -71,9 +72,9 @@ public class Awsstationnetship extends baseDao {
 
             }
         }) > 0){
-            LOGGER.info("地面关系站网迁移成功");
+            LOGGER.info(cnt++ + tableName + "完成迁库");
         }else{
-           LOGGER.error("地面关系站网迁移失败");
+           LOGGER.error(tableName + "迁移失败");
         }
     }
 

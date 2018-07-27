@@ -59,7 +59,7 @@ public class OthersDao extends baseDao {
                 batchValues.add(msps.getValues());
             }
             int[] nums = mysqlTemplate.batchUpdate(insertSql,batchValues.toArray(new Map[queryMap.size()]));
-            LOGGER.info(tableName + "完成迁库！");
+            LOGGER.info(cnt++ + tableName + "完成迁库！");
         }
 
 //       System.out.println("妈的智障！！！");

@@ -20,6 +20,7 @@ public class AsmStationNetShip extends baseDao {
     @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_ASMSTATIONNETSHIP";
+        LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
         if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
             @Override
@@ -37,9 +38,9 @@ public class AsmStationNetShip extends baseDao {
                 }
             }
         }) > 0){
-            LOGGER.info("自动土壤水分站迁移成功！");
+            LOGGER.info(cnt++ + tableName + "完成迁库！");
         }else{
-            LOGGER.error("自动土壤水分站迁移失败！");
+            LOGGER.error(tableName + "迁库失败！");
         }
     }
 
