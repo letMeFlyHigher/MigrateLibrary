@@ -15,7 +15,6 @@ public class RadiStationNetShip extends baseDao{
     private static final Logger LOGGER = LoggerFactory.getLogger(RadiStationNetShip.class);
 
     @Override
-    @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_RADISTATIONNETSHIP";
         LOGGER.info(tableName + "开始迁库>>>>>>");

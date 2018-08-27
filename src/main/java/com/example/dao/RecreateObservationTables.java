@@ -17,9 +17,9 @@ public class RecreateObservationTables extends baseDao {
     public void start() {
         String srcPath1 = "src/main/resources/sql/新增表.sql";
         String srcPath2 = "src/main/resources/sql/冲突表.sql";
-        StringBuilder sb = readFile(srcPath1);
-        sb.append(readFile(srcPath2));
-        System.out.println(sb.toString());
+//        StringBuilder sb = readFile(srcPath1);
+//        sb.append(readFile(srcPath2));
+//        System.out.println(sb.toString());
 
     }
 
@@ -28,7 +28,21 @@ public class RecreateObservationTables extends baseDao {
         String srcPath2 = "src/main/resources/sql/冲突表.sql";
         List<String> ctList = readFile(srcPath1);
         ctList.addAll(readFile(srcPath2));
-        return sb.toString();
+//        ctList.forEach(item ->  item.indexOf("\r\n"));
+        int i = 0;
+        for (String s : ctList) {
+            i++;
+           int pos = s.indexOf("\r\n");
+           String dropIfExists = s.substring(0,pos);
+           String create = s.substring(pos+2,s.length());
+           System.out.println(dropIfExists);
+           System.out.println(create);
+           mysqlTemplate.getJdbcOperations().execute(dropIfExists);
+           mysqlTemplate.getJdbcOperations().execute(create);
+        }
+        System.out.println("共创建" + i +  "个表");
+//        ctList.forEach(item ->mysqlTemplate.getJdbcOperations().execute(item));
+        return null;
     }
 
 
@@ -52,12 +66,15 @@ public class RecreateObservationTables extends baseDao {
                        continue;
                    }
                    ctList.add(sb.toString());
-                   sb = null;
+                   sb.setLength(0);
                    lastEmptyFlag = true;
                 }else{
                     sb.append(str).append("\r\n");
                     lastEmptyFlag = false;
                 }
+            }
+            if(sb.length() > 0 && !ctList.contains(sb.toString())){
+                ctList.add(sb.toString());
             }
         }catch (Exception e){
             e.printStackTrace();

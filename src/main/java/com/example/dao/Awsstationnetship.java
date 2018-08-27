@@ -17,7 +17,6 @@ public class Awsstationnetship extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(Awsstationnetship.class);
 
     @Override
-    @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_AWSSTATIONNETSHIP";
         LOGGER.info(tableName + "开始迁库>>>>>>");
@@ -46,7 +45,7 @@ public class Awsstationnetship extends baseDao {
                 if(rainFallSwitchQuery == null){
                     map.put("C_RAIN_STIME",null);
                     map.put("C_RAIN_ETIME",null);
-                }else if(rainFallSwitchQuery.equals(",")){  //全年启用将开始启用，和开始停用月都设置为12月份儿。
+                }else if(rainFallSwitchQuery.equals(",")){  //降水全年启用将开始启用，和开始停用月都设置为12月份儿。
                     map.put("C_RAIN_STIME",12);
                     map.put("C_RAIN_ETIME",12);
                 }else{ // 切换时间有具体的数值
@@ -58,7 +57,7 @@ public class Awsstationnetship extends baseDao {
                 if(evaporationSwitchQuery == null){
                     map.put("C_SWITCH_SDATE",null);
                     map.put("C_SWITCH_EDATE",null);
-                }else if(evaporationSwitchQuery.equals(",")){  //全年启用将开始启用，和开始停用月都设置为12月份儿。
+                }else if(evaporationSwitchQuery.equals(",")){  //蒸发量全年启用将开始启用，和开始停用月都设置为12月份儿。
                     map.put("C_SWITCH_SDATE",12);
                     map.put("C_SWITCH_EDATE",12);
                 }else{ // 切换时间有具体的数值

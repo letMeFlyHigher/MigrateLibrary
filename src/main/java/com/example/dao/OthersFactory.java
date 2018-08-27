@@ -23,16 +23,18 @@ public class OthersFactory   {
     @Autowired
     private OthersDao othersDao;
 
-    @Async
     public void start() {
         String insertPath = "src/main/resources/insertNew.sql";
         String queryPath = "src/main/resources/queryNew.sql";
         Map<String,Map<String,String>> map = new HashMap<String,Map<String,String>>();
         //获取新增表的map 包含类型，查询语句，新增语句。
         getSqlMap(insertPath,queryPath,map);
+        int i = 0;
         for(Map.Entry<String,Map<String,String>> entry :map.entrySet()){
+            i++;
             othersDao.start(entry);
         }
+        LOGGER.info("OthersDao 迁移" + i + "个表");
 
     }
 

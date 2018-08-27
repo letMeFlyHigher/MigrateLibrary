@@ -16,8 +16,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.sql.DataSource;
 
 @Configuration
-//@Import(AsyncConfig.class)
-//@ConfigurationProperties(prefix="spring.boot.")
 public class MultipleDBConfig {
 //    @Bean(name="mysqlDb")
 //    @ConfigurationProperties(prefix="spring.mysql.datasource2")

@@ -3,16 +3,6 @@ package com.example.work;
 import com.example.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
 
 public class Main {
 
@@ -49,6 +39,10 @@ public class Main {
 
     @Autowired
     private RecreateObservationTables recreateObservationTables;
+
+    @Autowired
+    private EnvironmentDao environmentDao;
+
     public boolean start(){
 
         stationplat.start();
@@ -78,6 +72,8 @@ public class Main {
         obsMethod.start();
 
         othersFactory.start();
+
+        environmentDao.start();
 
         return false;
     }

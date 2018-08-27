@@ -17,7 +17,6 @@ public class ArStationNetShip extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArStationNetShip.class);
 
     @Override
-    @Async
     public void start() {
 
         String tableName = "TAB_OMIN_CM_CC_ARSTATIONNETSHIP";

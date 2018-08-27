@@ -6,10 +6,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 
 @Repository
@@ -17,7 +13,6 @@ public class OthersDao extends baseDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OthersDao.class);
 
-    @Async
     public void start(Map.Entry<String,Map<String,String>> entry ) {
 
 

@@ -7,10 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class baseDao {
     @Autowired
@@ -87,20 +84,6 @@ public abstract class baseDao {
         for(i = 0; i < listMap.size(); i++){
             Map<String,Object> map = listMap.get(i);
             fieldHelper.editMapForUpdate(map);
-//                int j = 0;
-//                while(itera.hasNext()){   //对查出来的字段，做遍历
-//                    j++;
-//                    Map.Entry<String,Object> en = itera.next();
-//                    String field = en.getKey();  //字段名字
-//                    Object val = en.getValue();     //字段值
-                //回调函数，设置参数
-//                    if(callback != null){
-//                        callback.call(ps,j,field,val);
-//                    }
-//                    dealDiffTable(ps,j,field,iter);
-                //回调函数，设置参数
-//                }
-//            "mysql,oracle","bigDecimal",default,"string"
             MapSqlParameterSource msps = new MapSqlParameterSource();
             Iterator<String> fieldIter = map.keySet().iterator();
             while(fieldIter.hasNext()){
@@ -113,21 +96,83 @@ public abstract class baseDao {
         }
 
         int[] nums = mysqlTemplate.batchUpdate(insertSql.toString(),batchValues.toArray(new Map[listMap.size()]));
-//        System.out.println(nums);
         return 1;
-//        catch(DataAccessException e){
-//            e.printStackTrace();
-//            clearTable("TRUNCATE TABLE TAB_OMIN_CM_CC_STATIONPLAT");
-//            try {
-//                conn.rollback();
-//            } catch (SQLException e1) {
-//                e1.printStackTrace();
-//            }
-//            System.out.println("迁移失败 " + tableName);
-//
-//            return -1;
-//        }
+    }
 
+    /**
+     *  专门针对站网的迁移到PMCIS库的代码
+     * @param tableName
+     * @param listMap
+     * @param fieldHelper
+     * @return
+     */
+    public int insertToPMCISForNetShip(String tableName, List<Map<String,Object>> listMap, FieldHelper fieldHelper){
+        //这程序该怎么写呢。。。
+        //先要看我们有什么？
+        //一个不会变的是查询！我们查出来的东西，还是一样的，
+        //区别是在现在查出来的东西，需要插入到两个表中，一个基本表中一个扩展表中，在这些站网中，基本表就一个，所以个这个基本表的
+        //名字给定一个固定的值，
+        //现在需要考虑的问题是，如何把公共的字段从listMap中摘出来
+        //
+        // String baseName = "TAB_OMIN_CM_CC_BASENETSHIP";
+        //肯定要做的有遍历listMap
+        //基本表的语句是不会变的，先写基本表的语句
+        // INSERT INTO TAB_OMIN_CM_CC_BASESTATIONNETSHIP(C_SNETSHIP_ID,C_SITEOPF_ID,C_SNET_ID,C_STATION_LEVEL,C_STARTTIME,C_ENDTIME,C_TIMESYSTEM,C_EXCHANGECODE,C_OBSVMODE,C_OBSVCOUNT,C_OBSVTIMES,C_ONDUTY)
+        // VALUES(:C_SNETSHIP_ID,:C_SITEOPF_ID,:C_SNET_ID,:C_STATION_LEVEL,:C_STARTTIME,:C_ENDTIME,:C_TIMESYSTEM,:C_EXCHANGECODE,:C_OBSVMODE,:C_OBSVCOUNT,:C_OBSVTIMES,:C_ONDUTY)
+        int i ;
+        //othersDao insert sql statements
+        //INSERT INTO TABLENAME(C_SNETSHIP_ID,...SET(LISTMAP -> MAP.KEYSET) - BASESET) VALUES (:C_SNETSHIP_ID,...SET(....));
+        //坚信怎么赋值会根据SQL语句来，多余的字段不会影响sql语句的执行，在此前提下的程序,、、无情代码打破你的幻想
+
+        String baseSql = "INSERT INTO TAB_OMIN_CM_CC_BASESTATIONNETSHIP(C_SNETSHIP_ID,C_SITEOPF_ID,C_SNET_ID,C_STATION_LEVEL,C_STARTTIME,C_ENDTIME,C_TIMESYSTEM,C_EXCHANGECODE,C_OBSVMODE,C_OBSVCOUNT,C_OBSVTIMES,C_ONDUTY)" +
+                                                                "VALUES(:C_SNETSHIP_ID,:C_SITEOPF_ID,:C_SNET_ID,:C_STATION_LEVEL,:C_STARTTIME,:C_ENDTIME,:C_TIMESYSTEM,:C_EXCHANGECODE,:C_OBSVMODE,:C_OBSVCOUNT,:C_OBSVTIMES,:C_ONDUTY)";
+
+
+        List<String> baseList = Arrays.asList("C_SNETSHIP_ID","C_SITEOPF_ID","C_SNET_ID","C_STATION_LEVEL","C_STARTTIME","C_ENDTIME","C_TIMESYSTEM","C_EXCHANGECODE","C_OBSVMODE","C_OBSVCOUNT","C_OBSVTIMES","C_ONDUTY");
+        List<String> otherList = new ArrayList<String>();
+        Set<String> set = listMap.get(0).keySet();
+        otherList.add("C_SNETSHIP_ID");
+        for(String s : set){
+           if(!baseList.contains(s)) {
+              otherList.add(s) ;
+           }
+        }
+
+        String otherSql = "INSERT INTO " + tableName + "(";
+        StringBuilder sb1 = new StringBuilder(otherSql);
+        StringBuilder sb2 = new StringBuilder("VALUES(");
+        for(String s : otherList){
+            sb1.append(s);
+            sb2.append(":").append(s).append(",");
+        }
+        otherSql = sb1.deleteCharAt(sb1.length() - 1).append(")").append(" ").append(sb2.deleteCharAt(sb2.length() - 1).append(")")).toString();
+
+        List<Map<String,Object>> batchValues = new ArrayList<Map<String,Object>>(listMap.size());
+        List<Map<String,Object>> otherBatchValues = new ArrayList<Map<String,Object>>(listMap.size());
+
+        for(i = 0; i < listMap.size(); i++){
+            Map<String,Object> map = listMap.get(0);
+            MapSqlParameterSource msps = new MapSqlParameterSource();
+            MapSqlParameterSource otherMsps = new MapSqlParameterSource();
+
+            for(Map.Entry<String,Object> entry :map.entrySet()){
+                String key = entry.getKey();
+                Object val = entry.getValue();
+                if(baseList.contains(key)) {
+                    msps.addValue(key,val);
+                }
+                if(otherList.contains(key)){
+                    otherMsps.addValue(key,val);
+                }
+            }
+            batchValues.add(msps.getValues());
+            otherBatchValues.add(otherMsps.getValues());
+        }
+
+        mysqlTemplate.batchUpdate(baseSql,batchValues.toArray(new Map[listMap.size()]));
+        mysqlTemplate.batchUpdate(otherSql,otherBatchValues.toArray(new Map[listMap.size()]));
+
+        return 0;
     }
 
 //    protected abstract int getFiledNameType(String fieldName);

@@ -17,7 +17,6 @@ public class AsmStationNetShip extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(AsmStationNetShip.class);
 
     @Override
-    @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_ASMSTATIONNETSHIP";
         LOGGER.info(tableName + "开始迁库>>>>>>");

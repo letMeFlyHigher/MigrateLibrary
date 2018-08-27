@@ -24,12 +24,20 @@ public class DemoController {
     @Autowired
     private Main main;
 
+    /**
+     * 迁移mdos元数据
+     * @return
+     */
     @RequestMapping("/startMigrate")
     public String getStarted(){
         main.start();
         return null;
     }
 
+    /**
+     * 重新创建观测元数据的表结构
+     * @return
+     */
     @RequestMapping("/RecreateObservation")
     public String createObs(){
         return main.migrate();

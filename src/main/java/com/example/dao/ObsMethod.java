@@ -15,7 +15,6 @@ import java.util.Map;
 public class ObsMethod extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObsMethod.class);
     @Override
-    @Async
     public void start() {
         String tableName = "TAB_OMIN_CM_CC_OBSMETHOD";
 

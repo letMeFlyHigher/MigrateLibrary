@@ -16,7 +16,6 @@ public class CawnStationNetShip extends baseDao{
     private static final Logger LOGGER = LoggerFactory.getLogger(CawnStationNetShip.class);
 
     @Override
-    @Async
     public void start() {
         List<Map<String,Object>> listMap = executeQuerySql();
         String tableName = "TAB_OMIN_CM_CC_CAWNSTATIONNETSHIP";
