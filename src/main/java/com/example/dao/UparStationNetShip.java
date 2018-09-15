@@ -17,11 +17,11 @@ public class UparStationNetShip extends baseDao{
     private static final Logger LOGGER = LoggerFactory.getLogger(UparStationNetShip.class);
 
     @Override
-    public void start() {
+    public int start() {
         String tableName = "tab_omin_cm_cc_uparstationnetship".toUpperCase();
         LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
-        if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
+        if(insertToPMCISForNetShip(tableName, listMap, new FieldHelper() {
             @Override
             public int getFiledNameType(String fieldName) {
                 if(",C_OBSVMODE,C_SONDEOBSVCOUNT,C_ANEMOOBSVCOUNT,".contains(fieldName)){
@@ -40,6 +40,7 @@ public class UparStationNetShip extends baseDao{
         }else{
             LOGGER.error(tableName + "迁移失败");
         }
+        return 1;
     }
 
 //    @Override
@@ -69,11 +70,15 @@ public class UparStationNetShip extends baseDao{
 
     @Override
     public List<Map<String, Object>> executeQuerySql() {
+        //守班情况，人工观测次数，人工观测时间在高空站网中都是没有该字段的，但是目前基本关系表里这三个字段，所以将这三个字段的值赋值为空。
         String querySql = "SELECT\n" +
                 "  TAB_OMIN_META_NETWORK.NETWORKPK as C_SNETSHIP_ID,\n" +
                 "  SUBSTR(TAB_OMIN_META_NETWORK.NETWORKPK,0,32) as C_SITEOPF_ID,\n" +
                 "  '04' as C_SNET_ID,\n" +
-                "  TAB_OMIN_META_NETWORK.NetWorkLevel as C_STATION_LEVEL,TAB_OMIN_META_NETWORK.ISGCOS as C_ISGCOS,TAB_OMIN_META_NETWORK.StartTime as C_StartTime,TAB_OMIN_META_NETWORK.EndTime as C_EndTime,TAB_OMIN_META_NETWORK.TimeSystem as C_TimeSystem,TAB_OMIN_META_NETWORK.ExchangeCode as C_ExchangeCode,TAB_OMIN_META_NETWORK.ObsvMode as C_ObsvMode,TAB_OMIN_META_NETWORK.AnemoStartTime as C_AnemoStartTime,TAB_OMIN_META_NETWORK.AnemoEndTime as C_AnemoEndTime,TAB_OMIN_META_NETWORK.AnemoObsvTime as C_AnemoObsvTime,TAB_OMIN_META_NETWORK.AnemoObsvCount as C_AnemoObsvCount,TAB_OMIN_META_NETWORK.ANE_ALT as C_ANE_ALT,TAB_OMIN_META_NETWORK.SondeStartTime as C_SondeStartTime,TAB_OMIN_META_NETWORK.SondeEndTime as C_SondeEndTime,TAB_OMIN_META_NETWORK.SondeObsvTime as C_SondeObsvTime,TAB_OMIN_META_NETWORK.SondeObsvCount as C_SondeObsvCount,TAB_OMIN_META_NETWORK.Sound_Alt as C_Sound_Alt,TAB_OMIN_META_NETWORK.HisLogDataFrom as C_HisLogDataFrom,TAB_OMIN_META_NETWORK.HisLogCompBy as C_HisLogCompBy,TAB_OMIN_META_NETWORK.HisLogAudtBy as C_HisLogAudtBy,TAB_OMIN_META_NETWORK.HISLOGCOMPDATE as C_HISLOGCOMPDATE\n" +
+                " null as C_OBSVCOUNT,\n" +
+                " null as C_OBSVTIMES,\n" +
+                " null as C_ONDUTY,\n" +
+                "  TAB_OMIN_META_NETWORK.NetWorkLevel as C_STATION_LEVEL,TAB_OMIN_META_NETWORK.ISGCOS as C_ISGCOS,TAB_OMIN_META_NETWORK.StartTime as C_StartTime,TAB_OMIN_META_NETWORK.EndTime as C_EndTime,TAB_OMIN_META_NETWORK.TimeSystem as C_TimeSystem,TAB_OMIN_META_NETWORK.ExchangeCode as C_ExchangeCode,TAB_OMIN_META_NETWORK.ObsvMode as C_ObsvMode,TAB_OMIN_META_NETWORK.AnemoStartTime as C_AnemoStartTime,TAB_OMIN_META_NETWORK.AnemoEndTime as C_AnemoEndTime,TAB_OMIN_META_NETWORK.AnemoObsvTime as C_AnemoObsvTime,TAB_OMIN_META_NETWORK.AnemoObsvCount as C_AnemoObsvCount,TAB_OMIN_META_NETWORK.ANE_ALT as C_ANE_ALT,TAB_OMIN_META_NETWORK.SondeStartTime as C_SondeStartTime,TAB_OMIN_META_NETWORK.SondeEndTime as C_SondeEndTime,TAB_OMIN_META_NETWORK.SondeObsvTime as C_SondeObsvTime,TAB_OMIN_META_NETWORK.SondeObsvCount as C_SondeObsvCount,TAB_OMIN_META_NETWORK.Sound_Alt as C_Sound_Alt \n" +
                 "FROM TAB_OMIN_META_NETWORK\n" +
                 "WHERE TAB_OMIN_META_NETWORK.NETWORKTYPE = '04'";
         return queryMDOSForListMap(querySql);

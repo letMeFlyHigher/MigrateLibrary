@@ -43,6 +43,11 @@ public class DemoController {
         return main.migrate();
     }
 
+    @RequestMapping("/clear")
+    public String clear(){
+
+        return null;
+    }
 
 //    @RequestMapping("/getArea1")
 //    public String getUser1(){

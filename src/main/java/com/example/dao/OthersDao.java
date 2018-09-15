@@ -62,8 +62,8 @@ public class OthersDao extends baseDao {
 
 
     @Override
-    public void start() {
-
+    public int start() {
+        return 1;
     }
 
     @Override

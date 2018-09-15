@@ -7,7 +7,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class baseDao {
     @Autowired
@@ -20,12 +24,13 @@ public abstract class baseDao {
 
     protected static int cnt = 0;
 
-    public abstract void start();
+    public abstract int start();
 
 //    protected abstract void editMapForUpdate(Map<String, Object> map);
     public abstract List<Map<String,Object>> executeQuerySql();
 
     public List<Map<String,Object>> queryMDOSForListMap(String querySql){
+
         oracleTemplate.setFetchSize(3000);
         return oracleTemplate.queryForList(querySql);
     }
@@ -101,12 +106,20 @@ public abstract class baseDao {
 
     /**
      *  专门针对站网的迁移到PMCIS库的代码
-     * @param tableName
+     * @param tableName 如果表名为""表示，不需要拆分查询结果，直接插入基本关系表中即可。
      * @param listMap
      * @param fieldHelper
      * @return
      */
     public int insertToPMCISForNetShip(String tableName, List<Map<String,Object>> listMap, FieldHelper fieldHelper){
+        if(!tableName.isEmpty()){
+            String queryIfExists = "select count(*) as num from " + tableName;
+            Map<String,Object> numMap = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists);
+            if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
+                mysqlTemplate.getJdbcOperations().execute("TRUNCATE TABLE " + tableName);
+            }
+        }
+
         //这程序该怎么写呢。。。
         //先要看我们有什么？
         //一个不会变的是查询！我们查出来的东西，还是一样的，
@@ -124,8 +137,8 @@ public abstract class baseDao {
         //INSERT INTO TABLENAME(C_SNETSHIP_ID,...SET(LISTMAP -> MAP.KEYSET) - BASESET) VALUES (:C_SNETSHIP_ID,...SET(....));
         //坚信怎么赋值会根据SQL语句来，多余的字段不会影响sql语句的执行，在此前提下的程序,、、无情代码打破你的幻想
 
-        String baseSql = "INSERT INTO TAB_OMIN_CM_CC_BASESTATIONNETSHIP(C_SNETSHIP_ID,C_SITEOPF_ID,C_SNET_ID,C_STATION_LEVEL,C_STARTTIME,C_ENDTIME,C_TIMESYSTEM,C_EXCHANGECODE,C_OBSVMODE,C_OBSVCOUNT,C_OBSVTIMES,C_ONDUTY)" +
-                                                                "VALUES(:C_SNETSHIP_ID,:C_SITEOPF_ID,:C_SNET_ID,:C_STATION_LEVEL,:C_STARTTIME,:C_ENDTIME,:C_TIMESYSTEM,:C_EXCHANGECODE,:C_OBSVMODE,:C_OBSVCOUNT,:C_OBSVTIMES,:C_ONDUTY)";
+        String baseSql = "INSERT INTO TAB_OMIN_CM_CC_STATIONNETSHIP(C_SNETSHIP_ID,C_SITEOPF_ID,C_SNET_ID,C_STATION_LEVEL,C_STARTTIME,C_ENDTIME,C_TIMESYSTEM,C_EXCHANGECODE,C_OBSVMODE,C_OBSVCOUNT,C_OBSVTIMES,C_ONDUTY)" +
+                                                                " VALUES(:C_SNETSHIP_ID,:C_SITEOPF_ID,:C_SNET_ID,:C_STATION_LEVEL,:C_STARTTIME,:C_ENDTIME,:C_TIMESYSTEM,:C_EXCHANGECODE,:C_OBSVMODE,:C_OBSVCOUNT,:C_OBSVTIMES,:C_ONDUTY)";
 
 
         List<String> baseList = Arrays.asList("C_SNETSHIP_ID","C_SITEOPF_ID","C_SNET_ID","C_STATION_LEVEL","C_STARTTIME","C_ENDTIME","C_TIMESYSTEM","C_EXCHANGECODE","C_OBSVMODE","C_OBSVCOUNT","C_OBSVTIMES","C_ONDUTY");
@@ -133,47 +146,56 @@ public abstract class baseDao {
         Set<String> set = listMap.get(0).keySet();
         otherList.add("C_SNETSHIP_ID");
         for(String s : set){
-           if(!baseList.contains(s)) {
-              otherList.add(s) ;
+           if(!baseList.contains(s) && !s.endsWith("QUERY")) {
+                   otherList.add(s) ;
            }
         }
 
         String otherSql = "INSERT INTO " + tableName + "(";
+
         StringBuilder sb1 = new StringBuilder(otherSql);
         StringBuilder sb2 = new StringBuilder("VALUES(");
         for(String s : otherList){
-            sb1.append(s);
+            sb1.append(s).append(",");
             sb2.append(":").append(s).append(",");
         }
         otherSql = sb1.deleteCharAt(sb1.length() - 1).append(")").append(" ").append(sb2.deleteCharAt(sb2.length() - 1).append(")")).toString();
 
         List<Map<String,Object>> batchValues = new ArrayList<Map<String,Object>>(listMap.size());
+
         List<Map<String,Object>> otherBatchValues = new ArrayList<Map<String,Object>>(listMap.size());
 
         for(i = 0; i < listMap.size(); i++){
-            Map<String,Object> map = listMap.get(0);
+            Map<String,Object> map = listMap.get(i);
+            fieldHelper.editMapForUpdate(map);
             MapSqlParameterSource msps = new MapSqlParameterSource();
             MapSqlParameterSource otherMsps = new MapSqlParameterSource();
 
             for(Map.Entry<String,Object> entry :map.entrySet()){
                 String key = entry.getKey();
                 Object val = entry.getValue();
-                if(baseList.contains(key)) {
-                    msps.addValue(key,val);
+                if(!key.endsWith("QUERY")){
+                    if(baseList.contains(key)) {
+                        msps.addValue(key,val);
+                    }
+                    if(otherList.contains(key)){
+                       otherMsps.addValue(key, val);
+                    }
                 }
-                if(otherList.contains(key)){
-                    otherMsps.addValue(key,val);
-                }
+
             }
             batchValues.add(msps.getValues());
             otherBatchValues.add(otherMsps.getValues());
         }
+        //TODO 需要去测试一下，这个batchupdate方法的返回结构。
+        int[] baseResult = mysqlTemplate.batchUpdate(baseSql,batchValues.toArray(new Map[listMap.size()]));
+        if(!tableName.isEmpty()){
+            int[] otherResult = mysqlTemplate.batchUpdate(otherSql,otherBatchValues.toArray(new Map[listMap.size()]));
+        }
 
-        mysqlTemplate.batchUpdate(baseSql,batchValues.toArray(new Map[listMap.size()]));
-        mysqlTemplate.batchUpdate(otherSql,otherBatchValues.toArray(new Map[listMap.size()]));
-
-        return 0;
+        return 1;
     }
+
 
 //    protected abstract int getFiledNameType(String fieldName);
 

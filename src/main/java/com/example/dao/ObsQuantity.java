@@ -18,7 +18,7 @@ public class ObsQuantity extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObsQuantity.class);
 
     @Override
-    public void start() {
+    public int start() {
         String tableName = "TAB_OMIN_CM_CC_OBSQUANTITY";
         LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
@@ -38,8 +38,14 @@ public class ObsQuantity extends baseDao {
         Map<String,Object> numMap = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists);
         if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
             mysqlTemplate.getJdbcOperations().execute("TRUNCATE TABLE " + tableName);
+        }
+
+        String queryIfExists2 = "select count(*) as num from tab_omin_cm_cc_obsqstationnetship";
+        Map<String,Object> numMap2 = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists2);
+        if((Long)numMap2.get("num") != null && (Long)numMap2.get("num") > 0){
             mysqlTemplate.getJdbcOperations().execute("TRUNCATE TABLE TAB_OMIN_CM_CC_OBSQSTATIONNETSHIP");
         }
+
         int i = 0 ;
         Map<String,Object> fieldMap = listMap.get(i);
         Iterator<String> iter = fieldMap.keySet().iterator();
@@ -83,6 +89,7 @@ public class ObsQuantity extends baseDao {
             while(fieldIter.hasNext()){
                 String fieldName  = fieldIter.next();
                 if(!fieldName.endsWith("_QUERY")){
+                    //需要对日照时数进行处理，统一转成日照，另一个是
                     msps.addValue(fieldName,map.get(fieldName));
                 }
             }
@@ -94,12 +101,13 @@ public class ObsQuantity extends baseDao {
         mysqlTemplate.batchUpdate("INSERT INTO TAB_OMIN_CM_CC_OBSQSTATIONNETSHIP(C_OBSQSN_ID,C_SNETSHIP_ID,C_OBSQ_ID) VALUES(:C_OBSQSN_ID,:C_SNETSHIP_ID,:C_OBSQ_ID)",netShipBatchValues.toArray(new Map[listMap.size()]));
 //        System.out.println(nums);
         LOGGER.info(tableName + "迁库完成======");
-
+        return 1;
     }
 
     @Override
     public List<Map<String, Object>> executeQuerySql() {
         //以台站为基准，观测要素名不为空。
+        //TODO 需要增加仪器主键，观测量需要处理日照时数。
         String querySql = "SELECT \n" +
                 "\tTAB_OMIN_META_OBSVELMT.OBSVELMTPK AS C_OBSVELMTPK_QUERY,\n" +
                 "\t'tempVal' AS C_OBSQ_ID,\n" +

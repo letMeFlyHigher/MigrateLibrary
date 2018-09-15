@@ -15,7 +15,7 @@ import java.util.Map;
 public class ObsMethod extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObsMethod.class);
     @Override
-    public void start() {
+    public int start() {
         String tableName = "TAB_OMIN_CM_CC_OBSMETHOD";
 
         LOGGER.info(tableName + "开始迁库");
@@ -40,6 +40,7 @@ public class ObsMethod extends baseDao {
         });
 
         LOGGER.info(cnt++ + tableName + "迁库成功");
+        return 1;
     }
 
     @Override

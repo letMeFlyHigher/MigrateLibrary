@@ -45,7 +45,10 @@ public class Main {
 
     public boolean start(){
 
-        stationplat.start();
+        awsstationnetship.clearTable("TAB_OMIN_CM_CC_STATIONNETSHIP");
+        if(stationplat.start() < 0){
+            return false;
+        }
 //        Long starttime = System.currentTimeMillis();
         awsstationnetship.start();
 //        long endTime = System.currentTimeMillis();

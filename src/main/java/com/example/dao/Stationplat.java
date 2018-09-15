@@ -2,11 +2,14 @@ package com.example.dao;
 
 
 import com.example.util.FieldHelper;
+import com.sun.xml.internal.ws.model.RuntimeModelerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +21,20 @@ public class Stationplat extends baseDao{
     private static final Logger LOGGER = LoggerFactory.getLogger(Stationplat.class);
 
     @Override
-    public void start(){
+    public int start(){
+
+        try{
+            Connection conn = mysqlTemplate.getJdbcTemplate().getDataSource().getConnection();
+            String productName = conn.getMetaData().getDatabaseProductName();
+             if(!productName.equalsIgnoreCase("MySQL")){
+                   return -1;
+             }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+
         List<Map<String,Object>> stationList = new ArrayList<Map<String,Object>>();
         stationList = executeQuerySql();
         String tableName = "TAB_OMIN_CM_CC_STATIONPLAT";
@@ -43,6 +59,7 @@ public class Stationplat extends baseDao{
         }else{
             LOGGER.error(tableName + "迁库失败");
         }
+        return 1;
     }
 
 //    @Override

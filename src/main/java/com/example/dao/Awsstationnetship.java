@@ -17,11 +17,11 @@ public class Awsstationnetship extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(Awsstationnetship.class);
 
     @Override
-    public void start() {
+    public int start() {
         String tableName = "TAB_OMIN_CM_CC_AWSSTATIONNETSHIP";
         LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
-        if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
+        if(insertToPMCISForNetShip(tableName, listMap, new FieldHelper() {
             @Override
             public int getFiledNameType(String fieldName) {
                 if("C_ONDUTY,C_OBSVMODE,".contains(fieldName)){
@@ -37,7 +37,7 @@ public class Awsstationnetship extends baseDao {
             public void editMapForUpdate(Map<String, Object> map) {
                 String cIndexNbr = (String)map.get("C_INDEXNBR_QUERY");
                 if(!cIndexNbr.matches("[a-z|A-Z]\\d\\d\\d\\d")){ //区域站
-                    map.put("C_STARTTIME",null);
+                    map.put("C_ENABLETIME",null);
                 }
                 String rainFallSwitchQuery = (String)map.get("RAINFALLSWITCH_QUERY");
                 String evaporationSwitchQuery = (String)map.get("EVAPORATIONSWITCH_QUERY");
@@ -75,6 +75,7 @@ public class Awsstationnetship extends baseDao {
         }else{
            LOGGER.error(tableName + "迁移失败");
         }
+        return 1;
     }
 
 //    @Override
@@ -176,19 +177,15 @@ public class Awsstationnetship extends baseDao {
                 "    'tmpVal'                                                                  AS C_SNET_ID,\n" +
                 "    TAB_OMIN_META_NETWORK.NetWorkLevel                                                                   AS C_STATION_LEVEL,\n" +
                 "    TAB_OMIN_CM_CC_STATION.c_indexnbr                                                                    AS C_indexnbr_QUERY,\n" +
-                "    TAB_OMIN_CM_CC_STATION.c_estadate                                                                    AS C_StartTime,\n" +
-                "    TAB_OMIN_META_NETWORK.StartTime                                                                      AS C_netstarttime,\n" +
-                "    TAB_OMIN_META_NETWORK.EndTime                                                                        AS C_netEndTime,\n" +
+                "    TAB_OMIN_CM_CC_STATION.c_estadate                                                                    AS C_ENABLETIME,\n" +
+                "    TAB_OMIN_META_NETWORK.StartTime                                                                      AS C_starttime,\n" +
+                "    TAB_OMIN_META_NETWORK.EndTime                                                                        AS C_EndTime,\n" +
                 "    TAB_OMIN_META_NETWORK.TimeSystem                                                                     AS C_TimeSystem,\n" +
                 "    TAB_OMIN_META_NETWORK.ObsvCount                                                                      AS C_ObsvCount,\n" +
                 "    TAB_OMIN_META_NETWORK.ObsvTimes                                                                      AS C_ObsvTimes,\n" +
                 "    TAB_OMIN_META_NETWORK.ExchangeCode                                                                   AS C_ExchangeCode,\n" +
                 "    TAB_OMIN_META_NETWORK.ObsvMode                                                                       AS C_ObsvMode,\n" +
                 "    TAB_OMIN_META_NETWORK.ShiftCase                                                                      AS C_ONDUTY,\n" +
-                "    TAB_OMIN_META_NETWORK.HisLogDataFrom                                                                 AS C_HisLogDataFrom,\n" +
-                "    TAB_OMIN_META_NETWORK.HisLogCompBy                                                                   AS C_HisLogCompBy,\n" +
-                "    TAB_OMIN_META_NETWORK.HisLogAudtBy                                                                   AS C_HisLogAudtBy,\n" +
-                "    TAB_OMIN_META_NETWORK.HISLOGCOMPDATE                                                                 AS C_HISLOGCOMPDATE,\n" +
                 "    TAB_OMIN_META_REGSTATION.AUTOSTATIONMODEL                                                            AS C_INSTR_MODEL,\n" +
                 "    TAB_OMIN_META_REGSTATION.AUTOSTATIONMANU                                                             AS C_MF,\n" +
                 "    TAB_OMIN_META_REGSTATION.POWERSUPPLYMODE                                                             AS C_POWER_TYPE,\n" +

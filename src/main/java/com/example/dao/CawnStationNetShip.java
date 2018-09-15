@@ -3,7 +3,6 @@ package com.example.dao;
 import com.example.util.FieldHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Types;
@@ -16,10 +15,10 @@ public class CawnStationNetShip extends baseDao{
     private static final Logger LOGGER = LoggerFactory.getLogger(CawnStationNetShip.class);
 
     @Override
-    public void start() {
+    public int start() {
         List<Map<String,Object>> listMap = executeQuerySql();
         String tableName = "TAB_OMIN_CM_CC_CAWNSTATIONNETSHIP";
-        if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
+        if(insertToPMCISForNetShip(tableName, listMap, new FieldHelper() {
             @Override
             public void editMapForUpdate(Map<String, Object> map) {
 
@@ -38,7 +37,7 @@ public class CawnStationNetShip extends baseDao{
         }else{
             LOGGER.error(tableName + "迁库完成！");
         }
-
+        return 1;
     }
 
     @Override

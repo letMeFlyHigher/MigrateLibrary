@@ -14,12 +14,13 @@ import java.util.Map;
 public class RecreateObservationTables extends baseDao {
 
     @Override
-    public void start() {
+    public int start() {
         String srcPath1 = "src/main/resources/sql/新增表.sql";
         String srcPath2 = "src/main/resources/sql/冲突表.sql";
 //        StringBuilder sb = readFile(srcPath1);
 //        sb.append(readFile(srcPath2));
 //        System.out.println(sb.toString());
+        return 1;
 
     }
 

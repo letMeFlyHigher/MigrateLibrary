@@ -15,11 +15,12 @@ public class RadiStationNetShip extends baseDao{
     private static final Logger LOGGER = LoggerFactory.getLogger(RadiStationNetShip.class);
 
     @Override
-    public void start() {
+    public int start() {
         String tableName = "TAB_OMIN_CM_CC_RADISTATIONNETSHIP";
         LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
-        if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
+        //由于没有该表
+        if(insertToPMCISForNetShip("", listMap, new FieldHelper() {
             @Override
             public void editMapForUpdate(Map<String, Object> map) {
 
@@ -39,6 +40,7 @@ public class RadiStationNetShip extends baseDao{
         }else{
             LOGGER.error(tableName + "迁库失败！！！！！！");
         }
+        return 1;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class RadiStationNetShip extends baseDao{
                 "\tTAB_OMIN_META_NETWORK.NETWORKPK AS C_SNETSHIP_ID," +
                 "\tTAB_OMIN_CM_CC_STATION.C_STATION_ID AS C_SITEOPF_ID," +
                 "'11' as C_SNET_ID," +
-                "TAB_OMIN_META_NETWORK.NetWorkLevel as C_STATION_LEVEL,TAB_OMIN_META_NETWORK.StartTime as C_StartTime,TAB_OMIN_META_NETWORK.EndTime as C_EndTime,TAB_OMIN_META_NETWORK.TimeSystem as C_TimeSystem,TAB_OMIN_META_NETWORK.ObsvCount as C_ObsvCount,TAB_OMIN_META_NETWORK.ObsvTimes as C_ObsvTimes,TAB_OMIN_META_NETWORK.ExchangeCode as C_ExchangeCode,TAB_OMIN_META_NETWORK.ObsvMode as C_ObsvMode,TAB_OMIN_META_NETWORK.ShiftCase as C_ONDUTY,TAB_OMIN_META_NETWORK.HisLogDataFrom as C_HisLogDataFrom,TAB_OMIN_META_NETWORK.HisLogCompBy as C_HisLogCompBy,TAB_OMIN_META_NETWORK.HisLogAudtBy as C_HisLogAudtBy,TAB_OMIN_META_NETWORK.HISLOGCOMPDATE as C_HISLOGCOMPDATE \n" +
+                "TAB_OMIN_META_NETWORK.NetWorkLevel as C_STATION_LEVEL,TAB_OMIN_META_NETWORK.StartTime as C_StartTime,TAB_OMIN_META_NETWORK.EndTime as C_EndTime,TAB_OMIN_META_NETWORK.TimeSystem as C_TimeSystem,TAB_OMIN_META_NETWORK.ObsvCount as C_ObsvCount,TAB_OMIN_META_NETWORK.ObsvTimes as C_ObsvTimes,TAB_OMIN_META_NETWORK.ExchangeCode as C_ExchangeCode,TAB_OMIN_META_NETWORK.ObsvMode as C_ObsvMode,TAB_OMIN_META_NETWORK.ShiftCase as C_ONDUTY\n" +
                 "FROM TAB_OMIN_META_NETWORK,TAB_OMIN_CM_CC_STATION " +
                 "WHERE SUBSTR(TAB_OMIN_META_NETWORK.NETWORKPK(+),0,32) = TAB_OMIN_CM_CC_STATION.C_STATION_ID " +
                 "AND TAB_OMIN_META_NETWORK.NETWORKTYPE='11'";

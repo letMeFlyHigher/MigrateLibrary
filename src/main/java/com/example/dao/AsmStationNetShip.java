@@ -17,11 +17,11 @@ public class AsmStationNetShip extends baseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(AsmStationNetShip.class);
 
     @Override
-    public void start() {
+    public int start() {
         String tableName = "TAB_OMIN_CM_CC_ASMSTATIONNETSHIP";
         LOGGER.info(tableName + "开始迁库>>>>>>");
         List<Map<String,Object>> listMap = executeQuerySql();
-        if(insertToPMCISTable(tableName, listMap, new FieldHelper() {
+        if(insertToPMCISForNetShip(tableName, listMap, new FieldHelper() {
             @Override
             public void editMapForUpdate(Map<String, Object> map) {
 
@@ -41,6 +41,7 @@ public class AsmStationNetShip extends baseDao {
         }else{
             LOGGER.error(tableName + "迁库失败！");
         }
+        return 1;
     }
 
     @Override

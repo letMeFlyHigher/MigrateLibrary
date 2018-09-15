@@ -16,7 +16,7 @@ public class EnvironmentDao extends baseDao {
     private static Logger LOGGER = LoggerFactory.getLogger(EnvironmentDao.class);
 
     @Override
-    public void start() {
+    public int start() {
         String tableName = "TAB_OMIN_CM_CC_ENVIRONMENT";
 
         List<Map<String,Object>> listMap = executeQuerySql();
@@ -32,7 +32,7 @@ public class EnvironmentDao extends baseDao {
                 return Types.VARCHAR;
             }
         });
-
+        return 1;
     }
 
     @Override
