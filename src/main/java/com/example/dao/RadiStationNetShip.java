@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import com.example.util.FieldHelper;
+import com.example.util.MyUUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -23,7 +24,13 @@ public class RadiStationNetShip extends baseDao{
         if(insertToPMCISForNetShip("", listMap, new FieldHelper() {
             @Override
             public void editMapForUpdate(Map<String, Object> map) {
-
+                String old_NetPK = (String)map.get("C_SNETSHIP_ID");
+                String new_NetPK = MyUUID.getUUID36();
+                String old_stationPK = (String) map.get("C_SITEOPF_ID");
+                String new_stationPK = stationPKMap.get(old_stationPK);
+                map.put("C_SNETSHIP_ID",new_NetPK);
+                map.put("C_SITEOPF_ID",new_stationPK);
+                netPKMap.put(old_NetPK,new_NetPK);
             }
 
             @Override

@@ -24,6 +24,9 @@ public abstract class baseDao {
 
     protected static int cnt = 0;
 
+    public static Map<String,String> netPKMap = new HashMap<String,String>();
+    public static Map<String,String> stationPKMap = new HashMap<String,String>();
+
     public abstract int start();
 
 //    protected abstract void editMapForUpdate(Map<String, Object> map);
@@ -126,7 +129,6 @@ public abstract class baseDao {
         //区别是在现在查出来的东西，需要插入到两个表中，一个基本表中一个扩展表中，在这些站网中，基本表就一个，所以个这个基本表的
         //名字给定一个固定的值，
         //现在需要考虑的问题是，如何把公共的字段从listMap中摘出来
-        //
         // String baseName = "TAB_OMIN_CM_CC_BASENETSHIP";
         //肯定要做的有遍历listMap
         //基本表的语句是不会变的，先写基本表的语句
@@ -139,8 +141,6 @@ public abstract class baseDao {
 
         String baseSql = "INSERT INTO TAB_OMIN_CM_CC_STATIONNETSHIP(C_SNETSHIP_ID,C_SITEOPF_ID,C_SNET_ID,C_STATION_LEVEL,C_STARTTIME,C_ENDTIME,C_TIMESYSTEM,C_EXCHANGECODE,C_OBSVMODE,C_OBSVCOUNT,C_OBSVTIMES,C_ONDUTY)" +
                                                                 " VALUES(:C_SNETSHIP_ID,:C_SITEOPF_ID,:C_SNET_ID,:C_STATION_LEVEL,:C_STARTTIME,:C_ENDTIME,:C_TIMESYSTEM,:C_EXCHANGECODE,:C_OBSVMODE,:C_OBSVCOUNT,:C_OBSVTIMES,:C_ONDUTY)";
-
-
         List<String> baseList = Arrays.asList("C_SNETSHIP_ID","C_SITEOPF_ID","C_SNET_ID","C_STATION_LEVEL","C_STARTTIME","C_ENDTIME","C_TIMESYSTEM","C_EXCHANGECODE","C_OBSVMODE","C_OBSVCOUNT","C_OBSVTIMES","C_ONDUTY");
         List<String> otherList = new ArrayList<String>();
         Set<String> set = listMap.get(0).keySet();
@@ -150,9 +150,7 @@ public abstract class baseDao {
                    otherList.add(s) ;
            }
         }
-
         String otherSql = "INSERT INTO " + tableName + "(";
-
         StringBuilder sb1 = new StringBuilder(otherSql);
         StringBuilder sb2 = new StringBuilder("VALUES(");
         for(String s : otherList){
@@ -160,17 +158,13 @@ public abstract class baseDao {
             sb2.append(":").append(s).append(",");
         }
         otherSql = sb1.deleteCharAt(sb1.length() - 1).append(")").append(" ").append(sb2.deleteCharAt(sb2.length() - 1).append(")")).toString();
-
         List<Map<String,Object>> batchValues = new ArrayList<Map<String,Object>>(listMap.size());
-
         List<Map<String,Object>> otherBatchValues = new ArrayList<Map<String,Object>>(listMap.size());
-
         for(i = 0; i < listMap.size(); i++){
             Map<String,Object> map = listMap.get(i);
             fieldHelper.editMapForUpdate(map);
             MapSqlParameterSource msps = new MapSqlParameterSource();
             MapSqlParameterSource otherMsps = new MapSqlParameterSource();
-
             for(Map.Entry<String,Object> entry :map.entrySet()){
                 String key = entry.getKey();
                 Object val = entry.getValue();
@@ -182,7 +176,6 @@ public abstract class baseDao {
                        otherMsps.addValue(key, val);
                     }
                 }
-
             }
             batchValues.add(msps.getValues());
             otherBatchValues.add(otherMsps.getValues());
@@ -192,12 +185,8 @@ public abstract class baseDao {
         if(!tableName.isEmpty()){
             int[] otherResult = mysqlTemplate.batchUpdate(otherSql,otherBatchValues.toArray(new Map[listMap.size()]));
         }
-
         return 1;
     }
-
-
-//    protected abstract int getFiledNameType(String fieldName);
 
 
 }

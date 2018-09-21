@@ -53,11 +53,9 @@ public class Main {
         awsstationnetship.start();
 //        long endTime = System.currentTimeMillis();
 //        System.out.println("迁移地面站网表用时" + (endTime - starttime)/1000 + "s");
-//
         uparStationNetShip.start();
 //        long dealUpar = System.currentTimeMillis() ;
 //        System.out.println("迁移高空站网表用时" + (dealUpar - endTime)/1000 + "s");
-//
         arStationNetShip.start();
 //        long dealAr = System.currentTimeMillis() ;
 //        System.out.println("迁移酸雨站网表用时" + (dealAr - dealUpar)/1000 + "s");
@@ -85,6 +83,21 @@ public class Main {
         return recreateObservationTables.mig();
     }
 
+    public String clearTable(){
+        stationplat.clearTable("tab_omin_cm_cc_stationplat");
+        awsstationnetship.clearTable("tab_omin_cm_cc_awsstationnetship");
+        uparStationNetShip.clearTable("tab_omin_cm_cc_uparstationnetship");
+        arStationNetShip.clearTable("tab_omin_cm_cc_arstationnetship");
+        asmStationNetShip.clearTable("tab_omin_cm_cc_asmstationnetship");
+        cawnStationNetShip.clearTable("tab_omin_cm_cc_cawnstationnetship");
+        radiStationNetShip.clearTable("tab_omin_cm_cc_radistationnetship");
+        obsQuantity.clearTable("tab_omin_cm_cc_obsquantity");
+        obsMethod.clearTable("tab_omin_cm_cc_obsmethod");
+        environmentDao.clearTable("tab_omin_cm_cc_environment");
+
+
+        return "";
+    }
 
 
 

@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import com.example.util.FieldHelper;
+import com.example.util.MyUUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -33,7 +34,13 @@ public class ArStationNetShip extends baseDao {
             }
             @Override
             public void editMapForUpdate(Map<String, Object> map) {
-
+                String old_NetPK = (String)map.get("C_SNETSHIP_ID");
+                String new_NetPK = MyUUID.getUUID36();
+                String old_stationPK = (String) map.get("C_SITEOPF_ID");
+                String new_stationPK = stationPKMap.get(old_stationPK);
+                map.put("C_SNETSHIP_ID",new_NetPK);
+                map.put("C_SITEOPF_ID",new_stationPK);
+                netPKMap.put(old_NetPK,new_NetPK);
             }
         }) > 0){
             LOGGER.info(tableName + "完成迁库");
@@ -43,27 +50,7 @@ public class ArStationNetShip extends baseDao {
         return 1;
     }
 
-//    @Override
-//    protected void editMapForUpdate(Map<String, Object> map) {
-//        map.put("C_OBSVMODE",(BigDecimal)map.get("C_OBSVMODE"));
-//        map.put("C_ONDUTY",(BigDecimal)map.get("C_ONDUTY"));
-//    }
 
-//    @Override
-//    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
-//        int j = 0;
-//        while(iter.hasNext()){
-//            j++;
-//            Map.Entry<String,Object> entry =  iter.next();
-//            String fieldName = entry.getKey();
-//            Object val = entry.getValue();
-//            if(",C_OBSVMODE,C_ONDUTY,".indexOf(fieldName) > -1){
-//                ps.setBigDecimal(j,(BigDecimal)val);
-//            }else{
-//                ps.setString(j,(String)val);
-//            }
-//        }
-//    }
 
     @Override
     public List<Map<String, Object>> executeQuerySql() {

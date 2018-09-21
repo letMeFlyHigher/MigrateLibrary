@@ -15,7 +15,6 @@ public class OthersDao extends baseDao {
 
     public void start(Map.Entry<String,Map<String,String>> entry ) {
 
-
         //遍历循环新增的表。
 //        for(Map.Entry<String,Map<String,String>> entry : map.entrySet()) {
             String tableName = entry.getKey();
@@ -31,16 +30,15 @@ public class OthersDao extends baseDao {
             }else{
                 tableName = tableName.replace("_META_","_CM_CC_");
             }
+
         //准备工作
 //            if(hasRowsInTable(tableName)){
 //                continue;
 //            }
             clearTable(tableName);
-
             LOGGER.info(tableName + "开始迁库");
             //查询mdos
-           List<Map<String,Object>> queryMap = queryMDOSForListMap(querySql) ;
-
+            List<Map<String,Object>> queryMap = queryMDOSForListMap(querySql) ;
             List<Map<String,Object>> batchValues = new ArrayList<>(queryMap.size());
 
             for(int i = 0; i < queryMap.size(); i++){
@@ -49,6 +47,16 @@ public class OthersDao extends baseDao {
                 Iterator<String> fieldIter = fieldMap.keySet().iterator();
                 while(fieldIter.hasNext()){
                     String fieldName  = fieldIter.next();
+                    //使用新的主键。
+                    if("OBSVCRITPK,SUMMARYPK,WEATHERDESCPK,NOTEEVENTPK,OBSTPK,POLLUTEPK,NETWORKPK,OBSVRECDPK,HISLOGFROMPK,NETWORKSOPK,SOFTPK".contains(fieldName)){
+                        if(fieldName.equals("NETWORKPK")){
+                            fieldMap.put(fieldName,netPKMap.get(fieldName));
+                        }else{
+                            String value = netPKMap.get(fieldName);
+                            String pk = value.substring(0,36) + (String)((String) fieldMap.get(fieldName)).substring(36);
+                            fieldMap.put(fieldName,pk);
+                        }
+                    }
                     msps.addValue(fieldName,fieldMap.get(fieldName));
                 }
                 batchValues.add(msps.getValues());
@@ -56,9 +64,6 @@ public class OthersDao extends baseDao {
             int[] nums = mysqlTemplate.batchUpdate(insertSql,batchValues.toArray(new Map[queryMap.size()]));
             LOGGER.info(cnt++ + tableName + "完成迁库！");
         }
-
-//       System.out.println("妈的智障！！！");
-//    }
 
 
     @Override

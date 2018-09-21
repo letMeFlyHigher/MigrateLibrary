@@ -7,14 +7,17 @@ public class StringMethodTest {
         String testStr3 = "a1232";
         String testStr4 = "create table `tab_omin_stat`(";
 
+        System.out.println(testStr1.substring(0,3));
+        System.out.println(testStr1.substring(3));
+
 //        match(testStr1);
 //        match(testStr2);
 //        match(testStr3);
 //        split("2,4");
-        indexOf("bb");
-        indexOf2(testStr4);
-        String testStr5 = "TAB_OMIN_META_STATIONPLAT";
-        replace(testStr5);
+//        indexOf("bb");
+//        indexOf2(testStr4);
+//        String testStr5 = "TAB_OMIN_META_STATIONPLAT";
+//        replace(testStr5);
     }
 
     private static void match(String str){
@@ -54,4 +57,5 @@ public class StringMethodTest {
 
         System.out.println(str.substring(pos1 + 1,pos2-1));
     }
+
 }

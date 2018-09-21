@@ -2,6 +2,7 @@ package com.example.dao;
 
 
 import com.example.util.FieldHelper;
+import com.example.util.MyUUID;
 import com.sun.xml.internal.ws.model.RuntimeModelerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,10 +50,12 @@ public class Stationplat extends baseDao{
                     return Types.VARCHAR;
                 }
             }
-
             @Override
             public void editMapForUpdate(Map<String, Object> map) {
-
+                String newStationPK = MyUUID.getUUID32();
+                String oldStationPK = (String) map.get("C_SITEOPF_ID");
+                map.put("C_STEOPF_ID",newStationPK);
+                stationPKMap.put(oldStationPK,newStationPK);
             }
         }) > 0){
             LOGGER.info(cnt++ + tableName + "完成迁库");
@@ -62,31 +65,7 @@ public class Stationplat extends baseDao{
         return 1;
     }
 
-//    @Override
-//    protected void editMapForUpdate(Map<String, Object> map) {
-//        map.put("C_HP",(BigDecimal)map.get("C_HP"));
-//        map.put("C_HHA",(BigDecimal)map.get("C_HHA"));
-//        map.put("C_LONGITUDE_NUMB",(BigDecimal)map.get("C_LONGITUDE_NUMB"));
-//        map.put("C_LATITUDE_NUMB",(BigDecimal)map.get("C_LATITUDE_NUMB"));
-//    }
 
-//    @Override
-//    protected void dealDiffTable(PreparedStatement ps, String fieldName,Object val,Map<String,Object> map) throws SQLException {
-//        map.
-//        int j = 0;
-//        while(iter.hasNext()){
-//            j++;
-//            Map.Entry<String,Object> entry = iter.next();
-//            //站点平台表
-//        if(",C_HP,C_HHA,".indexOf("," + fieldName + ",") > -1){
-//            ps.setBigDecimal(j,(BigDecimal)val);
-//        }else if(",C_LONGITUDE_NUMB,C_LATITUDE_NUMB,".indexOf("," + fieldName + ",") > -1){
-//            ps.setBigDecimal(j,(BigDecimal)val);
-//        }else{
-//            ps.setString(j,(String)val);
-//        }
-//        }
-//    }
 
     @Override
     public List<Map<String, Object>> executeQuerySql() {

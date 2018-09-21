@@ -25,6 +25,9 @@ public class EnvironmentDao extends baseDao {
             public void editMapForUpdate(Map<String, Object> map) {
                 String uuid = MyUUID.getUUID36();
                 map.put("C_ENV_ID",uuid);
+                String c_siteopf_id = (String) map.get("C_SITEOPF_ID");
+                String newStationPK = stationPKMap.get(c_siteopf_id);
+                map.put("C_SITEOPF_ID", newStationPK);
             }
 
             @Override

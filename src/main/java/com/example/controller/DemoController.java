@@ -4,15 +4,15 @@ import com.example.work.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+//@RestController
 public class DemoController {
 //    @Autowired
 //    @Qualifier("oracleJdbcTemplate")
@@ -28,7 +28,7 @@ public class DemoController {
      * 迁移mdos元数据
      * @return
      */
-    @RequestMapping("/startMigrate")
+//    @RequestMapping("/startMigrate")
     public String getStarted(){
         main.start();
         return null;
@@ -38,16 +38,18 @@ public class DemoController {
      * 重新创建观测元数据的表结构
      * @return
      */
-    @RequestMapping("/RecreateObservation")
+//    @RequestMapping("/RecreateObservation")
     public String createObs(){
         return main.migrate();
     }
 
-    @RequestMapping("/clear")
+//    @RequestMapping("/clear")
     public String clear(){
 
         return null;
     }
+
+    //现在需要考虑重新生成主键的问题。。。
 
 //    @RequestMapping("/getArea1")
 //    public String getUser1(){
