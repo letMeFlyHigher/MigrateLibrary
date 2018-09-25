@@ -23,7 +23,8 @@ public class StartShell {
 
     @ShellMethod("recreate pmcis table strucure")
     public String recreateTableStructure(){
-       return "";
+        main.migrate();
+        return "Build Successfully!";
     }
 
     @ShellMethod("Hello Demo")
@@ -34,5 +35,18 @@ public class StartShell {
     @ShellMethod("truncate all pmcis observation tables")
     public String truncateAll(){
         return null;
+    }
+
+    @ShellMethod("count Table")
+    public Long  tableCount(String tableName){
+        return main.tableCount(tableName);
+    }
+
+    @ShellMethod("Help command")
+    public String selfhelp(){
+        String explain = "table-count 统计表中数据数量；\n" +
+                "start-migrate 开始迁移; \n" +
+                "recreate-table-structure 重新创建观测元数据表结构;\n";
+        return explain;
     }
 }

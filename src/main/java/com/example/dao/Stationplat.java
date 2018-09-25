@@ -54,7 +54,7 @@ public class Stationplat extends baseDao{
             public void editMapForUpdate(Map<String, Object> map) {
                 String newStationPK = MyUUID.getUUID32();
                 String oldStationPK = (String) map.get("C_SITEOPF_ID");
-                map.put("C_STEOPF_ID",newStationPK);
+                map.put("C_SITEOPF_ID",newStationPK);
                 stationPKMap.put(oldStationPK,newStationPK);
             }
         }) > 0){

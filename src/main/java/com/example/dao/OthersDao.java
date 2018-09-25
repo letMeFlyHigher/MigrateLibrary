@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import com.sun.xml.internal.ws.util.QNameMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -44,20 +45,24 @@ public class OthersDao extends baseDao {
             for(int i = 0; i < queryMap.size(); i++){
                 Map<String,Object> fieldMap = queryMap.get(i);
                 MapSqlParameterSource msps = new MapSqlParameterSource();
-                Iterator<String> fieldIter = fieldMap.keySet().iterator();
-                while(fieldIter.hasNext()){
-                    String fieldName  = fieldIter.next();
-                    //使用新的主键。
-                    if("OBSVCRITPK,SUMMARYPK,WEATHERDESCPK,NOTEEVENTPK,OBSTPK,POLLUTEPK,NETWORKPK,OBSVRECDPK,HISLOGFROMPK,NETWORKSOPK,SOFTPK".contains(fieldName)){
-                        if(fieldName.equals("NETWORKPK")){
-                            fieldMap.put(fieldName,netPKMap.get(fieldName));
+                for(Map.Entry<String,Object> en : fieldMap.entrySet()){
+                   Object value =  en.getValue();
+                   String key = en.getKey();
+
+                   if("OBSVCRITPK,SUMMARYPK,WEATHERDESCPK,NOTEEVENTPK,OBSTPK,POLLUTEPK,NETWORKPK,OBSVRECDPK,HISLOGFROMPK,NETWORKSOPK,SOFTPK".contains(key)){
+                       String oldNetPK = ((String)value).substring(0,36);
+                        if(key.equals("NETWORKPK")){
+                            fieldMap.put(key,netPKMap.get(oldNetPK));
                         }else{
-                            String value = netPKMap.get(fieldName);
-                            String pk = value.substring(0,36) + (String)((String) fieldMap.get(fieldName)).substring(36);
-                            fieldMap.put(fieldName,pk);
+                            String networkPK = netPKMap.get(oldNetPK);
+                            String newPK = networkPK + ((String)value).substring(36);
+                            fieldMap.put(key,newPK);
                         }
-                    }
-                    msps.addValue(fieldName,fieldMap.get(fieldName));
+                   }else if(",STATION_ID,STATION,".contains(key)){
+                        String newPK = stationPKMap.get(value);
+                        fieldMap.put(key,newPK);
+                   }
+                    msps.addValue(key,value);
                 }
                 batchValues.add(msps.getValues());
             }

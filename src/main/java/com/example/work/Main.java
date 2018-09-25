@@ -49,35 +49,33 @@ public class Main {
         if(stationplat.start() < 0){
             return false;
         }
-//        Long starttime = System.currentTimeMillis();
         awsstationnetship.start();
-//        long endTime = System.currentTimeMillis();
-//        System.out.println("迁移地面站网表用时" + (endTime - starttime)/1000 + "s");
         uparStationNetShip.start();
-//        long dealUpar = System.currentTimeMillis() ;
-//        System.out.println("迁移高空站网表用时" + (dealUpar - endTime)/1000 + "s");
         arStationNetShip.start();
-//        long dealAr = System.currentTimeMillis() ;
-//        System.out.println("迁移酸雨站网表用时" + (dealAr - dealUpar)/1000 + "s");
-
         asmStationNetShip.start();
-//        long dealAsm = System.currentTimeMillis() ;
-//        System.out.println("迁移酸雨站网表用时" + (dealAsm - dealAr)/1000 + "s");
-
         cawnStationNetShip.start();
-
         radiStationNetShip.start();
-
         obsQuantity.start();
-
         obsMethod.start();
-
         othersFactory.start();
-
         environmentDao.start();
-
         return false;
     }
+
+    public String getNetPK(){
+        return baseDao.netPKMap.toString();
+    }
+
+    public String getStationPK(){
+        return baseDao.stationPKMap.toString();
+    }
+
+    public String clearPKMap(){
+        baseDao.stationPKMap.clear();
+        baseDao.netPKMap.clear();
+        return "Okay";
+    }
+
 
     public String migrate(){
         return recreateObservationTables.mig();
@@ -97,6 +95,10 @@ public class Main {
 
 
         return "";
+    }
+
+    public Long tableCount(String tableName){
+       return stationplat.countRows(tableName) ;
     }
 
 

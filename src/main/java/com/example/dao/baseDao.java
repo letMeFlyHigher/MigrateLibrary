@@ -188,5 +188,11 @@ public abstract class baseDao {
         return 1;
     }
 
+    public Long countRows(String tableName){
+       Map<String, Object> result = mysqlTemplate.getJdbcOperations().queryForMap("SELECT COUNT(*) as total FROM " + tableName);
+       Long rs = (Long) result.get("total");
+       return rs;
+    }
+
 
 }
