@@ -42,6 +42,16 @@ public class StartShell {
         return main.tableCount(tableName);
     }
 
+    @ShellMethod(value = "get StationPKValue",key = "checkStationPKExists")
+    public String stationPKVal(String key){
+       return main.getStationPKValue(key) ;
+    }
+
+    @ShellMethod(value = "get NetPKValue",key = "checkNetPKExists")
+    public String netPKVal(String key){
+        return main.getNetPKValue(key);
+    }
+
     @ShellMethod("Help command")
     public String selfhelp(){
         String explain = "table-count 统计表中数据数量；\n" +
@@ -49,4 +59,6 @@ public class StartShell {
                 "recreate-table-structure 重新创建观测元数据表结构;\n";
         return explain;
     }
+
+
 }

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -68,13 +69,12 @@ public class ObsQuantity extends baseDao {
             String C_OBSQSN_ID = MyUUID.getUUID36();
             String obsvelmtPK = (String)map.get("C_OBSVELMTPK_QUERY");
             String old_C_SNETSHIP_ID = obsvelmtPK.substring(0,36);
-            String new_C_SNETSHIP_ID = MyUUID.getUUID36();
+            String newNetPK = netPKMap.get(old_C_SNETSHIP_ID);
+            Assert.notNull(newNetPK,"没有找到对应的站网主键:" + old_C_SNETSHIP_ID);
             // 对于站网基本关系表，还得 可以通过map来获得，对于站点平台表，
-            netPKMap.put(old_C_SNETSHIP_ID,new_C_SNETSHIP_ID);
-
             String C_OBSQ_ID = MyUUID.getUUID36();
             mspsNetShip.addValue("C_OBSQSN_ID",C_OBSQSN_ID)
-                    .addValue("C_SNETSHIP_ID",new_C_SNETSHIP_ID)
+                    .addValue("C_SNETSHIP_ID",newNetPK)
                     .addValue("C_OBSQ_ID",C_OBSQ_ID);
             map.put("C_OBSQ_ID",C_OBSQ_ID);
             MapSqlParameterSource msps = new MapSqlParameterSource();
@@ -108,7 +108,8 @@ public class ObsQuantity extends baseDao {
                 "FROM TAB_OMIN_META_OBSVELMT,TAB_OMIN_META_NETWORK,TAB_OMIN_CM_CC_STATION\n" +
                 "WHERE SUBSTR(TAB_OMIN_META_OBSVELMT.OBSVELMTPK,0,36) = TAB_OMIN_META_NETWORK.NETWORKPK \n" +
                 " AND SUBSTR(TAB_OMIN_META_NETWORK.NETWORKPK(+),0,32) = TAB_OMIN_CM_CC_STATION.C_STATION_ID \n" +
-                "AND TAB_OMIN_META_OBSVELMT.OBSVELMTNAME IS NOT NULL";
+                "AND TAB_OMIN_META_NETWORK.Networktype in ('01','04','11','13','16','17') \n" +
+                "AND TAB_OMIN_META_OBSVELMT.OBSVELMTNAME IS NOT NULL ";
         return queryMDOSForListMap(querySql);
     }
 }

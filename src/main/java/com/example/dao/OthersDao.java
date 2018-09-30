@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -52,15 +53,16 @@ public class OthersDao extends baseDao {
                    if("OBSVCRITPK,SUMMARYPK,WEATHERDESCPK,NOTEEVENTPK,OBSTPK,POLLUTEPK,NETWORKPK,OBSVRECDPK,HISLOGFROMPK,NETWORKSOPK,SOFTPK".contains(key)){
                        String oldNetPK = ((String)value).substring(0,36);
                         if(key.equals("NETWORKPK")){
-                            fieldMap.put(key,netPKMap.get(oldNetPK));
+                            value = netPKMap.get(oldNetPK);
                         }else{
                             String networkPK = netPKMap.get(oldNetPK);
                             String newPK = networkPK + ((String)value).substring(36);
-                            fieldMap.put(key,newPK);
+                            value = newPK;
                         }
-                   }else if(",STATION_ID,STATION,".contains(key)){
+                   }else if(key.equals("C_STATIOIN_ID")){
                         String newPK = stationPKMap.get(value);
-                        fieldMap.put(key,newPK);
+                        Assert.notNull(newPK,"未找到对应的台站主键：" + value);
+                        value = newPK;
                    }
                     msps.addValue(key,value);
                 }

@@ -70,6 +70,14 @@ public class Main {
         return baseDao.stationPKMap.toString();
     }
 
+    public String getNetPKValue(String key){
+        return baseDao.netPKMap.get(key);
+    }
+
+    public String getStationPKValue(String key){
+        return baseDao.stationPKMap.get(key);
+    }
+
     public String clearPKMap(){
         baseDao.stationPKMap.clear();
         baseDao.netPKMap.clear();

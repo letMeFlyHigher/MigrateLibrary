@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.sql.Types;
 import java.util.List;
@@ -29,6 +30,7 @@ public class AsmStationNetShip extends baseDao {
                 String new_NetPK = MyUUID.getUUID36();
                 String old_stationPK = (String) map.get("C_SITEOPF_ID");
                 String new_stationPK = stationPKMap.get(old_stationPK);
+                Assert.notNull(new_stationPK,"未找到对应的台站主键：" + new_stationPK);
                 map.put("C_SNETSHIP_ID",new_NetPK);
                 map.put("C_SITEOPF_ID",new_stationPK);
                 netPKMap.put(old_NetPK,new_NetPK);
