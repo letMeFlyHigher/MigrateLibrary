@@ -100,9 +100,7 @@ public class Main {
         obsQuantity.clearTable("tab_omin_cm_cc_obsquantity");
         obsMethod.clearTable("tab_omin_cm_cc_obsmethod");
         environmentDao.clearTable("tab_omin_cm_cc_environment");
-
-
-        return "";
+        return "Okay";
     }
 
     public Long tableCount(String tableName){
