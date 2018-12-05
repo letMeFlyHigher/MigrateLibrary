@@ -65,7 +65,7 @@ public class GenerateSelectByNew {
         return "";
     }
     public static void main(String[] args){
-        String pathName = "src/main/resources/sql/新增表.sql"; //冲突表0716.txt  C:\Users\99624\IdeaProjects\mdos2\MigrateLibrary\src\main\resources\冲突表0716.txt
+        String pathName = "src/main/resources/sql/add.sql"; //冲突表0716.txt  C:\Users\99624\IdeaProjects\mdos2\MigrateLibrary\src\main\resources\冲突表0716.txt
         String SQLResult = getSQLResult(pathName);
         System.out.println(SQLResult);
         String newFilePath = "";

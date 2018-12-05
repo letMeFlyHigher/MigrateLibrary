@@ -1,6 +1,8 @@
 package com.example.dao;
 
 import com.example.util.FieldHelper;
+import com.sun.media.jfxmedia.logging.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +16,9 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class baseDao {
+
+    private static final org.slf4j.Logger baseLogger = LoggerFactory.getLogger(baseDao.class);
+
     @Autowired
     @Qualifier("mysqlJdbcTemplate")
     protected NamedParameterJdbcTemplate mysqlTemplate;
@@ -102,7 +107,7 @@ public abstract class baseDao {
             }
             batchValues.add(msps.getValues());
         }
-
+        baseLogger.info(batchValues.toString());
         int[] nums = mysqlTemplate.batchUpdate(insertSql.toString(),batchValues.toArray(new Map[listMap.size()]));
         return 1;
     }

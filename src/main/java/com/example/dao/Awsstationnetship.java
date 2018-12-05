@@ -51,8 +51,8 @@ public class Awsstationnetship extends baseDao {
                     map.put("C_RAIN_ETIME",12);
                 }else{ // 切换时间有具体的数值
                     String[] vals = ((String)rainFallSwitchQuery).split(",");
-                    map.put("C_RAIN_STIME",Integer.parseInt(vals[0]));
-                    map.put("C_RAIN_ETIME",Integer.parseInt(vals[1]));
+                    map.put("C_RAIN_STIME",Integer.parseInt(vals[1]));
+                    map.put("C_RAIN_ETIME",Integer.parseInt(vals[0]));
                 }
 
                 if(evaporationSwitchQuery == null){
@@ -63,8 +63,8 @@ public class Awsstationnetship extends baseDao {
                     map.put("C_SWITCH_EDATE",12);
                 }else{ // 切换时间有具体的数值
                     String[] vals = ((String)evaporationSwitchQuery).split(",");
-                    map.put("C_SWITCH_SDATE",Integer.parseInt(vals[0]));
-                    map.put("C_SWITCH_EDATE",Integer.parseInt(vals[1]));
+                    map.put("C_SWITCH_SDATE",Integer.parseInt(vals[1]));
+                    map.put("C_SWITCH_EDATE",Integer.parseInt(vals[0]));
                 }
 //                map.put("C_OBSVMODE",(BigDecimal)map.get("C_OBSVMODE"));
 //                map.put("C_ONDUTY",(BigDecimal)map.get("C_ONDUTY"));

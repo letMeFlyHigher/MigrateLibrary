@@ -15,8 +15,8 @@ public class RecreateObservationTables extends baseDao {
 
     @Override
     public int start() {
-        String srcPath1 = "src/main/resources/sql/新增表.sql";
-        String srcPath2 = "src/main/resources/sql/冲突表.sql";
+        String srcPath1 = "src/main/resources/sql/add.sql";
+        String srcPath2 = "src/main/resources/sql/modify.sql";
 //        StringBuilder sb = readFile(srcPath1);
 //        sb.append(readFile(srcPath2));
 //        System.out.println(sb.toString());
@@ -25,8 +25,8 @@ public class RecreateObservationTables extends baseDao {
     }
 
     public String mig(){
-        String srcPath1 = "src/main/resources/sql/新增表.sql";
-        String srcPath2 = "src/main/resources/sql/冲突表.sql";
+        String srcPath1 = "src/main/resources/sql/add.sql";
+        String srcPath2 = "src/main/resources/sql/modify.sql";
         List<String> ctList = readFile(srcPath1);
         ctList.addAll(readFile(srcPath2));
 //        ctList.forEach(item ->  item.indexOf("\r\n"));
