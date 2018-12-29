@@ -54,9 +54,9 @@ public class StartShell {
 
     @ShellMethod("Help command")
     public String selfhelp(){
-        String explain = "table-count Í³¼Æ±íÖĞÊı¾İÊıÁ¿£»\n" +
-                "start-migrate ¿ªÊ¼Ç¨ÒÆ; \n" +
-                "recreate-table-structure ÖØĞÂ´´½¨¹Û²âÔªÊı¾İ±í½á¹¹;\n";
+        String explain = "table-count ç»Ÿè®¡è¡¨ä¸­æ•°æ®æ•°é‡ï¼›\n" +
+                "start-migrate å¼€å§‹è¿ç§»; \n" +
+                "recreate-table-structure é‡æ–°åˆ›å»ºè§‚æµ‹å…ƒæ•°æ®è¡¨ç»“æ„;\n";
         return explain;
     }
 

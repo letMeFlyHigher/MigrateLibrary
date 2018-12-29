@@ -1,7 +1,6 @@
 package com.example.dao;
 
 import com.example.util.FieldHelper;
-import com.sun.media.jfxmedia.logging.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,11 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Savepoint;
+
 import java.util.*;
-import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class baseDao {
 

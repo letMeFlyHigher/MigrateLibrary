@@ -50,7 +50,7 @@ public class OthersDao extends baseDao {
                    Object value =  en.getValue();
                    String key = en.getKey();
 
-                   if("OBSVCRITPK,SUMMARYPK,WEATHERDESCPK,NOTEEVENTPK,OBSTPK,POLLUTEPK,NETWORKPK,OBSVRECDPK,HISLOGFROMPK,NETWORKSOPK,SOFTPK".contains(key)){
+                   if("OBSVCRITPK,SUMMARYPK,WEATHERDESCPK,NOTEEVENTPK,OBSTPK,POLLUTEPK,NETWORKPK,OBSVRECDPK,HISLOGFROMPK,NETWORKSOPK,SOFTPK,ATTACHPK".contains(key)){
                        String oldNetPK = ((String)value).substring(0,36);
                         if(key.equals("NETWORKPK")){
                             value = netPKMap.get(oldNetPK);
@@ -59,7 +59,7 @@ public class OthersDao extends baseDao {
                             String newPK = networkPK + ((String)value).substring(36);
                             value = newPK;
                         }
-                   }else if(key.equals("C_STATIOIN_ID")){
+                   }else if(key.equals("C_STATIOIN_ID") || "STATION_ID".equals(key)){
                         String newPK = stationPKMap.get(value);
                         Assert.notNull(newPK,"未找到对应的台站主键：" + value);
                         value = newPK;
