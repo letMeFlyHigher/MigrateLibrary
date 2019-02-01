@@ -27,6 +27,18 @@ public class StartShell {
         return "Build Successfully!";
     }
 
+    @ShellMethod("clear pk")
+    public String clearpk(){
+        main.clearPKMap();
+        return "cleared";
+    }
+
+    @ShellMethod("clear table")
+    public String clearTable(){
+        main.clearTable();
+        return "cleared!";
+    }
+
     @ShellMethod("Hello Demo")
     public String hello(){
         return "hello this is demo, if you can see that,you start shell successfully";

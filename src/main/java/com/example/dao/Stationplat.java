@@ -39,7 +39,7 @@ public class Stationplat extends baseDao{
         List<Map<String,Object>> stationList = new ArrayList<Map<String,Object>>();
         stationList = executeQuerySql();
         String tableName = "TAB_OMIN_CM_CC_STATIONPLAT";
-        clearTable(tableName);
+//        clearTable(tableName);
         LOGGER.info(tableName + "开始迁库>>>>");
         if(insertToPMCISTable(tableName, stationList, new FieldHelper() {
             @Override

@@ -43,22 +43,38 @@ public class Main {
     @Autowired
     private EnvironmentDao environmentDao;
 
+    @Autowired
+    private Contact contact;
+
+    @Autowired
+    private WkflDefaHandler wkflDefaHandler;
+
+    @Autowired
+    private WkflDefbHandler wkflDefbHandler;
+
     public boolean start(){
 
-        awsstationnetship.clearTable("TAB_OMIN_CM_CC_STATIONNETSHIP");
-        if(stationplat.start() < 0){
-            return false;
+        int size = 30;
+        for(int i = 0; i < size; i++){
+            if(stationplat.start() < 0){
+                return false;
+            }
+            awsstationnetship.start();
+            uparStationNetShip.start();
+            arStationNetShip.start();
+            asmStationNetShip.start();
+            cawnStationNetShip.start();
+            radiStationNetShip.start();
+            obsQuantity.start();
+            obsMethod.start();
+            othersFactory.start();
+            environmentDao.start();
+            contact.start();
+            clearPKMap();
         }
-        awsstationnetship.start();
-        uparStationNetShip.start();
-        arStationNetShip.start();
-        asmStationNetShip.start();
-        cawnStationNetShip.start();
-        radiStationNetShip.start();
-        obsQuantity.start();
-        obsMethod.start();
-        othersFactory.start();
-        environmentDao.start();
+        wkflDefaHandler.start();
+        wkflDefbHandler.start();
+//        awsstationnetship.clearTable("TAB_OMIN_CM_CC_STATIONNETSHIP");
         return false;
     }
 
@@ -100,6 +116,7 @@ public class Main {
         obsQuantity.clearTable("tab_omin_cm_cc_obsquantity");
         obsMethod.clearTable("tab_omin_cm_cc_obsmethod");
         environmentDao.clearTable("tab_omin_cm_cc_environment");
+        contact.clearTable("tab_omin_cm_cc_contact");
         return "Okay";
     }
 

@@ -64,16 +64,16 @@ public abstract class baseDao {
      * @return
      */
     public  int insertToPMCISTable(String tableName, List<Map<String,Object>> listMap, FieldHelper fieldHelper){
-        String queryIfExists = "select count(*) as num from " + tableName;
-        Map<String,Object> numMap = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists);
-        if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
-            mysqlTemplate.getJdbcOperations().execute("TRUNCATE TABLE " + tableName);
-        }
+//        String queryIfExists = "select count(*) as num from " + tableName;
+//        Map<String,Object> numMap = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists);
+//        if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
+//            mysqlTemplate.getJdbcOperations().execute("TRUNCATE TABLE " + tableName);
+//        }
         int i = 0 ;
         Map<String,Object> fieldMap = listMap.get(i);
         Iterator<String> iter = fieldMap.keySet().iterator();
-        StringBuffer insertSql = new StringBuffer("INSERT INTO " + tableName + "(");
-        StringBuffer values = new StringBuffer("VALUES(");
+        StringBuilder insertSql = new StringBuilder("INSERT INTO " + tableName + "(");
+        StringBuilder values = new StringBuilder("VALUES(");
         Object value;
         //拼写插入语句,后缀有QUERY表示，用到该值，但并不将该值直接插入。
         while(iter.hasNext()){
@@ -103,7 +103,7 @@ public abstract class baseDao {
             }
             batchValues.add(msps.getValues());
         }
-        baseLogger.info(batchValues.toString());
+//        baseLogger.info(batchValues.toString());
         int[] nums = mysqlTemplate.batchUpdate(insertSql.toString(),batchValues.toArray(new Map[listMap.size()]));
         return 1;
     }
@@ -116,13 +116,13 @@ public abstract class baseDao {
      * @return
      */
     public int insertToPMCISForNetShip(String tableName, List<Map<String,Object>> listMap, FieldHelper fieldHelper){
-        if(!tableName.isEmpty()){
-            String queryIfExists = "select count(*) as num from " + tableName;
-            Map<String,Object> numMap = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists);
-            if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
-                mysqlTemplate.getJdbcOperations().execute("TRUNCATE TABLE " + tableName);
-            }
-        }
+//        if(!tableName.isEmpty()){
+//            String queryIfExists = "select count(*) as num from " + tableName;
+//            Map<String,Object> numMap = mysqlTemplate.getJdbcOperations().queryForMap(queryIfExists);
+//            if((Long)numMap.get("num") != null && (Long)numMap.get("num") > 0){
+//                mysqlTemplate.getJdbcOperations().execute("TRUNCATE TABLE " + tableName);
+//            }
+//        }
 
         //这程序该怎么写呢。。。
         //先要看我们有什么？
@@ -140,8 +140,7 @@ public abstract class baseDao {
         //INSERT INTO TABLENAME(C_SNETSHIP_ID,...SET(LISTMAP -> MAP.KEYSET) - BASESET) VALUES (:C_SNETSHIP_ID,...SET(....));
         //坚信怎么赋值会根据SQL语句来，多余的字段不会影响sql语句的执行，在此前提下的程序,、、无情代码打破你的幻想
 
-        String baseSql = "INSERT INTO TAB_OMIN_CM_CC_STATIONNETSHIP(C_SNETSHIP_ID,C_SITEOPF_ID,C_SNET_ID,C_STATION_LEVEL,C_STARTTIME,C_ENDTIME,C_TIMESYSTEM,C_EXCHANGECODE,C_OBSVMODE,C_OBSVCOUNT,C_OBSVTIMES,C_ONDUTY)" +
-                                                                " VALUES(:C_SNETSHIP_ID,:C_SITEOPF_ID,:C_SNET_ID,:C_STATION_LEVEL,:C_STARTTIME,:C_ENDTIME,:C_TIMESYSTEM,:C_EXCHANGECODE,:C_OBSVMODE,:C_OBSVCOUNT,:C_OBSVTIMES,:C_ONDUTY)";
+        String baseSql = "INSERT INTO TAB_OMIN_CM_CC_STATIONNETSHIP(C_SNETSHIP_ID,C_SITEOPF_ID,C_SNET_ID,C_STATION_LEVEL,C_STARTTIME,C_ENDTIME,C_TIMESYSTEM,C_EXCHANGECODE,C_OBSVMODE,C_OBSVCOUNT,C_OBSVTIMES,C_ONDUTY) VALUES(:C_SNETSHIP_ID,:C_SITEOPF_ID,:C_SNET_ID,:C_STATION_LEVEL,:C_STARTTIME,:C_ENDTIME,:C_TIMESYSTEM,:C_EXCHANGECODE,:C_OBSVMODE,:C_OBSVCOUNT,:C_OBSVTIMES,:C_ONDUTY)";
         List<String> baseList = Arrays.asList("C_SNETSHIP_ID","C_SITEOPF_ID","C_SNET_ID","C_STATION_LEVEL","C_STARTTIME","C_ENDTIME","C_TIMESYSTEM","C_EXCHANGECODE","C_OBSVMODE","C_OBSVCOUNT","C_OBSVTIMES","C_ONDUTY");
         List<String> otherList = new ArrayList<String>();
         Set<String> set = listMap.get(0).keySet();
@@ -155,8 +154,8 @@ public abstract class baseDao {
         StringBuilder sb1 = new StringBuilder(otherSql);
         StringBuilder sb2 = new StringBuilder("VALUES(");
         for(String s : otherList){
-            sb1.append(s).append(",");
-            sb2.append(":").append(s).append(",");
+            sb1.append(s).append(',');
+            sb2.append(':').append(s).append(',');
         }
         otherSql = sb1.deleteCharAt(sb1.length() - 1).append(")").append(" ").append(sb2.deleteCharAt(sb2.length() - 1).append(")")).toString();
         List<Map<String,Object>> batchValues = new ArrayList<Map<String,Object>>(listMap.size());
@@ -181,7 +180,7 @@ public abstract class baseDao {
             batchValues.add(msps.getValues());
             otherBatchValues.add(otherMsps.getValues());
         }
-        //TODO 需要去测试一下，这个batchupdate方法的返回结构。
+
         int[] baseResult = mysqlTemplate.batchUpdate(baseSql,batchValues.toArray(new Map[listMap.size()]));
         if(!tableName.isEmpty()){
             int[] otherResult = mysqlTemplate.batchUpdate(otherSql,otherBatchValues.toArray(new Map[listMap.size()]));

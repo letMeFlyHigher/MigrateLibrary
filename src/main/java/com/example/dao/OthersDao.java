@@ -37,7 +37,7 @@ public class OthersDao extends baseDao {
 //            if(hasRowsInTable(tableName)){
 //                continue;
 //            }
-            clearTable(tableName);
+//            clearTable(tableName);
             LOGGER.info(tableName + "开始迁库");
             //查询mdos
             List<Map<String,Object>> queryMap = queryMDOSForListMap(querySql) ;
@@ -63,8 +63,10 @@ public class OthersDao extends baseDao {
                         String newPK = stationPKMap.get(value);
                         Assert.notNull(newPK,"未找到对应的台站主键：" + value);
                         value = newPK;
+                   }else if(key.equals("CHGINFOPK") || key.equals("INSTMOPK")){
+                        value = UUID.randomUUID().toString().replace("-","");
                    }
-                    msps.addValue(key,value);
+                   msps.addValue(key,value);
                 }
                 batchValues.add(msps.getValues());
             }
